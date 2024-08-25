@@ -374,6 +374,7 @@
             @csrf
             <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products...">
             <!-- <button type="submit"><i class="fa fa-search"></i></button> -->
+            <a href="/index" style="color:#FFFFFF;"><i class="fa fa-sign-in"></i> Sign In</a>
         </div>
     </div>
 
