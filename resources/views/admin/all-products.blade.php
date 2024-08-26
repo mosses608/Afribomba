@@ -51,7 +51,7 @@
                     <th>Action</th>
                     </tr>
                     @foreach($products as $product)
-                    <tr>
+                    <tr class="product-tr-td">
                         <td>#</td>
                         <td><a href="{{asset('storage/'. $product->product_image)}}"><img src="{{asset('storage/'. $product->product_image)}}" alt=""></a></td>
                         <td>{{$product->product_id}}</td>
