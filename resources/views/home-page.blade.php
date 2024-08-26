@@ -387,7 +387,8 @@
         <center>
             <form action="/" method="GET" class="search-bar-container">
             @csrf
-            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products..."> <a href="/index" style="color:#000;" id="sign-in-link">Sign In</a>
+            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products...">
+             <!-- <a href="/index" style="color:#000;" id="sign-in-link">Sign In</a> -->
         </form>
     </center>
     </header>
@@ -408,7 +409,7 @@
 
     <footer class="footer-distributed">
         <div class="footer-left">
-            <img src="{{asset('assets/images/background-logo.png')}}" alt="">
+            <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt=""></a>
             <!-- <p class="footer-links">
                 <a href="#" class="link-1">Home</a>
                 <a href="#">Blog</a>
