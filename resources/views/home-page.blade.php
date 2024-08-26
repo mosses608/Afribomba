@@ -99,7 +99,7 @@
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
             padding: 20px;
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -413,6 +413,45 @@
             .search-bar-container input[type="text"] {
                 width: 90%;
                 padding: 8px 40px 8px 10px;
+            }
+        }
+
+        @media (max-width:768px){
+            .header-wrapper{
+                width:100%;
+            }
+            .header-wrapper img{
+                display:none;
+            }
+            .min-header-container{
+                float:none;
+                width:100%;
+                margin-left:0%;
+            }
+            .min-header-container h1{
+                font-size: 16px;
+            }
+            .min-header-container p{
+                font-size:12px;
+            }
+            .hours{
+                font-size:12px;
+            }
+            .search-bar-container{
+                float:none;
+                width: 100%;
+                margin-left:0%;
+            }
+            .product-list{
+                width:100%;
+                display: inline;
+                margin-left:1%;
+            }
+            .product{
+                margin-top:5%;
+            }
+            .footer-distributed{
+                width:100%;
             }
         }
     </style>
