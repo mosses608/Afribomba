@@ -35,8 +35,12 @@
         }
 
         .min-header-container{
-            float: none;
-            width:100%;
+            float: left;
+            margin-left:20%;
+        }
+        .search-bar-container{
+            float:left;
+            margin-left:11%;
         }
 
         header h1 {
@@ -340,6 +344,36 @@
             color:#000;
         }
 
+        .paginate-builder{
+            justify-content:center;
+            box-shadow: 0 0 4px rgba(0,0,0.5px);
+            width:90%;
+            background-color:#FFF;
+            padding:10px;
+        }
+
+        .paginate-builder a{
+            text-decoration:none;
+        }
+
+        .paginate-builder p{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .paginate-builder span{
+           padding:6px;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .paginate-builder a{
+            color:#000;
+        }
+
+        .paginate-builder svg{
+            font-size:20px;
+            display:none;
+        }
+
         @media (max-width: 1000px) {
             .footer-distributed .footer-left,
             .footer-distributed .footer-center,
@@ -413,7 +447,13 @@
         </div>
         @endforeach
     </section>
-
+<br>
+   <center>
+   <div class="paginate-builder">
+        {{$products->links()}}
+    </div>
+   </center>
+<br><br>
     <footer class="footer-distributed">
         <div class="footer-left">
             <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt="Image" loading="lazy"></a>
