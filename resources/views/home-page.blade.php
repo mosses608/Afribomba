@@ -19,12 +19,18 @@
             min-height: 100vh;
         }
 
-        header {
+        .header-wrapper {
             background-color: #003366; /* Updated to desired color */
             color: #fff;
             padding: 15px 20px;
+            width: 100%;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .min-header-container{
+            float: none;
+            width:100%;
         }
 
         header h1 {
@@ -44,21 +50,25 @@
 
         .search-bar-container {
             display: flex;
+            width:50%;
             justify-content: center; /* Centered the search bar */
             padding: 10px 20px;
-            background-color: #003366; /* Updated to match header color */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
-        .search-bar {
-            position: relative;
-            width: 100%;
-            max-width: 600px; /* Adjust width as needed */
+        .search-bar-container a{
+            margin-left:2%;
+            width:80px;
+            font-size:14px;
+            text-decoration:none;
+            padding:6px;
+            background-color:#FFFFFF;
+            color:#000;
+            border-radius:4px;
         }
 
-        .search-bar input[type="text"] {
-            width: 100%;
+        .search-bar-container input[type="text"] {
+            width: 80%;
             padding: 8px 40px 8px 10px; /* Add space for the icon */
             font-size: 14px;
             border: 1px solid #ccc;
@@ -66,7 +76,7 @@
             outline: none;
         }
 
-        .search-bar i {
+        .search-bar-container i {
             position: absolute;
             right: 10px;
             top: 50%;
@@ -319,6 +329,11 @@
             background-color: #000000;
         }
 
+        #sign-in-link{
+            float:right;
+            color:#000;
+        }
+
         @media (max-width: 1000px) {
             .footer-distributed .footer-left,
             .footer-distributed .footer-center,
@@ -355,7 +370,7 @@
                 padding: 10px;
             }
 
-            .search-bar input[type="text"] {
+            .search-bar-container input[type="text"] {
                 width: 90%;
                 padding: 8px 40px 8px 10px;
             }
@@ -363,29 +378,30 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>SEKO SUPPLIERS WHOLESALE SHOP</h1>
-        <p>Note: Price may change anytime | Contact: +255 753 380 407</p>
-        <div class="hours">Open: 7:00 AM | Close: 6:00 PM</div>
+    <header class="header-wrapper">
+        <div class="min-header-container">
+            <h1>SEKO SUPPLIERS WHOLESALE SHOP</h1>
+            <p>Note: Price may change anytime | Contact: +255 653 881 184</p>
+            <div class="hours">Open: 7:00 AM | Close: 6:00 PM</div>
+        </div>
+        <center>
+            <form action="/" method="GET" class="search-bar-container">
+            @csrf
+            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products..."> <a href="/index" style="color:#000;" id="sign-in-link">Sign In</a>
+        </form>
+    </center>
     </header>
 
-    <div class="search-bar-container">
-        <form action="/" class="search-bar" method="GET">
-            @csrf
-            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products...">
-            <!-- <button type="submit"><i class="fa fa-search"></i></button> -->
-            <a href="/index" style="color:#FFFFFF;"><i class="fa fa-sign-in"></i> Sign In</a>
-        </div>
-    </div>
+   
 
     <section class="product-list" id="productList">
         @foreach($products as $product)
         <div class="product">
             <img src="{{asset('storage/' . $product->product_image)}}" alt="Image" loading="lazy">
             <h2>{{$product->product_name}}</h2>
-            <p class="quantity">{{$product->product_quantity}}</p>
+            <p class="quantity">{{$product->product_quantity}} Available</p>
             <p class="price">Tsh {{number_format($product->product_price)}}</p>
-            <p class="available">Available (Box)</p>
+            <!-- <p class="available">Available (Box)</p> -->
         </div>
         @endforeach
     </section>
@@ -414,22 +430,22 @@
         <div class="footer-center">
             <div>
                 <i class="fa fa-map-marker"></i>
-                <p><a href="https://www.google.com/maps?q=Sikukuu+St+%26+Michikichi+St,+Dar+es+Salaam">Mchikichi na Sikukuu</a></p>
+                <p><a href="https://www.google.com/maps?q=Sikukuu+St+%26+Michikichi+St,+Dar+es+Salaam" style="color:#FFF;">Mchikichi na Sikukuu</a></p>
             </div>
             <div>
                 <i class="fa fa-phone"></i>
-                <p>+255 653 881 184</p>
+                <p style="color:#FFF;">+255 653 881 184</p>
             </div>
             <div>
                 <i class="fa fa-envelope"></i>
-                <p><a href="mailto:baracky2000@gmail.com">baracky2000@gmail.com</a></p>
+                <p><a href="mailto:baracky2000@gmail.com" style="color:#FFF;">baracky2000@gmail.com</a></p>
             </div>
         </div>
 
         <div class="footer-right">
             <p class="footer-company-about">
                 <span>About the company</span>
-                Is an online platform offering a wide range of industrial equipment, tools, and supplies. They cater to various industries with quality products and reliable service.
+                <p style="color:#ccc;">Is an online platform offering a wide range of industrial equipment, tools, and supplies. They cater to various industries with quality products and reliable service.</p>
             </p>
             <div class="footer-icons">
                 <a href="https://wa.me/+255653881184"><i class="fab fa-facebook"></i></a>
