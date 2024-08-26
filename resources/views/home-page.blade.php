@@ -28,6 +28,12 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .header-wrapper img{
+            float:left;
+            width:150px;
+            height:120px;
+        }
+
         .min-header-container{
             float: none;
             width:100%;
@@ -379,6 +385,7 @@
 </head>
 <body>
     <header class="header-wrapper">
+    <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt=""></a>
         <div class="min-header-container">
             <h1>SEKO SUPPLIERS WHOLESALE SHOP</h1>
             <p>Note: Price may change anytime | Contact: +255 653 881 184</p>
@@ -409,7 +416,7 @@
 
     <footer class="footer-distributed">
         <div class="footer-left">
-            <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt=""></a>
+            <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt="Image" loading="lazy"></a>
             <!-- <p class="footer-links">
                 <a href="#" class="link-1">Home</a>
                 <a href="#">Blog</a>
