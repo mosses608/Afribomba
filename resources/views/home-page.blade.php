@@ -365,6 +365,10 @@
             display:none;
         }
 
+        .paginate-builder{
+            border-radius:10px;
+        }
+
         @media (max-width: 1000px) {
             .footer-distributed .footer-left,
             .footer-distributed .footer-center,
