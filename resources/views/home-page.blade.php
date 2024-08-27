@@ -22,7 +22,7 @@
         .header-wrapper {
             background-color: #003366; /* Updated to desired color */
             color: #fff;
-            padding: 15px 20px;
+            padding: 10px;
             width: 100%;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -30,17 +30,18 @@
 
         .header-wrapper img{
             float:left;
-            width:150px;
-            height:120px;
+            width:60px;
+            border-radius:30px;
+            height:60px;
         }
 
         .min-header-container{
             float: left;
-            margin-left:20%;
+            margin-left:28%;
         }
         .search-bar-container{
             float:left;
-            margin-left:11%;
+            margin-left:23%;
         }
 
         header h1 {
@@ -95,11 +96,11 @@
         }
 
         .product-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            display: inline;
+            /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
             gap: 15px;
-            padding: 20px;
-            max-width: 100%;
+            padding: 10px;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -108,6 +109,10 @@
             border: 1px solid #ddd;
             border-radius: 10px;
             overflow: hidden;
+            float:left;
+            width:18%;
+            margin-left:5%;
+            margin-top:2%;
             transition: transform 0.3s, box-shadow 0.3s;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -190,7 +195,7 @@
             width: 100%;
             text-align: left;
             font: bold 16px 'Open Sans', sans-serif;
-            padding: 10px 10px;
+            padding: 6px;
         }
 
         .footer-distributed .footer-left,
@@ -242,7 +247,11 @@
         }
 
         .footer-distributed .footer-center {
-            width: 35%;
+            width: 100%;
+        }
+        .footer-center div{
+            float:left;
+            padding:10px;
         }
 
         .footer-distributed .footer-center i {
@@ -298,7 +307,7 @@
         }
 
         .footer-distributed .footer-right {
-            width: 20%;
+            width: 100%;
         }
 
         .footer-distributed .footer-company-about {
@@ -317,28 +326,10 @@
             margin-bottom: 10px;
         }
 
-        .footer-distributed .footer-icons {
+        .footer-icons {
             margin-top: 25px;
+            display:none;
         }
-
-        .footer-distributed .footer-icons a {
-            display: inline-block;
-            width: 35px;
-            height: 35px;
-            border-radius: 2px;
-            background-color: #33383b;
-            color: #ffffff;
-            font-size: 20px;
-            text-align: center;
-            line-height: 35px;
-            margin: 0 5px;
-            transition: background 0.3s;
-        }
-
-        .footer-distributed .footer-icons a:hover {
-            background-color: #000000;
-        }
-
         #sign-in-link{
             float:right;
             color:#000;
@@ -408,10 +399,13 @@
 
             .search-bar-container {
                 padding: 10px;
+                margin-left:0%;
+                float:none;
             }
 
             .search-bar-container input[type="text"] {
-                width: 90%;
+                width: 80%;
+                margin-left:0%;
                 padding: 8px 40px 8px 10px;
             }
         }
@@ -444,15 +438,50 @@
             }
             .product-list{
                 width:100%;
-                display: inline;
-                margin-left:1%;
+                margin-left:0%;
             }
             .product{
-                margin-top:5%;
+                margin-top:2%;
+                width:25%;
+            }
+            .product h2,p{
+                font-size:12px;
+                font-weight:400;
+            }
+            
+            .product img{
+                height:100px;
             }
             .footer-distributed{
                 width:100%;
             }
+            .footer-center{
+                float:left;
+                font-size:14px;
+            }
+            .footer-iconsn{
+                display:none;
+            }
+            .footer-icons{
+                display:block;
+            }
+            .footer-icons a {
+                display: inline-block;
+                width: 35px;
+                height: 35px;
+                border-radius: 2px;
+                background-color: #33383b;
+                color: #ffffff;
+                font-size: 20px;
+                text-align: center;
+                line-height: 35px;
+                margin: 0 5px;
+                transition: background 0.3s;
+            }
+            .footer-icons a:hover {
+            background-color: #000000;
+            }
+
         }
     </style>
 </head>
@@ -460,7 +489,7 @@
     <header class="header-wrapper">
     <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt=""></a>
         <div class="min-header-container">
-            <h1>SEKO SUPPLIERS WHOLESALE SHOP</h1>
+            <h1>AFRIBOMBA WHOLESALE SHOP</h1>
             <p>Note: Price may change anytime | Contact: +255 653 881 184</p>
             <div class="hours">Open: 7:00 AM | Close: 6:00 PM</div>
         </div>
@@ -480,9 +509,9 @@
         <div class="product">
             <img src="{{asset('storage/' . $product->product_image)}}" alt="Image" loading="lazy">
             <h2>{{$product->product_name}}</h2>
-            <p class="quantity">{{$product->product_quantity}} Available</p>
+            <p class="quantity">Available</p>
+            <p class="available">{{$product->description}}</p>
             <p class="price">Tsh {{number_format($product->product_price)}}</p>
-            <!-- <p class="available">Available (Box)</p> -->
         </div>
         @endforeach
     </section>
@@ -494,18 +523,18 @@
    </center>
 <br><br>
     <footer class="footer-distributed">
-        <div class="footer-left">
+        <!-- <div class="footer-left">
             <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt="Image" loading="lazy"></a>
-            <!-- <p class="footer-links">
+            <p class="footer-links">
                 <a href="#" class="link-1">Home</a>
                 <a href="#">Blog</a>
                 <a href="#">Pricing</a>
                 <a href="#">About</a>
                 <a href="#">Faq</a>
                 <a href="#">Contact</a>
-            </p> -->
+            </p>
             <p class="footer-company-name" style="color:#FFFFFF;">AFRIBOMBA WHOLESALE SHOP &copy; <span class="currentYear"></span></p>
-        </div>
+        </div> -->
 
         <script>
             const currentYear = new Date();
@@ -514,6 +543,7 @@
             document.querySelector('.currentYear').textContent = formattedYear;
         </script>
 
+        <center>
         <div class="footer-center">
             <div>
                 <i class="fa fa-map-marker"></i>
@@ -527,19 +557,33 @@
                 <i class="fa fa-envelope"></i>
                 <p><a href="mailto:baracky2000@gmail.com" style="color:#FFF;">baracky2000@gmail.com</a></p>
             </div>
+            <div class="footer-iconsn">
+                <a href="https://wa.me/+255653881184"><i class="fab fa-facebook"></i></a>
+            </div>
+            <div class="footer-iconsn">
+                <a href="https://wa.me/+255653881184"><i class="fab fa-twitter"></i></a>
+            </div>
+            <div class="footer-iconsn">
+                <a href="https://wa.me/+255653881184"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="footer-iconsn">
+                <a href="https://wa.me/+255653881184"><i class="fab fa-whatsapp"></i></a>
+            </div>
         </div>
+        <div class="footer-icons">
+            <a href="https://wa.me/+255653881184"><i class="fab fa-facebook"></i></a>
+            <a href="https://wa.me/+255653881184"><i class="fab fa-twitter"></i></a>
+            <a href="https://wa.me/+255653881184"><i class="fab fa-whatsapp"></i></a>
+            <br><br>
+        </div>
+        </center>
 
         <div class="footer-right">
             <p class="footer-company-about">
                 <span>About the company</span>
                 <p style="color:#ccc;">Is an online platform offering a wide range of industrial equipment, tools, and supplies. They cater to various industries with quality products and reliable service.</p>
             </p>
-            <div class="footer-icons">
-                <a href="https://wa.me/+255653881184"><i class="fab fa-facebook"></i></a>
-                <a href="https://wa.me/+255653881184"><i class="fab fa-twitter"></i></a>
-                <a href="https://wa.me/+255653881184"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/+255653881184"><i class="fab fa-whatsapp"></i></a>
-            </div>
+           
         </div>
     </footer>
 
