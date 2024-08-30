@@ -333,6 +333,7 @@
         #sign-in-link{
             float:right;
             color:#000;
+            display:none;
         }
 
         .paginate-builder{
@@ -437,7 +438,7 @@
             }
             .search-bar-container{
                 float:none;
-                width: 100%;
+                width: 90%;
                 margin-left:0%;
             }
             .product-list{
@@ -449,12 +450,31 @@
                 width:25%;
             }
             .product h2,p{
-                font-size:12px;
                 font-weight:400;
+            }
+
+            .product .available{
+                font-size:12px;
+                display:none;
+            }
+
+            .product .price{
+                font-size:12px;
+                padding:2px;
+            }
+
+            .product .product-name{
+                font-size:12px;
+                padding: 0px;
+            }
+
+            #sign-in-link{
+                display:block;
+                float:none;
             }
             
             .product img{
-                height:100px;
+                height:80px;
             }
             .footer-distributed{
                 width:100%;
@@ -501,7 +521,7 @@
             <form action="/" method="GET" class="search-bar-container">
             @csrf
             <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products...">
-             <!-- <a href="/index" style="color:#000;" id="sign-in-link">Sign In</a> -->
+             <a href="/index" style="color:#000;" id="sign-in-link">Sign In</a>
         </form>
     </center>
     </header>
@@ -512,8 +532,8 @@
         @foreach($products as $product)
         <div class="product">
             <img src="{{asset('storage/' . $product->product_image)}}" alt="Image" loading="lazy">
-            <h2>{{$product->product_name}}</h2>
-            <p class="quantity">Available</p>
+            <h2 class="product-name">{{$product->product_name}}</h2>
+            <!-- <p class="quantity">Available</p> -->
             <p class="available">{{$product->description}}</p>
             <p class="price">Tsh {{number_format($product->product_price)}}</p>
         </div>
