@@ -448,6 +448,7 @@
             .product{
                 margin-top:2%;
                 width:25%;
+                height: 200px;
             }
             .product h2,p{
                 font-weight:400;
@@ -455,7 +456,6 @@
 
             .product .available{
                 font-size:12px;
-                display:none;
             }
 
             .product .price{
