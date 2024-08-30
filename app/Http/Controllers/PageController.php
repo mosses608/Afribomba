@@ -23,7 +23,7 @@ class PageController extends Controller
     }
 
     public function home_page(){
-        $products = Product::filter(request(['search']))->paginate(8);
+        $products = Product::filter(request(['search']))->orderBy('product_name','asc')->get();
         return view('home-page', compact('products'));
     }
 

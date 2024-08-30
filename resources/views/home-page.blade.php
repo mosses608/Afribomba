@@ -540,11 +540,7 @@
         @endforeach
     </section>
 <br>
-   <center>
-   <div class="paginate-builder">
-        {{$products->links()}}
-    </div>
-   </center>
+   
 <br><br>
     <footer class="footer-distributed">
         <!-- <div class="footer-left">
