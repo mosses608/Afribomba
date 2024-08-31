@@ -96,16 +96,18 @@ class PageController extends Controller
             }
         }
 
+        $myProducts = Product::filter(request(['search']))->orderBy('id','asc')->get();
+
         return view('admin.all-products',[
             'stores' => Store::all(),
-            'products' => Product::latest()->filter(request(['search']))->paginate(10),
+            'products' => $myProducts,
             'users' => User::all(),
         ]);
     }
 
     public function store_loader(){
         return view('admin.all-stores',[
-            'stores' => Store::latest()->filter(request(['search']))->paginate(10),
+            'stores' => Store::filter(request(['search']))->paginate(10),
         ]);
     }
 
@@ -170,13 +172,19 @@ class PageController extends Controller
 
     public function recommended_product(){
         $transferProdt = Transfer::all();
+        $createdAt = [];
+        $productName = [];
+        $productQuantity = [];
+        $staffRecommended = [];
+        $sourceStore = [];
+        $destinationStore = [];
         foreach ($transferProdt as $transfer) {
-            $createdAt = json_decode($transfer->created_at, true);
-            $productName = json_decode($transfer->product_name, true);
-            $productQuantity = json_decode($transfer->product_quantity, true);
-            $staffRecommended = json_decode($transfer->staff_recommeded, true);
-            $sourceStore = json_decode($transfer->source_store, true);
-            $destinationStore = json_decode($transfer->store_name, true);
+            $createdAt[] = json_decode($transfer->created_at, true);
+            $productName[] = json_decode($transfer->product_name, true);
+            $productQuantity[] = json_decode($transfer->product_quantity, true);
+            $staffRecommended[] = json_decode($transfer->staff_recommeded, true);
+            $sourceStore[] = json_decode($transfer->source_store, true);
+            $destinationStore[] = json_decode($transfer->store_name, true);
         }
         return view('admin.recommended',[
             'transfers' => $transferProdt,
@@ -603,17 +611,22 @@ class PageController extends Controller
 
         $singleTransfer = Transfer::all();
 
+        $storeName = [];
+        $productName = [];
+        $productQuantity = [];
+        $created_at = [];
+
         foreach ($singleTransfer as $index => $transfer) {
-            $storeName = json_decode($transfer->store_name, true);
-            $productName = json_decode($transfer->product_name, true);
-            $productQuantity = json_decode($transfer->product_quantity, true);
-            $created_at = json_decode($transfer->created_at, true);
+            $storeName[] = json_decode($transfer->store_name, true);
+            $productName[] = json_decode($transfer->product_name, true);
+            $productQuantity[] = json_decode($transfer->product_quantity, true);
+            $created_at[] = json_decode($transfer->created_at, true);
         }
         
         return view('admin.single-store',[
             'users' => User::all(),
             'store' => $store,
-            'products' => Product::all(),
+            'products' => Product::orderBy('id','asc')->get(),
             'transfers' => Transfer::all(),
         ], compact('storeName','productName','productQuantity','created_at','product_name','productDescrp'));
     }

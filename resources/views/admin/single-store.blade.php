@@ -20,7 +20,7 @@
         <div class="centered-before-ajax">
             <button class="sale-product-btn" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button> <button class="transfer-product-btn" onclick="showTransferProduct()">Transfer Product</button>
             <form action="/admin/all-stores" method="GET" class="search-component">
-                @csrf
+                @csrf   
                 <input type="text" name="search" id="" placeholder="Search..."><button type="submit"><span>Search</span></button>
             </form>
             <button class="add-product-button" onclick="showAddStoreForm()"><i class="fa fa-edit"></i> <span>Edit Store</span></button>
@@ -40,7 +40,7 @@
                     @foreach($products as $product)
                     <tr>                    
                         @if($product->store_name == $store->store_name)
-                        <td>#</td>
+                        <td>{{$product->id}}</td>
                         <td style="text-align:center; padding:6px;"><img src="{{$product->product_image ? asset('storage/' . $product->product_image): asset('assets/images/background-logo.png')}}" alt="Image"></td>
                         <td style="text-align:center; padding:6px;">
                         {{$product->product_name}}
@@ -61,7 +61,7 @@
                         <tr>
                             @if(is_array($storeName) ? implode(',', $storeName): $transfer->store_name == $store->store_name)                             
                              @if($product_name == is_array($productName) ? implode(',', $productName) : $transfer->product_name)
-                             <td>#</td>
+                             <td>{{$transfer->id}}</td>
                             <td><img src="{{$product->product_image ? asset('storage/' . $product->product_image): asset('assets/images/background-logo.png')}}" alt="Image"></td>
                             <td>{{is_array($productName) ? implode(',', $productName): $transfer->product_name}}</td>
                             <td>{{__('Fine')}}</td>

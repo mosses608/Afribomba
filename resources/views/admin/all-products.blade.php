@@ -28,11 +28,11 @@
         <div class="centered-before-ajax">
             <form action="/admin/all-products" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Search product..."><button type="submit"><span>Search</span></button>
+                <input type="text" name="search" id="" placeholder="Search product..."><button type="submit"><i class="fa fa-search"></i><span>Search</span></button>
             </form>
             <button class="transfer-product-button" onclick="showTransferProduct()"><i class="fa fa-plus"></i> <span>Transfer Product</span></button>
             <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <span>Add Product</span></button>
-            <button class="export-product-wrapper" onclick="showExportForm()"><i class="fa fa-upload"></i> Sale Product</button>
+            <button class="export-product-wrapper" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
         </div><br><br>
         <div class="flex-wrapper-container">
             <div class="mini-container">
@@ -52,7 +52,7 @@
                     </tr>
                     @foreach($products as $product)
                     <tr class="product-tr-td">
-                        <td>#</td>
+                        <td>{{$product->id}}</td>
                         <td><a href="{{asset('storage/'. $product->product_image)}}"><img src="{{asset('storage/'. $product->product_image)}}" alt=""></a></td>
                         <td>{{$product->product_id}}</td>
                         <td>{{$product->product_name}}</td>
@@ -122,9 +122,6 @@
                     </tr>
                     @endforeach
                 </table>
-            </div>
-            <div class="paginate-builder">
-                {{$products->links()}}
             </div>
         </div>
 

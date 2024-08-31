@@ -40,8 +40,8 @@
                     <th>Action</th>
                     </tr>
                     @foreach($stores as $store)
-                    <tr>
-                        <td>#</td>
+                    <tr class="product-tr-td">
+                        <td>{{$store->id}}</td>
                         <td>{{$store->store_id}}</td>
                         <td>{{$store->store_name}}</td>
                         <td>{{$store->store_location}}</td>

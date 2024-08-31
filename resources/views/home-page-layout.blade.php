@@ -21,17 +21,41 @@
         <script src="{{asset('assets/js/index.js')}}"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <!-- <link rel="stylesheet" href="{{asset('assets/css/home-layout.css')}}"> -->
+        <style>
+            body {
+                background-size:cover;
+                background-position:center;
+                background-repeat:no-repeat;
+                width:100%;
+                background: url('https://siliconcompanies.com/assets/img/Service%20details/Logistics%20.png') no-repeat center center fixed;
+            }
+    </style>
     </head>
-    <body class="font-sans-antialiased">
-        <header class="main-body-parser">
-            <h1 class="desktop-view">Afribomba Wholesale Shop</h1> <h1 class="mobile-view">ACL</h1>
-            <a href="/index"><i class="fa fa-sign-in"></i> <span class="mobile-view-hidee">Go To Login</span></a>
-        </header>
+    <body class="font-sans-antialiasedd">
+    <header class="header-wrapper">
+        <a href="/index"><img src="{{asset('assets/images/background-logo.png')}}" alt=""></a>
+        
+        <center>
+        <div class="min-header-container">
+            <h1>AFRIBOMBA WHOLESALE SHOP</h1>
+            <p>Note: Price may change anytime | Contact: +255 653 881 184</p>
+            <div class="hours">Open: 7:00 AM | Close: 6:00 PM</div>
+            <span id="mobile-dispalyer">Contact: +255 653 881 184</span>
+        </div>
+        </center>
+        <!-- <center>
+            <form action="/" method="GET" class="search-bar-container">
+            @csrf
+            <input type="text" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products...">
+             <a href="/index" style="color:#000;" id="sign-in-link">Sign In</a>
+        </form>
+    </center> -->
+    </header>
         <main>
             @yield('content')
         </main>
         <footer>
-            <button class="scrollToTopButton" onclick="scrollToTop()"><i class="fa fa-angle-up"></i></button>
+            <button class="scrollToTopButton" style="background-color:#007BFF; color:#FFF;" onclick="scrollToTop()"><i class="fa fa-angle-up"></i></button>
         </footer>
 
         <script>

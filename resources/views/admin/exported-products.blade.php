@@ -18,7 +18,7 @@
                 @csrf
                 <input type="date" name="search" id="" placeholder="Search exported product..."><button type="submit"><span>Search</span></button>
             </form>
-            <button class="add-product-button" style="background-color:orange; margin-right:1%;"> <span>Tsh {{number_format($datePrice)}}</span></button>
+            <button class="add-product-button" id="product-button" style="background-color:orange; margin-right:1%;"> <span>Tsh {{number_format($datePrice)}}</span></button>
             <button class="totla-component">{{$totalComponents}} Items</button>
         </div><br><br>
         <div class="flex-wrapper-container">
