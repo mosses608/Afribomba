@@ -28,10 +28,10 @@
         <div class="centered-before-ajax">
             <form action="/admin/all-products" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Search product..."><button type="submit"><i class="fa fa-search"></i><span>Search</span></button>
+                <input type="text" name="search" id="" placeholder="Search product..."><button type="submit"><i class="fa fa-search"></i></button>
             </form>
-            <button class="transfer-product-button" onclick="showTransferProduct()"><i class="fa fa-plus"></i> <span>Transfer Product</span></button>
-            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <span>Add Product</span></button>
+            <button class="transfer-product-button" onclick="showTransferProduct()"><i class="fa fa-plus"></i> <em>T</em>  <span>Transfer Product</span></button>
+            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <em>A</em> <span>Add Product</span></button>
             <button class="export-product-wrapper" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
         </div><br><br>
         <div class="flex-wrapper-container">

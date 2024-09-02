@@ -18,56 +18,8 @@
             <h2><i class="fas fa-calendar-alt"></i> <span class="currentDate"></span></h2>
             <br>
         </div><br>
-        <!-- <div class="centered-before-ajax">
-            <form action="/admin/exported-products" method="GET" class="search-component">
-                @csrf
-                <input type="text" name="search" placeholder="Search exported product...">
-                <button type="submit"><span>Search</span></button>
-            </form>
-            <button class="import-product" onclick="showImportForm()">Import Product</button>
-            <button class="transfer-button-prod" onclick="showTransferProduct()">Transfer Product</button>
-            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <span>Sale Product</span></button> -->
-        <!-- </div> -->
         <div class="flex-wrapper-container">
             <div class="mini-container">
-                <!-- <table>
-                    <tr class="product-table-header">
-                        <th>Product Id</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
-                        <th>Price</th>
-                        <th>Description</th>
-                        <th>Store Name</th>
-                        <th>Date Created</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr class="single-viewer-holder">
-                        <td>{{$product->product_id}}</td>
-                        <td>{{$product->product_name}}</td>
-                        <td>{{$product->product_quantity}}</td>
-                        <td>
-                            @if($product->status == 'Good')
-                            <p class="good-status">{{$product->status}}</p>
-                            @elseif($product->product_quantity <= 20 && $product->product_quantity >= 1)
-                            <p class="less-status">{{$product->status}}</p>
-                            @elseif($product->product_quantity == 0)
-                            <p class="out-stock">Out Stock</p>
-                            @endif
-                        </td>
-                        <td>{{$product->product_price}}</td>
-                        <td>{{$product->description}}</td>
-                        <td>{{$product->store_name}}</td>
-                        <td>{{$product->created_at}}</td>
-                        <td>
-                            @if($product->status == 'Less')
-                            <button class="comment-button-loader" type="button" onclick="showCommentForm()"><i class="fa fa-comment"></i></button>
-                            @elseif($product->status == 'Good')
-                            <button class="comment-button-loader" id="hidder-component" type="button" onclick="showMessage()"><i class="fa fa-comment"></i></button>
-                            @endif
-                        </td>
-                    </tr>
-                </table> -->
                 <br>
                 <div class="image-holder-view">
                     <img src="{{$product->product_image ? asset('storage/' . $product->product_image) : asset('assets/images/profile.png')}}" alt="">
@@ -96,6 +48,15 @@
                 <div class="graph-analytical">
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                 <canvas id="productChart" width="400" height="200"></canvas>
+                <style>
+                    @media only screen and (max-width:768px){
+                        .graph-analytical canvas{
+                            display:block;
+                            height:400px !important;
+                            widt: 100% !important;
+                        }
+                    }
+                </style>
                 </div>
                 <script>
     // Extract data from PHP to JavaScript

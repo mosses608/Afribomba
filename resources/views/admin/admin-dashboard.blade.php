@@ -132,83 +132,87 @@
             <br><br><br><br><hr><hr><br>
             <a href="/admin/users">More Info <i class="fas fa-arrow-right"></i></a><br><br>
         </section> -->
-        
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="graph-analytics">
-    <div class="line-break"><br><br><br><br></div>
-    <canvas id="exportChart" width="400" height="200"></canvas>
-</div>
+        <div class="graph-analytics">
+            <div class="line-break"><br><br><br><br></div>
+            <canvas id="exportChart" width="400" height="200"></canvas>
+        </div>
 
-<script>
-    // Decode the JSON data passed from the controller
-    var chartDates = @json($dates); // Array of dates
-    var chartData = @json($chartData); // Object with product names as keys and date quantities as values
-
-    // Create the datasets for each product
-    var datasets = Object.keys(chartData).map(function(productName) {
-        return {
-            label: productName,
-            data: chartDates.map(function(date) {
-                return chartData[productName][date] || 0; // Use 0 if no data for the date
-            }),
-            // backgroundColor: getRandomColor(),
-            // borderColor: getRandomColor(),
-            borderWidth: 1,
-            fill: false // Use false if you don't want to fill the area under the line
-        };
-    });
-
-    // Helper function to generate random colors for the bars
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
-    // Create the chart
-    var ctx = document.getElementById('exportChart').getContext('2d');
-    var exportChart = new Chart(ctx, {
-        type: 'bar',  // Use 'bar' for a bar chart
-        data: {
-            labels: chartDates, // Dates for the x-axis
-            datasets: datasets  // Data for each product
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Quantity Sold'
-                    },
-                    beginAtZero: true
+        <style>
+            @media only screen and (min-width: 769px) {
+                .graph-analytics canvas {
+                    height: 400px !important;
                 }
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
+            }
+
+            @media only screen and (max-width: 768px) {
+                .graph-analytics canvas {
+                    width: 100% !important;
+                    height: 400px !important;
+                }
+            }
+        </style>
+
+        <script>
+            // Decode the JSON data passed from the controller
+            var chartDates = @json($dates); // Array of dates
+            var chartData = @json($chartData); // Object with product names as keys and date quantities as values
+
+            // Create the datasets for each product
+            var datasets = Object.keys(chartData).map(function(productName) {
+                return {
+                    label: productName,
+                    data: chartDates.map(function(date) {
+                        return chartData[productName][date] || 0; // Use 0 if no data for the date
+                    }),
+                    borderWidth: 1,
+                    fill: false // Use false if you don't want to fill the area under the line
+                };
+            });
+
+            // Create the chart
+            var ctx = document.getElementById('exportChart').getContext('2d');
+            var exportChart = new Chart(ctx, {
+                type: 'bar',  // Use 'bar' for a bar chart
+                data: {
+                    labels: chartDates, // Dates for the x-axis
+                    datasets: datasets  // Data for each product
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                options: {
+                    maintainAspectRatio: false,  // Disable maintain aspect ratio for better responsiveness
+                    aspectRatio: 2,  // Adjust this value to control the height (e.g., higher value = shorter height on larger screens)
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Quantity Sold'
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
-    });
-</script>
+            });
+        </script>
 
 
 

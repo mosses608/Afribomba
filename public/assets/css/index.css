@@ -2089,6 +2089,14 @@
     font-size: 14px;
 }
 
+.transfer-product-button em{
+    display: none;
+}
+
+.add-product-button em{
+    display: none;
+}
+
 
 
 .hidden{
@@ -2376,17 +2384,78 @@
 
 @media(max-width:768px){
 
+    .product-creator-ajax-wrapper-w{
+        width: 95%;
+        left: 2%;
+    }
+
+    .product-creator-ajax-wrapper-w input{
+        width: 100%;
+        margin-top: 2%;
+    }
+
+    .product-creator-ajax-wrapper-w label{
+        float: left;
+    }
+    .product-creator-ajax-wrapper-w select{
+        width: 100%;
+        margin-top: 2%;
+    }
+
+    .left-side-wrapper{
+        width: 98%;
+        padding: 10px;
+    }
+
+    .left-side-wrapper,.image-holder-view{
+        display: inline-block;
+    }
+
+    .image-holder-view{
+        width: 98%;
+        height: 200px;
+    }
+    .image-holder-view img{
+        height: 200px;
+    }
+
+    #transfer-complete-product-wr{
+        position: absolute;
+        top: 15%;
+    }
+
+    #transfer-complete-product-wr label{
+        float: left;
+    }
+
+    .transfer-product-button em{
+        display: block;
+    }
+    
+    .add-product-button em{
+        display: block;
+    }
+
+    .transfer-product-button i{
+        display: none;
+    }
+    
+    .add-product-button i{
+        display: none;
+    }
+
+
+
+    #sale-product-button span{
+        display: none;
+    }
+
+    #sale-product-button{
+        width: 40px;
+    }
+
     .graph-analytics{
         width: 100%;
-        height: 600px;
-    }
-
-    #exportChart{
-        height: 600px;
-    }
-
-    canvas{
-        height: 600px;
     }
 
     .transfer-product-button span{
@@ -2564,7 +2633,7 @@
     .side-menu-container-ajax-wrapper-mobile{
         display: none;
         animation: SlideFromLeft 1s forwards;
-        width: 250px;
+        width: 280px;
         top: 9.5%;
     }
     .right-side-profile-manager{
@@ -2590,10 +2659,20 @@
         float: none;
     }
     .main-dashboard-ajax-wrapper section{
-        float: none;
-        margin-left: 0%;
+        display: inline-block;
+        margin-left: 1%;
         height: 100px;
-        width: 90%;
+        width: 32%;
+    }
+    .left-panel-sider{
+        float: none;
+    }
+    .left-panel-sider h2 a{
+        font-size: 12px;
+        padding: 0px;
+    }
+    .right-panel-sider{
+        display: none;
     }
     .profile-left-layer{
         float: none;

@@ -122,8 +122,9 @@
         /* Media Queries for responsiveness */
         @media (min-width: 768px) {
             .container {
+                margin-top:5%;
                 flex-direction: row; /* Horizontal layout for tablets and larger screens */
-                height: 80vh;  /* Set height to 80% of viewport height */
+                height: 500px;  /* Set height to 80% of viewport height */
             }
             .left-side, .right-side {
                 flex: 1;

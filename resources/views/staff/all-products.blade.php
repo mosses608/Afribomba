@@ -25,8 +25,8 @@
                 @csrf
                 <input type="text" name="search" id="" placeholder="Search product..."><button type="submit"><span>Search</span></button>
             </form>
-            <button class="sale-product-button" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
-            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <span>Add Product</span></button>
+            <button class="sale-product-button" id="sale-product-button" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
+            <button class="add-product-button" id="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <span>Add Product</span></button>
         </div><br><br>
         <div class="flex-wrapper-container">
             <div class="mini-container">
@@ -46,7 +46,7 @@
                     </tr>
                     @foreach($products as $product)
                     <tr>
-                        <td>#</td>
+                        <td>{{$product->id}}</td>
                         <td><a href="{{asset('storage/'. $product->product_image)}}"><img src="{{asset('storage/'. $product->product_image)}}" alt=""></a></td>
                         <td>{{$product->product_id}}</td>
                         <td>{{$product->product_name}}</td>

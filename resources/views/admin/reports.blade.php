@@ -66,7 +66,7 @@
                     </td>
                     <td>
                         @foreach($prices as $p)
-                            <div>{{ $p }}</div>
+                            <div>Tsh {{ number_format($p) }}</div>
                         @endforeach
                     </td>
                     <td>
