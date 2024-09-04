@@ -309,7 +309,7 @@
                 @foreach($products as $product)
                     <option value="{{$product->product_name}}"
                             data-quantity="{{$product->product_quantity}}">
-                        {{$product->product_name}}, {{$product->product_quantity}}
+                        {{$product->product_name}}
                     </option>
                 @endforeach
             </select>
@@ -388,7 +388,7 @@
                             @foreach($products as $product)
                                 <option value="{{$product->product_name}}"
                                         data-quantity="{{$product->product_quantity}}">
-                                    {{$product->product_name}}, {{$product->product_quantity}}
+                                    {{$product->product_name}}
                                 </option>
                             @endforeach
                         </select>
