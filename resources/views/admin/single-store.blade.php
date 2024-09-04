@@ -50,8 +50,15 @@
                             {{$product->product_quantity}}
                         </td>
                         <td>
-                            <button onclick="editBar(event, $product->id)"><i class="fas fa-edit"></i></button>
-                            <button onclick="showEditForm(event, $product->id)"><i class="fa fa-trash"> </i></button>
+                            <!-- <button onclick="editBar(event, $product->id)"><i class="fas fa-edit"></i></button> -->
+                            <button onclick="showEditProForm(event, $product->id)"><i class="fa fa-trash"> </i></button>
+                            <form action="/products/edit/{{$product->id}}" method="POST" class="delete-store-dt hidden" id="delete-store-{{$product->id}}">
+                                @csrf
+                                @method('DELETE')
+                                <p>You are about to delete {{$product->product_name}}</p>
+                                <button type="submit" class="Confirm-delete">Confirm</button>
+                                <button type="button" class="close-form">&times;</button>
+                            </form>
                         </td>
                         @endif
                     </tr>
@@ -67,8 +74,15 @@
                             <td>{{__('Fine')}}</td>
                             <td>{{ is_array($productQuantity) ? implode(',', $productQuantity):  $transfer->product_quantity}}</td>
                             <td>
-                                <button onclick="editBar(event, $transfer->id)"><i class="fas fa-edit"></i></button>
-                                <button onclick="showEditForm(event, $transfer->id)"><i class="fas fa-trash-alt"> </i></button>
+                                <!-- <button onclick="editBar(event, $transfer->id)"><i class="fas fa-edit"></i></button> -->
+                                <button onclick="showEditTransForm(event, $transfer->id)"><i class="fas fa-trash-alt"> </i></button>
+                                <form action="/transfer/edit/{{$transfer->id}}" method="POST" class="delete-store-dt hidden" id="delete-store-dt-{{$transfer->id}}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <p>You are about to delete {{is_array($productName) ? implode(',', $productName): $transfer->product_name}}</p>
+                                    <button type="submit" class="Confirm-delete">Confirm</button>
+                                    <button type="button" class="close-form">&times;</button>
+                                </form>
                             </td>
                             @endif
                             @endif
@@ -78,6 +92,22 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                window.showEditProForm = function(event, productId){
+                    event.preventDefault();
+                    const productForm = document.getElementById(`delete-store-${productId}`);
+                    productForm.style.display='block';
+                }
+
+                window.showEditTransForm = function(event, transferId){
+                    event.preventDefault();
+                    const transferDialog = document.getElemntById(`delete-store-dt-${transferId}`);
+                    transferDialog.style.display='block';
+                }
+            });
+        </script>
 
 
         
@@ -137,10 +167,10 @@
 <script>
     $(document).ready(function() {
         // Initialize Select2 for dynamic dropdown
-        // $('#product-name-select').select2({
-        //     placeholder: 'Select Product Name',
-        //     allowClear: true
-        // });
+        $('#product-name-select').select2({
+            placeholder: 'Select Product Name',
+            allowClear: true
+        });
 
         // Update fields on product selection
         $('#product-name-select').on('change', function() {
@@ -187,10 +217,10 @@
             $('.added-component').append(appendableChild);
             
             // Reinitialize Select2 for the new dropdown
-            // $('.product-name-select').select2({
-            //     placeholder: 'Select Product Name',
-            //     allowClear: true
-            // });
+            $('.product-name-select').select2({
+                placeholder: 'Select Product Name',
+                allowClear: true
+            });
 
             // Attach change event to the new dropdown
             $('.product-name-select').last().on('change', function() {
@@ -290,10 +320,10 @@
 <script>
     $(document).ready(function() {
         // Initialize Select2 for dynamic dropdown
-        // $('.product-select-md2').select2({
-        //     placeholder: 'Choose Product',
-        //     allowClear: true
-        // });
+        $('.product-select-md2').select2({
+            placeholder: 'Choose Product',
+            allowClear: true
+        });
 
         // Update quantity field on product selection
         $('.product-select-md2').on('change', function() {
@@ -330,10 +360,10 @@
             $('.appendable-child').append(appendableChild);
             
             // Reinitialize Select2 for the new dropdown
-            // $('.product-select-md2').select2({
-            //     placeholder: 'Choose Product',
-            //     allowClear: true
-            // });
+            $('.product-select-md2').select2({
+                placeholder: 'Choose Product',
+                allowClear: true
+            });
 
             // Attach change event to the new dropdown
             $('.product-select-md2').last().on('change', function() {

@@ -155,10 +155,6 @@
                 });
             });
 
-
-
-
-
     // document.addEventListener('DOMContentLoaded', function(){
     //     const products = @json($products);
 

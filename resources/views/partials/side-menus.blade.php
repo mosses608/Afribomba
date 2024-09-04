@@ -75,6 +75,7 @@
     <div class="hidden-product-menu" id="hidden-product-menu">
     <a href="/admin/all-products"><span><i class="fa fa-times-circle"></i></span> <p>All Products</p></a><br><br>
     <a href="/admin/exported-products"><span><i class="fa fa-times-circle"></i></span> <p>Exported Products</p></a><br><br>
+    <a href="/admin/transfered-products"><span><i class="fa fa-times-circle"></i></span> <p>Tranfered Products</p></a><br><br>
     <a href="/admin/instock-products"><span><i class="fa fa-times-circle"></i></span> <p>InStock Products</p></a><br><br>
     <a href="/admin/less-product"><span><i class="fa fa-times-circle"></i></span> <p>LessStock Products</p></a><br><br>
     <a href="/admin/outstock-product"><span><i class="fa fa-times-circle"></i></span> <p>OutStock Products</p></a><br><br>

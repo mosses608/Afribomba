@@ -25,20 +25,20 @@
                     <img src="{{$product->product_image ? asset('storage/' . $product->product_image) : asset('assets/images/profile.png')}}" alt="">
                 </div>
                 <div class="left-side-wrapper">
-                    <p><strong>Product Id: {{$product->product_id}}</strong></p><br><br>
-                    <p><strong>Name: {{$product->product_name}}</strong></p><br><br>
-                    <p><strong>Quantity: {{$product->product_quantity}}</strong></p><br><br>
+                    <p><strong>Product Id: {{$product->product_id}}</strong></p><br><br id="br-line">
+                    <p><strong>Name: {{$product->product_name}}</strong></p><br><br id="br-line">
+                    <p><strong>Quantity: {{$product->product_quantity}}</strong></p><br><br id="br-line">
                     @if($product->status == 'Good')
-                            <p class="good-status-in"><strong>Status: {{$product->status}}</strong></p><br><br>
+                            <p class="good-status-in"><strong>Status: {{$product->status}}</strong></p><br><br id="br-line">
                             @elseif($product->product_quantity <= 20 && $product->product_quantity >= 1)
-                            <p class="less-status-in"><strong>Status: {{$product->status}}</strong></p><br><br>
+                            <p class="less-status-in"><strong>Status: {{$product->status}}</strong></p><br><br id="br-line">
                             @elseif($product->product_quantity == 0)
-                            <p class="out-stock-in"><strong>Status: Out Stock</strong></p><br><br>
+                            <p class="out-stock-in"><strong>Status: Out Stock</strong></p><br><br id="br-line">
                     @endif
-                    <p><strong>Price: {{number_format($product->product_price,2)}}</strong></p><br><br>
-                    <p><strong>Description: {{$product->description}}</strong></p><br><br>
-                    <p><strong>Store Name: {{$product->store_name}}</strong></p><br><br>
-                    <p><strong>Created On: {{$product->created_at}}</strong></p><br><br>
+                    <p><strong>Price: {{number_format($product->product_price,2)}}</strong></p><br><br id="br-line">
+                    <p><strong>Description: {{$product->description}}</strong></p><br><br id="br-line">
+                    <p><strong>Store Name: {{$product->store_name}}</strong></p><br><br id="br-line">
+                    <p><strong>Created On: {{$product->created_at}}</strong></p><br><br id="br-line">
                     @if($product->status == 'Less')
                             <button class="comment-button-loader" type="button" onclick="showCommentForm()"><i class="fa fa-comment"></i></button><br><br>
                             @elseif($product->status == 'Good')

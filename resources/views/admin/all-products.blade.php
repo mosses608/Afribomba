@@ -210,10 +210,10 @@
 <script>
     $(document).ready(function() {
         // Initialize Select2 for dynamic dropdown
-        // $('#product-name-select').select2({
-        //     placeholder: '--select--',
-        //     allowClear: true
-        // });
+        $('#product-name-select').select2({
+            placeholder: '--select--',
+            allowClear: true
+        });
 
         // Update fields on product selection
         $('#product-name-select').on('change', function() {
@@ -260,10 +260,10 @@
             $('.added-component').append(appendableChild);
             
             // Reinitialize Select2 for the new dropdown
-            // $('.product-name-select').select2({
-            //     placeholder: '--select--',
-            //     allowClear: true
-            // });
+            $('.product-name-select').select2({
+                placeholder: '--select--',
+                allowClear: true
+            });
 
             // Attach change event to the new dropdown
             $('.product-name-select').last().on('change', function() {
@@ -364,10 +364,10 @@
 <script>
     $(document).ready(function() {
         // Initialize Select2 for dynamic dropdown
-        // $('.product-select-md2').select2({
-        //     placeholder: 'Choose Product',
-        //     allowClear: true
-        // });
+        $('.product-select-md2').select2({
+            placeholder: 'Choose Product',
+            allowClear: true
+        });
 
         // Update quantity field on product selection
         $('.product-select-md2').on('change', function() {
@@ -404,10 +404,10 @@
             $('.appendable-child').append(appendableChild);
             
             // Reinitialize Select2 for the new dropdown
-            // $('.product-select-md2').select2({
-            //     placeholder: 'Choose Product',
-            //     allowClear: true
-            // });
+            $('.product-select-md2').select2({
+                placeholder: 'Choose Product',
+                allowClear: true
+            });
 
             // Attach change event to the new dropdown
             $('.product-select-md2').last().on('change', function() {

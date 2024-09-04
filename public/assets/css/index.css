@@ -1033,6 +1033,38 @@
     padding: 6px;
 }
 
+.delete-store-dt{
+    position: absolute;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    background-color: #FFF;
+    padding: 10px;
+    left: 40%;
+    border-radius: 10px;
+    width: 30%;
+    top: 40%;
+}
+
+.delete-store-dt p{
+    font-size: 14px;
+    padding: 10px;
+}
+
+.Confirm-delete{
+    float: left;
+    margin-left: 5%;
+    color: red;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+}
+
+.close-form{
+    color: maroon;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+    float: right;
+    margin-right: 5%;
+}
+
 .mini-container table tr td a{
     color: #0000FF;
     text-decoration: none;
@@ -2404,11 +2436,22 @@
 
     .left-side-wrapper{
         width: 98%;
+        float: none;
         padding: 10px;
     }
 
     .left-side-wrapper,.image-holder-view{
         display: inline-block;
+    }
+
+    .left-side-wrapper p{
+        display: list-item;
+        margin-left: 5%;
+        padding: 2px;
+    }
+
+    #br-line{
+        display: block;
     }
 
     .image-holder-view{
