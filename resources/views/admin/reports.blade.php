@@ -12,11 +12,15 @@
             <br>
         </div><br>
         <div class="centered-before-ajax">
-            <form action="/admin/reports" method="GET" class="search-component">
-                @csrf
-                <input type="date" name="search" id="" placeholder="Filter items..."><button type="submit"><span>Filter</span></button>
-            </form>
-            <button class="add-product-button" onclick="printDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
+        <form action="/admin/reports" method="GET" class="search-component">
+            @csrf
+            <label for="From">From</label><br>
+            <input type="date" name="start_date" id="start_date" placeholder="Start date...">
+            <label for="">To</label><br>
+            <input type="date" name="end_date" id="end_date" placeholder="End date...">
+            <button type="submit"><span>Filter</span></button>
+        </form>
+        <button class="add-product-button" onclick="printDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
 
         <style>
@@ -81,7 +85,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td id="total_price_exported">Tsh {{number_format($datePrice, 2)}}</td>
+                        <!-- <td id="total_price_exported">Tsh {{number_format($datePrice, 2)}}</td> -->
                         <td></td>
                     </tr>
                     @endif

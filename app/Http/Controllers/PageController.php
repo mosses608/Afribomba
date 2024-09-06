@@ -117,9 +117,9 @@ class PageController extends Controller
         ]);
     }
 
-    public function report_loader(Request $request){
+    public function report_loader(Request $request) {
         $exportations = Export::all();
-    
+
         $productIds = [];
         $productNames = [];
         $quantities = [];
@@ -128,20 +128,20 @@ class PageController extends Controller
 
         $totalQuantity = 0;
         $totalPrice = 0;
-    
+
         foreach ($exportations as $exported) {
             $quantity = json_decode($exported->product_quantity, true);
             $price = json_decode($exported->product_price, true);
             $productId = json_decode($exported->product_id, true);
             $productName = json_decode($exported->product_name, true);
             $productDate = json_decode($exported->created_at, true);
-    
+
             $productIds = array_merge($productIds, (array) $productId);
             $productNames = array_merge($productNames, (array) $productName);
             $quantities = array_merge($quantities, (array) $quantity);
             $prices = array_merge($prices, (array) $price);
             $productDates = array_merge($productDates, (array) $productDate);
-    
+
             if (is_array($quantity) && is_array($price)) {
                 foreach ($quantity as $key => $qty) {
                     $totalQuantity += $qty;
@@ -152,23 +152,40 @@ class PageController extends Controller
                 $totalPrice += $quantity * $price;
             }
         }
-    
+
         $myexports = $totalPrice;
-    
-        if ($request->has('search') && $request->search != '') {
-            $searchDate = $request->search;
-            $datePrice = Export::whereDate('created_at', $searchDate)
-                ->sum(DB::raw('CAST(product_quantity AS NUMERIC) * CAST(product_price AS NUMERIC)'));
+
+        // Apply date range filtering
+        if ($request->has(['start_date', 'end_date']) && $request->start_date && $request->end_date) {
+            $startDate = $request->start_date;
+            $endDate = $request->end_date;
+
+            // Filter exports within the specified date range
+            $filteredExports = Export::whereBetween('created_at', [$startDate, $endDate])->get();
+
+            // Recalculate total price based on the filtered data
+            $datePrice = 0;
+            foreach ($filteredExports as $filteredExport) {
+                $quantity = json_decode($filteredExport->product_quantity, true);
+                $price = json_decode($filteredExport->product_price, true);
+
+                if (is_array($quantity) && is_array($price)) {
+                    foreach ($quantity as $key => $qty) {
+                        $datePrice += $qty * $price[$key];
+                    }
+                } else {
+                    $datePrice += $quantity * $price;
+                }
+            }
         } else {
             $datePrice = $myexports;
         }
-    
+
         return view('admin.reports', [
-            'exports' => Export::filter(request(['search']))->paginate(10),
+            'exports' => Export::paginate(1),
             'myexports' => $myexports,
         ], compact('datePrice', 'quantities', 'prices', 'productIds', 'productNames', 'productDates'));
     }
-    
 
     public function recommended_product(){
         $transferProdt = Transfer::all();

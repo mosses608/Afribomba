@@ -26,10 +26,10 @@
             <br>
         </div><br>
         <div class="centered-before-ajax">
-            <form action="/admin/all-products" method="GET" class="search-component">
-                @csrf
-                <input type="text" name="search" id="" placeholder="Search product..."><button type="submit"><i class="fa fa-search"></i></button>
-            </form>
+        <form id="searchForm" method="GET" class="search-component">
+            @csrf
+            <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search product...">
+        </form>
             <button class="transfer-product-button" onclick="showTransferProduct()"><i class="fa fa-plus"></i> <em>T</em>  <span>Transfer Product</span></button>
             <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <em>A</em> <span>Add Product</span></button>
             <button class="export-product-wrapper" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
@@ -124,6 +124,21 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            function searchProducts() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-tr-td');
+
+            products.forEach(product => {
+                const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const isVisible = name.includes(input) || id.includes(input);
+                product.style.display = isVisible ? '' : 'none';
+            });
+        }
+        </script>
 
         <form action="/products" method="POST" class="product-creator-ajax-wrapper" enctype="multipart/form-data">
             @csrf
@@ -419,6 +434,7 @@
         });
     });
 </script>
+
 
 
     </div>
