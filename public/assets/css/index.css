@@ -2383,11 +2383,52 @@
     display: none;
 }
 
+.search-component-inp{
+    float: left;
+    width: 50%;
+}
+
+.breaker-liner0,.line-breaker-01{
+    display: inline-block;
+    width: 42%;
+}
+
+.search-component-inp label{
+    float: left;
+    margin-left: 15%;
+}
+
+.search-component-inp button{
+    font-size: 14px;
+    color: #FFF;
+    background-color: orange;
+    padding: 6px;
+    cursor: pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: 4px;
+}
+
+.breaker-liner0 input{
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 4px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: 1.2px solid rgb(161, 198, 231);
+}
+
+.line-breaker-01 input{
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 4px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: 1.2px solid rgb(161, 198, 231);
+}
 
 
-
-
-
+/* 
+.line-breaker-01{
+    float: left;
+} */
 
 
 

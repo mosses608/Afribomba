@@ -9,7 +9,7 @@
     <div class="dashboard-mini-menu" onclick="showDashboardMenuuu()">
         <a href="/admin/admin-dashboard"><span><i class="fa fa-home"></i></span> <p>Dahboard</p> <em><i class="fa fa-angle-down"></i></em></a> <br>
     </div>
-    <div class="hidden-dashboard-menu" >
+    <div class="hidden-dashboard-menu">
         <a href="/admin/admin-dashboard"><span><i class="fa fa-times-circle"></i></span> <p>Admin Dashboard</p></a><br>
     </div>
     <div class="product-catalog-menu" onclick="showProductMenu()">

@@ -74,9 +74,6 @@ class PageController extends Controller
     ]);
 }
 
-
-    
-
     public function admin_profile(){
         return view('admin.profile');
     }

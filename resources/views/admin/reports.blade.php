@@ -12,14 +12,18 @@
             <br>
         </div><br>
         <div class="centered-before-ajax">
-        <form action="/admin/reports" method="GET" class="search-component">
+        <form action="/admin/reports" method="GET" class="search-component-inp">
             @csrf
-            <label for="From">From</label><br>
-            <input type="date" name="start_date" id="start_date" placeholder="Start date...">
-            <label for="">To</label><br>
-            <input type="date" name="end_date" id="end_date" placeholder="End date...">
+            <div class="breaker-liner0">
+                <label for="From">From</label><br>
+                <input type="date" name="start_date" id="start_date" placeholder="Start date...">
+            </div>
+            <div class="line-breaker-01">
+                <label for="">To</label><br>
+                <input type="date" name="end_date" id="end_date" placeholder="End date...">
+            </div>
             <button type="submit"><span>Filter</span></button>
-        </form>
+        </form><br>
         <button class="add-product-button" onclick="printDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
 
