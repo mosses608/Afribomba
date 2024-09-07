@@ -2424,7 +2424,78 @@
     border: 1.2px solid rgb(161, 198, 231);
 }
 
+.tr-sold-prod td{
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 2px rgba(0,0,0,0.4);
+}
 
+.tr-sold-prod td i{
+    color: #0000FF;
+}
+
+.view-productName,.view-quantity,.price-tag-btn{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+}
+
+.all-product-names{
+    position: absolute;
+    left: 26%;
+    top: 51%;
+    display: none;
+    background-color: #FFF;
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    padding: 10px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.td-prodt-name:hover .all-product-names{
+    display: block;
+}
+
+.all-quantity{
+    position: absolute;
+    left: 50%;
+    top: 51%;
+    display: none;
+    background-color: #FFF;
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    padding: 10px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.td-quantity:hover .all-quantity{
+    display: block;
+}
+
+.all-prices{
+    position: absolute;
+    left: 65%;
+    top: 51%;
+    display: none;
+    background-color: #FFF;
+    box-shadow: 0 0 4px rgba(0,0,0,0.4);
+    padding: 10px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.td-price-tg:hover .all-prices{
+    display: block;
+}
+
+.all-product-names p{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+.all-prices p{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+}
 /* 
 .line-breaker-01{
     float: left;

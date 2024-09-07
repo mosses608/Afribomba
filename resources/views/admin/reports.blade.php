@@ -46,7 +46,7 @@
                 <table class="printable-media">
                     <tr class="product-table-header">
                     <th>#</th>
-                    <th>Product Id</th>
+                    <!-- <th>Product Id</th> -->
                     <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Total Price</th>
@@ -55,27 +55,36 @@
 
                     @if(count($exports) != "")
                     @foreach($exports as $product)
-                    <tr>
+                    <tr class="tr-sold-prod">
                     <td>{{$product->id}}</td>
-                    <td>
+                    <!-- <td>
                         @foreach($productIds as $id)
                             <div>{{ $id }}</div>
                         @endforeach
-                    </td>
-                    <td>
+                    </td> -->
+                    <td class="td-prodt-name">
+                        <button class="view-productName" onclick="showNames(event, {{$product->id}})"><i class="fa fa-eye"></i> View Names</button>
+                        <div class="all-product-names" id="all-product-names-{{$product->id}}">
                         @foreach($productNames as $name)
-                            <div>{{ $name }}</div>
+                            <p>{{ $name }}</p>
                         @endforeach
+                        </div>
                     </td>
-                    <td>
+                    <td class="td-quantity">
+                        <button class="view-quantity" onclick="showQuantity(event, {{$product->id}})"><i class="fa fa-eye"></i> View Quantities</button>
+                        <div class="all-quantity" id="all-quantity-{{$product->id}}">
                         @foreach($quantities as $qty)
-                            <div>{{ $qty }}</div>
+                            <p>{{ $qty }}</p>
                         @endforeach
+                        </div>
                     </td>
-                    <td>
+                    <td class="td-price-tg">
+                        <button class="price-tag-btn" onclick="showPrices(event, {{$product->id}})"><i class="fa fa-eye"></i> View Prices</button>
+                        <div class="all-prices" id="all-prices-$product->id">
                         @foreach($prices as $p)
-                            <div>Tsh {{ number_format($p) }}</div>
+                            <p>Tsh {{ number_format($p) }}</p>
                         @endforeach
+                        </div>
                     </td>
                     <td>
                         {{$product->created_at}}
@@ -101,6 +110,13 @@
             function printDoc(){
                 window.print();
             }
+
+            document.addEventListener('DOMContentLoaded', function(){
+                window.showNames = function(event, nameId){
+                    const namesClass = document.getElementById(`all-product-names-${nameId}`);
+                    namesClass.style.display='block';
+                }
+            });
         </script>
     </div>
 </center>

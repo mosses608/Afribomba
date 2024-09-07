@@ -152,15 +152,12 @@ class PageController extends Controller
 
         $myexports = $totalPrice;
 
-        // Apply date range filtering
         if ($request->has(['start_date', 'end_date']) && $request->start_date && $request->end_date) {
             $startDate = $request->start_date;
             $endDate = $request->end_date;
 
-            // Filter exports within the specified date range
             $filteredExports = Export::whereBetween('created_at', [$startDate, $endDate])->get();
 
-            // Recalculate total price based on the filtered data
             $datePrice = 0;
             foreach ($filteredExports as $filteredExport) {
                 $quantity = json_decode($filteredExport->product_quantity, true);
@@ -260,7 +257,7 @@ class PageController extends Controller
 
     public function instock_product(){
         return view('admin.instock-products',[
-            'products' => Product::latest()->filter(request(['search']))->paginate(10),
+            'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
         ]);
     }
 
@@ -277,13 +274,13 @@ class PageController extends Controller
         // }
 
         return view('admin.less-product',[
-            'products' => Product::filter(request(['search']))->paginate(10),
+            'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
         ]);
     }
 
     public function outstock_product(){
         return view('admin.outstock-product',[
-            'products' => Product::filter(request(['search']))->paginate(10),
+            'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
         ]);
     }
 

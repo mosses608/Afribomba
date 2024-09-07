@@ -43,7 +43,7 @@
                     </tr>
                     @foreach($users as $user)
                     <tr>
-                        <td>#</td>
+                        <td>{{$user->id}}</td>
                         <td>{{$user->staff_id}}</td>
                         <td>{{$user->staff_name}}</td>
                         <td>{{$user->staff_role}}</td>

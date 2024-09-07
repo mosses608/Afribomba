@@ -16,8 +16,22 @@
                 @csrf
                 <input type="text" name="search" id="" placeholder="Search outstock product..."><button type="submit"><span>Search</span></button>
             </form>
-            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-print"></i> <span>Print</span></button>
+            <button class="add-product-button" onclick="PrintDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
+
+        <style>
+            @media print{
+                body *{
+                    visibility:hidden;
+                }
+                .mini-container,table,tr,th,td{
+                    visibility:visible;
+                }
+                td img{
+                    visibility:visible;
+                }
+            }
+        </style>
         <div class="flex-wrapper-container">
             <div class="mini-container">
                 <table>
@@ -40,7 +54,7 @@
                         <td>{{$product->product_id}}</td>
                         <td>{{$product->product_name}}</td>
                         <td>{{$product->product_quantity}}</td>
-                        <td>{{$product->product_price}}</td>
+                        <td>Tsh {{number_format($product->product_price)}}</td>
                         <td>{{$product->description}}</td>
                         <td>{{$product->store_name}}</td>
                         <td>{{$product->created_at}}</td>
@@ -85,6 +99,10 @@
         function closePopUpForm(){
             document.querySelector('.product-creator-ajax-wrapper').style.display='none';
             location.reload();
+        }
+
+        function PrintDoc(){
+            window.print();
         }
     </script>
 </center>

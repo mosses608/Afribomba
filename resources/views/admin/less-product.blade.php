@@ -58,7 +58,7 @@
                         <td>{{$product->product_id}}</td>
                         <td>{{$product->product_name}}</td>
                         <td>{{$product->product_quantity}}</td>
-                        <td>{{$product->product_price}}</td>
+                        <td>Tsh {{number_format($product->product_price)}}</td>
                         <td>{{$product->description}}</td>
                         <td>{{$product->store_name}}</td>
                         <td>{{$product->created_at}}</td>
