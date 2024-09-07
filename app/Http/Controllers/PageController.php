@@ -615,9 +615,8 @@ class PageController extends Controller
         return redirect('/admin/users')->with('success_delete','User deleted successfully!');
     }
 
-    public function show_single_store($id){
-
-        // $store->store_name = Store::select('store_name')->groupBy('store_name')->first();
+    public function show_single_store($id)
+    {
         $product_name = Product::select('product_name')->groupBy('product_name')->get();
         $productDescrp = Product::select('description')->groupBy('description')->get();
 
@@ -631,19 +630,25 @@ class PageController extends Controller
         $created_at = [];
 
         foreach ($singleTransfer as $index => $transfer) {
-            $storeName[] = json_decode($transfer->store_name, true);
-            $productName[] = json_decode($transfer->product_name, true);
-            $productQuantity[] = json_decode($transfer->product_quantity, true);
-            $created_at[] = json_decode($transfer->created_at, true);
+            $storeName[] = $this->decodeJson($transfer->store_name);
+            $productName[] = $this->decodeJson($transfer->product_name);
+            $productQuantity[] = $this->decodeJson($transfer->product_quantity);
+            $created_at[] = $this->decodeJson($transfer->created_at);
         }
         
-        return view('admin.single-store',[
+        return view('admin.single-store', [
             'users' => User::all(),
             'store' => $store,
-            'products' => Product::orderBy('id','asc')->get(),
+            'products' => Product::orderBy('id', 'asc')->get(),
             'transfers' => Transfer::all(),
-        ], compact('storeName','productName','productQuantity','created_at','product_name','productDescrp'));
+        ], compact('storeName', 'productName', 'productQuantity', 'created_at', 'product_name', 'productDescrp'));
     }
+
+    private function decodeJson($data)
+    {
+        return is_string($data) && is_array(json_decode($data, true)) ? json_decode($data, true) : $data;
+    }
+
 
     public function edit_store(Request $request, Store $store){
         $storeDetailsEdit = $request->validate([

@@ -66,25 +66,31 @@
 
                     @foreach($transfers as $transfer)
                         <tr>
-                            @if(is_array($storeName) ? implode(',', $storeName): $transfer->store_name == $store->store_name)                             
-                             @if($product_name == is_array($productName) ? implode(',', $productName) : $transfer->product_name)
-                             <td>{{$transfer->id}}</td>
-                            <td><img src="{{$product->product_image ? asset('storage/' . $product->product_image): asset('assets/images/background-logo.png')}}" alt="Image"></td>
-                            <td>{{is_array($productName) ? implode(',', $productName): $transfer->product_name}}</td>
-                            <td>{{__('Fine')}}</td>
-                            <td>{{ is_array($productQuantity) ? implode(',', $productQuantity):  $transfer->product_quantity}}</td>
-                            <td>
-                                <!-- <button onclick="editBar(event, $transfer->id)"><i class="fas fa-edit"></i></button> -->
-                                <button onclick="showEditTransForm(event, $transfer->id)"><i class="fas fa-trash-alt"> </i></button>
-                                <form action="/transfer/edit/{{$transfer->id}}" method="POST" class="delete-store-dt hidden" id="delete-store-dt-{{$transfer->id}}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <p>You are about to delete {{is_array($productName) ? implode(',', $productName): $transfer->product_name}}</p>
-                                    <button type="submit" class="Confirm-delete">Confirm</button>
-                                    <button type="button" class="close-form">&times;</button>
-                                </form>
-                            </td>
-                            @endif
+                            @php
+                                $transferStoreName = is_array($transfer->store_name) ? implode(',', $transfer->store_name) : $transfer->store_name;
+                                $transferProductName = is_array($transfer->product_name) ? implode(',', $transfer->product_name) : $transfer->product_name;
+                            @endphp
+
+                            @if(is_array($storeName) && in_array($transferStoreName, $storeName) || $transferStoreName == $storeName)
+                                @if(is_array($productName) && in_array($transferProductName, $productName) || $transferProductName == $productName)
+                                    <td>{{ $transfer->id }}</td>
+                                    <td>
+                                        <img src="{{ $product->product_image ? asset('storage/' . $product->product_image) : asset('assets/images/background-logo.png') }}" alt="Image">
+                                    </td>
+                                    <td>{{ is_array($productName) ? implode(',', $productName) : $transfer->product_name }}</td>
+                                    <td>{{ __('Fine') }}</td>
+                                    <td>{{ is_array($productQuantity) ? implode(',', $productQuantity) : $transfer->product_quantity }}</td>
+                                    <td>
+                                        <button onclick="showEditTransForm(event, {{ $transfer->id }})"><i class="fas fa-trash-alt"></i></button>
+                                        <form action="/transfer/edit/{{ $transfer->id }}" method="POST" class="delete-store-dt hidden" id="delete-store-dt-{{ $transfer->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <p>You are about to delete {{ is_array($productName) ? implode(',', $productName) : $transfer->product_name }}</p>
+                                            <button type="submit" class="Confirm-delete">Confirm</button>
+                                            <button type="button" class="close-form">&times;</button>
+                                        </form>
+                                    </td>
+                                @endif
                             @endif
                         </tr>
                     @endforeach
