@@ -50,9 +50,9 @@
     <div class="recommend-menu">
         <a href="/staff/recommended"><span><i class="fa fa-paper-plane"></i></span> <p>Recommendations</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div>
-    <!-- <div class="product-comment-menu">
-        <a href="/admin/comments"><span><i class="fa fa-comments"></i></span> <p>Product Comments</p> <em><i class="fa fa-angle-right"></i></em></a><br>
-    </div> -->
+    <div class="product-comment-menu">
+        <a href="/staff/view-comments"><span><i class="fa fa-comments"></i></span> <p>Product Comments</p> <em><i class="fa fa-angle-right"></i></em></a><br>
+    </div>
     <!-- <div class="setting-menu">
         <a href="/admin/settings"><span><i class="fa fa-cog"></i></span> <p>Account Settings</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div> -->

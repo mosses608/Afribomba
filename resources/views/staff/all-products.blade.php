@@ -23,7 +23,8 @@
         <div class="centered-before-ajax">
             <form action="/staff/all-products" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Search product..."><button type="submit"><span>Search</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search product...">
+                <!-- <button type="submit"><span>Search</span></button> -->
             </form>
             <button class="sale-product-button" id="sale-product-button" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
             <button class="add-product-button" id="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <span>Add Product</span></button>
@@ -45,7 +46,7 @@
                     <th>Action</th>
                     </tr>
                     @foreach($products as $product)
-                    <tr>
+                    <tr class="product-tr-td">
                         <td>{{$product->id}}</td>
                         <td><a href="{{asset('storage/'. $product->product_image)}}"><img src="{{asset('storage/'. $product->product_image)}}" alt=""></a></td>
                         <td>{{$product->product_id}}</td>
@@ -67,6 +68,21 @@
                     @endforeach
                 </table>
             </div>
+
+            <script>
+                function searchProducts() {
+                const input = document.getElementById('searchInput').value.toLowerCase();
+                const products = document.querySelectorAll('.product-tr-td');
+
+                products.forEach(product => {
+                    const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                    const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    
+                    const isVisible = name.includes(input) || id.includes(input);
+                    product.style.display = isVisible ? '' : 'none';
+                });
+            }
+        </script>
         </div>
 
 

@@ -73,7 +73,7 @@ class StaffController extends Controller
 
     public function all_products(){
         return view('staff.all-products',[
-            'products' => Product::filter(request(['search']))->paginate(10),
+            'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
             'stores' => Store::all(),
             'comments' => Transfer::all(),
         ]);
@@ -185,20 +185,20 @@ class StaffController extends Controller
 
     public function instock_product(){
         return view('staff.instock-products',[
-            'products' => Product::latest()->filter(request(['search']))->paginate(10),
+            'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
             'comments' => Transfer::all(),
         ]);
     }
 
     public function less_stock(){
         return view('staff.less-product',[
-            'products' => Product::latest()->filter(request(['search']))->paginate(10),
+            'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
             'comments' => Transfer::all(),
         ]);
     }
 
     public function outstock_products(){
-        $outstockProduct = Product::where('product_quantity',0)->filter(request(['search']))->paginate(10);
+        $outstockProduct = Product::where('product_quantity',0)->filter(request(['search']))->orderBy('id','asc')->paginate(10);
         return view('staff.less-product',[
             'products' => $outstockProduct,
             'comments' => Transfer::all(),
@@ -206,7 +206,7 @@ class StaffController extends Controller
     }
 
     public function view_comment(){
-        $comments = Comment::all();
+        $comments = Comment::orderBy('id','asc')->get();
         return view('staff.view-comments', compact('comments'));
     }
 }

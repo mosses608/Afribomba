@@ -14,7 +14,8 @@
         <div class="centered-before-ajax">
             <form action="/admin/comments" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Filter items..."><button type="submit"><span>Filter</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Filter items...">
+                <!-- <button type="submit"><span>Filter</span></button> -->
             </form>
             <button class="add-product-button" onclick="printDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
@@ -49,7 +50,7 @@
                     <th>Date Created</th>
                     </tr>
                     @foreach($comments as $comment)
-                    <tr>
+                    <tr class="product-tr-td">
                         <!-- <td>{{$comment->id}}</td> -->
                         <td>{{$comment->product_name}}</td>
                         <td>{{$comment->comment}}</td>
@@ -72,6 +73,21 @@
             function printDoc(){
                 window.print();
             }
+        </script>
+
+        <script>
+            function searchProducts() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-tr-td');
+
+            products.forEach(product => {
+                const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const isVisible = name.includes(input) || id.includes(input);
+                product.style.display = isVisible ? '' : 'none';
+            });
+        }
         </script>
     </div>
 </center>

@@ -182,24 +182,28 @@ class PageController extends Controller
     }
 
     public function recommended_product(){
+
         $transferProdt = Transfer::all();
-        $createdAt = [];
-        $productName = [];
-        $productQuantity = [];
-        $staffRecommended = [];
-        $sourceStore = [];
-        $destinationStore = [];
+        // $productId = [];
+        // $createdAt = [];
+        // $productName = [];
+        // $productQuantity = [];
+        // $staffRecommended = [];
+        // $sourceStore = [];
+        // $destinationStore = [];
+
         foreach ($transferProdt as $transfer) {
-            $createdAt[] = json_decode($transfer->created_at, true);
-            $productName[] = json_decode($transfer->product_name, true);
-            $productQuantity[] = json_decode($transfer->product_quantity, true);
-            $staffRecommended[] = json_decode($transfer->staff_recommeded, true);
-            $sourceStore[] = json_decode($transfer->source_store, true);
-            $destinationStore[] = json_decode($transfer->store_name, true);
+            $productId = json_decode($transfer->id, true);
+            $createdAt = json_decode($transfer->created_at, true);
+            $productName = json_decode($transfer->product_name, true);
+            $productQuantity = json_decode($transfer->product_quantity, true);
+            $staffRecommended = json_decode($transfer->staff_recommeded, true);
+            $sourceStore = json_decode($transfer->source_store, true);
+            $destinationStore = json_decode($transfer->store_name, true);
         }
         return view('admin.recommended',[
             'transfers' => $transferProdt,
-        ], compact('createdAt','productName','productQuantity','staffRecommended','sourceStore','destinationStore'));
+        ], compact('productId','createdAt','productName','productQuantity','staffRecommended','sourceStore','destinationStore'));
     }
 
     public function comments_loader(){

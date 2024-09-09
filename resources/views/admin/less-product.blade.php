@@ -14,7 +14,8 @@
         <div class="centered-before-ajax">
             <form action="/admin/less-product" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Search less stock product..."><button type="submit"><span>Search</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search less stock product...">
+                <!-- <button type="submit"><span>Search</span></button> -->
             </form>
             <button class="add-product-button" onclick="shoPrintDialog()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
@@ -52,7 +53,7 @@
                     </tr>
                     @foreach($products as $product)
                     @if($product->status=='Less')
-                    <tr>
+                    <tr class="product-tr-td">
                         <td>{{$product->id}}</td>
                         <td><img src="{{asset('storage/' . $product->product_image)}}" alt=""></td>
                         <td>{{$product->product_id}}</td>
@@ -71,6 +72,21 @@
                 @endif
             </div>
         </div>
+
+        <script>
+            function searchProducts() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-tr-td');
+
+            products.forEach(product => {
+                const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const isVisible = name.includes(input) || id.includes(input);
+                product.style.display = isVisible ? '' : 'none';
+            });
+        }
+        </script>
 
         <form action="/products" method="POST" class="product-creator-ajax-wrapper" enctype="multipart/form-data">
             @csrf

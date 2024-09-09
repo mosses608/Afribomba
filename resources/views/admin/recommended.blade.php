@@ -14,7 +14,8 @@
         <div class="centered-before-ajax">
             <form action="/admin/recommended" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Filter items..."><button type="submit"><span>Filter</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Filter items...">
+                <!-- <button type="submit"><span>Filter</span></button> -->
             </form>
             <button class="add-product-button" onclick="printDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
@@ -58,16 +59,17 @@
                     <!-- <th>Product Id</th> -->
                     <th>Product Name</th>
                     <th>Quantity</th>
-                    <th>Staff Recommended</th>
-                    <th>Source Store</th>
-                    <th>Destination Store</th>
+                    <th>Recommended</th>
+                    <th>Source</th>
+                    <th>Destination</th>
                     <th>Status</th>
                     <th>Date Created</th>
                     <!-- <th>Action</th> -->
                     </tr>
                     @foreach($transfers as $transfer)
-                    <tr>
-                        <td>#</td>
+                    <tr class="product-tr-td">
+                       
+                        <td>{{is_array($productId) ? implode(',', $productId) : $transfer->id}}</td>
                         <!-- <th><img src="{{asset('storage/' . $transfer->product_image)}}" alt="Image" class="image-print"></th> -->
                         <!-- <td>{{$transfer->product_id}}</td> -->
                         <td>
@@ -110,6 +112,21 @@
             function printDoc(){
                 window.print();
             }
+        </script>
+
+        <script>
+            function searchProducts() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-tr-td');
+
+            products.forEach(product => {
+                const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const isVisible = name.includes(input) || id.includes(input);
+                product.style.display = isVisible ? '' : 'none';
+            });
+        }
         </script>
     </div>
 </center>

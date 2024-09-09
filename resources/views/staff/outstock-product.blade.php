@@ -14,7 +14,8 @@
         <div class="centered-before-ajax">
             <form action="/staff/instock-products" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Search instock product..."><button type="submit"><span>Search</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search instock product...">
+                <!-- <button type="submit"><span>Search</span></button> -->
             </form>
             <button class="add-product-button" onclick="showPrintDialog()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
@@ -63,8 +64,8 @@
                     </tr>
                     @foreach($products as $product)
                     @if($product->product_quantity == 0)
-                        <tr>
-                            <td>#</td>
+                        <tr class="product-tr-td">
+                            <td>{{$product->id}}</td>
                             <td>{{$product->product_id}}</td>
                             <td>{{$product->product_name}}</td>
                             <td>{{$product->product_quantity}}</td>
@@ -79,6 +80,20 @@
                     @endforeach
                 </table>
             </div>
+            <script>
+                function searchProducts() {
+                const input = document.getElementById('searchInput').value.toLowerCase();
+                const products = document.querySelectorAll('.product-tr-td');
+
+                products.forEach(product => {
+                    const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                    const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    
+                    const isVisible = name.includes(input) || id.includes(input);
+                    product.style.display = isVisible ? '' : 'none';
+                });
+            }
+        </script>
         </div>
 
         <form action="/products" method="POST" class="product-creator-ajax-wrapper" enctype="multipart/form-data">

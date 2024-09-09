@@ -21,7 +21,8 @@
             <button class="sale-product-btn" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button> <button class="transfer-product-btn" onclick="showTransferProduct()">Transfer Product</button>
             <form action="/admin/all-stores" method="GET" class="search-component">
                 @csrf   
-                <input type="text" name="search" id="" placeholder="Search..."><button type="submit"><span>Search</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search...">
+                <!-- <button type="submit"><span>Search</span></button> -->
             </form>
             <button class="add-product-button" onclick="showAddStoreForm()"><i class="fa fa-edit"></i> <span>Edit Store</span></button>
         </div><br><br>
@@ -38,7 +39,7 @@
                     </tr>
 
                     @foreach($products as $product)
-                    <tr>                    
+                    <tr class="product-tr-td">                    
                         @if($product->store_name == $store->store_name)
                         <td>{{$product->id}}</td>
                         <td style="text-align:center; padding:6px;"><img src="{{$product->product_image ? asset('storage/' . $product->product_image): asset('assets/images/background-logo.png')}}" alt="Image"></td>
@@ -97,6 +98,21 @@
                    
                 </table>
             </div>
+
+            <script>
+                function searchProducts() {
+                const input = document.getElementById('searchInput').value.toLowerCase();
+                const products = document.querySelectorAll('.product-tr-td');
+
+                products.forEach(product => {
+                    const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                    const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                    
+                    const isVisible = name.includes(input) || id.includes(input);
+                    product.style.display = isVisible ? '' : 'none';
+                });
+            }
+            </script>
         </div>
 
         <script>
