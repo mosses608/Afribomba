@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Store;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use App\Models\Product;
 use App\Models\Export;
-use App\Models\Transfer;
 use App\Models\Comment;
+use App\Models\Product;
+use App\Models\Session;
+use App\Models\Transfer;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 
 class PageController extends Controller
@@ -735,5 +736,10 @@ class PageController extends Controller
     public function delete_single_product(Request $request, Product $product){
         $product->delete();
         return redirect()->back()->with('success_delete_product','Product deleted successfully!');
+    }
+
+    public function system_logs(){
+        $sessions = Session::filter(request(['search']))->orderBy('last_activity','desc')->get();
+        return view('admin.logs', compact('sessions'));
     }
 }

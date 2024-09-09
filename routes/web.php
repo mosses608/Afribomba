@@ -72,6 +72,8 @@ Route::delete('/stores/delete/{store}', [PageController::class, 'delete_store_de
 
 Route::get('/reset-password', [PageController::class, 'reset_password']);
 
+Route::get('/admin/logs', [App\Http\Controllers\PageController::class, 'system_logs'])->middleware('auth');
+
 
 Route::get('/staff/staff-dashboard', [StaffController::class, 'staff_dashboard'])->middleware('auth');
 

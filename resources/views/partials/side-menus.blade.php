@@ -44,6 +44,9 @@
     <div class="setting-menu">
         <a href="/admin/profile"><span><i class="fa fa-cog"></i></span> <p>Account Settings</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div>
+    <div class="setting-menu">
+        <a href="/admin/logs"><span><i class="fas fa-history"></i></span> <p>System Logs</p> <em><i class="fa fa-angle-right"></i></em></a><br>
+    </div>
     <div class="invalidate-logout">
         <form action="/logout" method="POST" class="logout-invalidate">
             @csrf
