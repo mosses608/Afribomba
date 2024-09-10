@@ -29,7 +29,7 @@
             <a href="/staff/staff-dashboard"><img src="{{asset('assets/images/background-logo.png')}}" alt="Profile Logo" class="company-logo-pic"></a>
             <a href="/staff/staff-dashboard"><h1 id="pc-view-media">AFRIBOMBA COMPANY LIMITED</h1> <h1 id="media-abbrev">AFCL</h1></a>
             <button class="toggle-side-controller" onclick="showMobileSideMenu()">&#9776;</button>
-            <button class="notify-wrapper"><a href="/staff/view-comments"><i class="fa fa-comment"><span style="color:#FFFFFF;">{{count($comments)}}</span></i></a></button>
+            <button class="notify-wrapper"><a href="/staff/view-comments"><i class="fa fa-comment"><span style="color:#FFFFFF;">{{$staffNameConut}}</span></i></a></button>
             <div class="right-side-profile-manager" onclick="showRightMini()">
                 <img src="{{Auth::guard('web')->user()->profile ? asset('storage/' . Auth::guard('web')->user()->profile) : asset('assets/images/background-logo.png')}}" alt="Profile">
                 <span>{{Auth::guard('web')->user()->staff_role}} <i class="fa fa-angle-down"></i></span>

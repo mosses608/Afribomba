@@ -12,7 +12,7 @@
             <br>
         </div><br>
         <div class="centered-before-ajax">
-        <form action="/admin/reports" method="GET" class="search-component">
+        <form action="/admin/logs" method="GET" class="search-component">
             @csrf
                 <input type="text" name="search" id="start_date">
             <button type="submit"><span>Search</span></button>

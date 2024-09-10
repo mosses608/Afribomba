@@ -189,9 +189,9 @@
             </select>
         </div>
 
-        <div class="inp-select-optb">
-            <label>Customer Name:</label><br>
-            <input type="text" name="customer_name[]" placeholder="Customer Name...">
+        <div class="inp-select-optb"> 
+            <label>TIN:</label><br>
+            <input type="text" name="customer_name[]" placeholder="TIN">
         </div>
 
         <div class="inp-select-optc">

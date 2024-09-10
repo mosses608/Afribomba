@@ -51,6 +51,10 @@ class StaffController extends Controller
     
         $reconnded = DB::table('transfers')->where('staff_recommeded', '!=' , 0)->count();
 
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         return view('staff.staff-dashboard',[
             'users' => User::all(),
             'products' => Product::all(),
@@ -62,21 +66,29 @@ class StaffController extends Controller
             'staff_recommednCounter' => $reconnded,
             'chartData' => $dataByProduct,
             'dates' => $dates,
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function staff_profile(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         return view('staff.profile',[
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function all_products(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         return view('staff.all-products',[
             'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
             'stores' => Store::all(),
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function single_export($id){
@@ -93,6 +105,9 @@ class StaffController extends Controller
             ];
         });
 
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
 
         return view('staff.single-export',[
             'product' => $product,
@@ -101,13 +116,12 @@ class StaffController extends Controller
             'sales' => $sales,
             'chartData' => $chartData,
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function exported_products(Request $request){
         $currentDate = Carbon::now()->format('Y-m-d');
 
-    // Calculate total profit from all exports
     $myexports = Export::all()->sum(function($export) {
         $quantities = json_decode($export->product_quantity, true);
         $prices = json_decode($export->product_price, true);
@@ -121,7 +135,6 @@ class StaffController extends Controller
     $dateProfit = $myexports;
     $totalComponents = Export::whereNotNull('product_name')->count();
 
-    // Handle search functionality
     if ($request->has('search') && $request->search != '') {
         $searchDate = $request->search;
 
@@ -139,27 +152,40 @@ class StaffController extends Controller
     }
 
         $exports = Export::whereDate('created_at',$currentDate);
+
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
         
         return view('staff.exported-products',[
             'products' => Product::all(),
             'exports' => $exports->latest()->filter(request(['search']))->paginate(10),
             // 'export' => $exports,
             'comments' => Transfer::all(),
-        ],compact('myexports','dateProfit','totalComponents', 'currentDate'));
+        ],compact('myexports','dateProfit','totalComponents', 'currentDate','staffNameConut'));
     }
 
     public function all_stores(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         return view('staff.all-stores',[
             'stores' => Store::all(),
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function recommended(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
+        $notficationCounter = Transfer::where('staff_recommeded', Auth::guard('web')->user()->staff_name)->count();
         return view('staff.recommended',[
             'transfers' => Transfer::latest()->filter(request(['search']))->paginate(10),
             'comments' => Transfer::latest()->filter(request(['search']))->paginate(10),
-        ]);
+        ], compact('notficationCounter','staffNameConut'));
     }
 
     public function edit_transfer_status(Request $request, Transfer $transfer){
@@ -177,36 +203,56 @@ class StaffController extends Controller
         // $product->product_name = json_decode($product->product_name, true);
         // $product->product_quantity = json_decode($product->product_quantity, true);
         // $product->product_price = json_decode($product->product_price, true);
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         return view('staff.print',[
             'product' => $product,
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function instock_product(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         return view('staff.instock-products',[
             'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function less_stock(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         return view('staff.less-product',[
             'products' => Product::filter(request(['search']))->orderBy('id','asc')->paginate(10),
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function outstock_products(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
+
         $outstockProduct = Product::where('product_quantity',0)->filter(request(['search']))->orderBy('id','asc')->paginate(10);
         return view('staff.less-product',[
             'products' => $outstockProduct,
             'comments' => Transfer::all(),
-        ]);
+        ], compact('staffNameConut'));
     }
 
     public function view_comment(){
+        $loggedInStaff = Auth::guard('web')->user()->staff_name;
+
+       $staffNameConut = Transfer::where('staff_recommede d', $loggedInStaff)->count();
+       
         $comments = Comment::orderBy('id','asc')->get();
-        return view('staff.view-comments', compact('comments'));
+        return view('staff.view-comments', compact('comments','staffNameConut'));
     }
 }

@@ -36,8 +36,8 @@
                 </div><br><br><br><br><br>
                 <div class="down-metadata">
                     <h1><strong>Bill To: </strong></h1><br><br>
-                    <h3>Customer Name:: <strong>{{is_array($customer_name) ? implode(',', $customer_name) : $product->customer_name}}</strong></h3>
-                    <h3>Customer Phone: <strong>{{ is_array($customerPhone) ? implode(', ', $customerPhone) : $product->phone }}</strong></h3>
+                    <h3>TIN:: <strong>{{is_array($customer_name) ? implode(',', $customer_name) : $product->customer_name}}</strong></h3>
+                    <h3>Phone: <strong>{{ is_array($customerPhone) ? implode(', ', $customerPhone) : $product->phone }}</strong></h3>
 
                     <!-- <h3>Due Date: <strong>{{ \Carbon\Carbon::parse($product->created_at)->addDays(30)->format('Y-m-d') }}</strong></h3><br> -->
                 </div><br><br><br><br>

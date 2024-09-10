@@ -14,9 +14,9 @@
         @foreach($products as $product)
         <div class="product">
             <img src="{{asset('storage/' . $product->product_image)}}" alt="Image" loading="lazy">
-            <h2 class="product-name">{{$product->product_name}}</h2>
+            <strong><h2 class="product-name">{{$product->product_name}}</h2></strong>
             <p class="available">{{$product->description}}</p>
-            <p class="price-tag">Tsh {{number_format($product->product_price)}}/=</p>
+            <strong><p class="price-tag">Tsh {{number_format($product->product_price)}}/=</p></strong>
         </div>
         @endforeach
     </section>
@@ -32,32 +32,32 @@
         <center>
         <div class="footer-center">
             <div>
-                <i class="fa fa-map-marker"></i>
+                <!-- <i class="fa fa-map-marker"></i> -->
                 <p><a href="https://www.google.com/maps?q=Sikukuu+St+%26+Michikichi+St,+Dar+es+Salaam" style="color:#FFF;">Mchikichi na Sikukuu</a></p>
             </div>
             <div>
-                <i class="fa fa-phone"></i>
-                <p style="color:#FFF;">+255 653 881 184</p>
+                <!-- <i class="fa fa-phone"></i> -->
+                <p style="color:#FFF;">+255 762 881 188</p>
             </div>
             <div>
-                <i class="fa fa-envelope"></i>
+                <!-- <i class="fa fa-envelope"></i> -->
                 <p><a href="mailto:baracky2000@gmail.com" style="color:#FFF;">baracky2000@gmail.com</a></p>
             </div>
             <div class="footer-iconsn">
-                <a href="https://wa.me/+255653881184"><i class="fab fa-facebook"></i></a>
-                <p>Facebook</p>
+                <a href="https://wa.me/+255762881188">Facebook</a>
+                <!-- <p>Facebook</p> -->
             </div>
             <div class="footer-iconsn">
-                <a href="https://wa.me/+255653881184"><i class="fab fa-twitter"></i></a>
-                <p>Twitter</p>
+                <a href="https://wa.me/+255762881188">Twitter</a>
+                <!-- <p>Twitter</p> -->
             </div>
             <div class="footer-iconsn">
-                <a href="https://wa.me/+255653881184"><i class="fab fa-instagram"></i></a>
-                <p>Instagram</p>
+                <a href="https://wa.me/+255762881188">Instagram</a>
+                <!-- <p>Instagram</p> -->
             </div>
             <div class="footer-iconsn">
-                <a href="https://wa.me/+255653881184"><i class="fab fa-whatsapp"></i></a>
-                <p>WhatsApp</p>
+                <a href="https://wa.me/+255762881188">WhatsApp</a>
+                <!-- <p>WhatsApp</p> -->
             </div>
         </div>
         <!-- <div class="footer-icons">

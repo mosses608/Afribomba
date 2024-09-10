@@ -38,9 +38,9 @@
         <center>
         <div class="min-header-container">
             <h1>AFRIBOMBA WHOLESALE SHOP</h1>
-            <p>Note: Price may change anytime | Contact: +255 653 881 184</p>
+            <p>Note: Price may change anytime | Contact: +255 762 881 188</p>
             <div class="hours">Open: 7:00 AM | Close: 6:00 PM</div>
-            <span id="mobile-dispalyer">Contact: +255 653 881 184</span>
+            <span id="mobile-dispalyer">Contact: +255 762 881 188</span>
         </div>
         </center>
         <!-- <center>

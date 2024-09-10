@@ -38,8 +38,8 @@
                 <table>
                     <tr class="product-table-header">
                     <th>#</th>
-                    <th>Product Id</th>
                     <th>Image</th>
+                    <th>Product Id</th>
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Price</th>

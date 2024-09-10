@@ -24,6 +24,7 @@
                 <table>
                     <tr class="product-table-header">
                     <th>#</th>
+                    <th>Image</th>
                     <th>Product Id</th>
                     <th>Product Name</th>
                     <th>Quantity</th>
@@ -36,6 +37,7 @@
                     @if($product->product_quantity != 0)
                         <tr class="product-tr-td">
                             <td>{{$product->id}}</td>
+                            <td><img src="{{asset('storage/' . $product->product_image)}}" alt="Image"></td>
                             <td>{{$product->product_id}}</td>
                             <td>{{$product->product_name}}</td>
                             <td>{{$product->product_quantity}}</td>
