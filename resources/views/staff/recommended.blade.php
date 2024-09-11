@@ -16,7 +16,7 @@
         <div class="centered-before-ajax">
             <form action="/staff/recommended" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Filter items..."><button type="submit"><span>Filter</span></button>
+                <input type="date" name="search" id="" placeholder="Filter items..."><button type="submit"><span>Filter</span></button>
             </form>
             <button class="add-product-button" onclick="printDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
         </div><br><br>
@@ -50,9 +50,9 @@
                 <table>
                     <tr class="product-table-header">
                     <th>#</th>
-                    <th>Image</th>
-                    <th>Product Id</th>
-                    <th>Product</th>
+                    <!-- <th>Image</th>
+                    <th>Product Id</th> -->
+                    <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Staff</th>
                     <th>Store</th>
@@ -61,15 +61,13 @@
                     <!-- <th>Action</th> -->
                     </tr>
                     @foreach($transfers as $transfer)
-                    @if($transfer->staff_recommeded == Auth::guard('web')->user()->staff_name)
+                    @if(is_array($staffRecommended) ? implode(',', $staffRecommended): $transfer->staff_recommeded == Auth::guard('web')->user()->staff_name)
                     <tr>
                         <td>{{$transfer->id}}</td>
-                        <th><img src="{{asset('storage/' . $transfer->product_image)}}" alt="Image" id="product-img-print"></th>
-                        <td>{{$transfer->product_id}}</td>
-                        <td>{{$transfer->product_name}}</td>
-                        <td>{{$transfer->product_quantity}}</td>
-                        <td>{{$transfer->staff_recommeded}}</td>
-                        <td>{{$transfer->store_name}}</td>
+                        <td>{{is_array($productName) ? implode(',', $productName) : $transfer->product_name}}</td>
+                        <td>{{is_array($quantity) ? implode(',', $quantity) : $transfer->product_quantity}}</td>
+                        <td>{{is_array($staffRecommended) ? implode(',', $staffRecommended) : $transfer->staff_recommeded}}</td>
+                        <td>{{is_array($storeName) ? implode(',', $storeName) : $transfer->store_name}}</td>
                         <td>
                             @if($transfer->status == '')
                             <form action="/transfers/editstatus/{{$transfer->id}}" method="POST" class="edit-status-recommend">

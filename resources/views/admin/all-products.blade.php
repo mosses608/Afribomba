@@ -176,7 +176,16 @@
     <div class="added-component">
         <div class="appendable-min-comp">
         <div class="inp-select-opta">
-            <label>Product Name:</label><br>
+            <label>TIN:</label><br>
+            <input type="text" name="customer_name[]" placeholder="TIN">
+        </div>
+        <div class="client-phone">
+            <label for="">Client Phone: (Optional)</label><br>
+            <input type="text" name="phone[]" id="" placeholder="Client phone number">
+        </div>
+
+        <div class="inp-select-optb"> 
+        <label>Product Name:</label><br>
             <select name="product_name[]" id="product-name-select" class="product-name-select">
                 <option value="">--select--</option>
                 @foreach($products as $product)
@@ -187,11 +196,6 @@
                 </option>
                 @endforeach
             </select>
-        </div>
-
-        <div class="inp-select-optb"> 
-            <label>TIN:</label><br>
-            <input type="text" name="customer_name[]" placeholder="TIN">
         </div>
 
         <div class="inp-select-optc">
@@ -205,10 +209,7 @@
             <input type="text" name="product_price[]" class="product-price">
         </div>
 
-        <div class="client-phone">
-            <label for="">Client Phone: (Optional)</label><br>
-            <input type="text" name="phone[]" id="" placeholder="Client phone number">
-        </div>
+        
 
         </div>
         <br><br><br><br>

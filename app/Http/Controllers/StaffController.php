@@ -172,7 +172,7 @@ class StaffController extends Controller
 
         return view('staff.all-stores',[
             'stores' => Store::all(),
-            'comments' => Transfer::all(),
+            'comments' => Comment::all(),
         ], compact('staffNameConut'));
     }
 
@@ -182,10 +182,23 @@ class StaffController extends Controller
        $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
 
         $notficationCounter = Transfer::where('staff_recommeded', Auth::guard('web')->user()->staff_name)->count();
+
+        $products = Product::all();
+
+        $transfers = Transfer::filter(request(['search']))->orderBy('id','asc')->get();
+        
+        foreach ($transfers as $index => $transfer) {
+            $productName = json_decode($transfer->product_name, true);
+            $quantity = json_decode($transfer->product_quantity, true);
+            $staffRecommended = json_decode($transfer->staff_recommeded, true);
+            $storeName = json_decode($transfer->store_name, true);
+        }
+        
+
         return view('staff.recommended',[
-            'transfers' => Transfer::latest()->filter(request(['search']))->paginate(10),
-            'comments' => Transfer::latest()->filter(request(['search']))->paginate(10),
-        ], compact('notficationCounter','staffNameConut'));
+            'transfers' => $transfers,
+            'comments' => Comment::latest()->filter(request(['search']))->paginate(10),
+        ], compact('notficationCounter','staffNameConut','products','productName','quantity','staffRecommended','storeName'));
     }
 
     public function edit_transfer_status(Request $request, Transfer $transfer){
@@ -209,7 +222,7 @@ class StaffController extends Controller
 
         return view('staff.print',[
             'product' => $product,
-            'comments' => Transfer::all(),
+            'comments' => Comment::all(),
         ], compact('staffNameConut'));
     }
 
@@ -250,7 +263,7 @@ class StaffController extends Controller
     public function view_comment(){
         $loggedInStaff = Auth::guard('web')->user()->staff_name;
 
-       $staffNameConut = Transfer::where('staff_recommede d', $loggedInStaff)->count();
+       $staffNameConut = Transfer::where('staff_recommeded', $loggedInStaff)->count();
        
         $comments = Comment::orderBy('id','asc')->get();
         return view('staff.view-comments', compact('comments','staffNameConut'));

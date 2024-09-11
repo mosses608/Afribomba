@@ -12,7 +12,7 @@ class Transfer extends Model
     public function scopeFilter($query, array $filters){
         if($filters['search'] ?? false){
             $query->where('product_name' , 'like' , '%' . request('search') . '%')
-            ->orwhere('product_id' , 'like' , '%' . request('search') . '%');
+            ->orwhere('created_at' , 'like' , '%' . request('search') . '%');
         }
     }
 
