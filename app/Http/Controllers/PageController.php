@@ -32,28 +32,39 @@ class PageController extends Controller
     public function admin_dashboard()
 {
     $reconnded = (int)DB::table('transfers')->where('staff_recommeded', '!=', 0)->count();
+
     $instock = (int)DB::table('products')->where('product_quantity', '!=', 0)->count();
+
     $lessProduct = (int)DB::table('products')->where('product_quantity', '<', 20)->count();
     
     $exports = Export::select('product_name', 'created_at', 'product_quantity')
                       ->orderBy('created_at', 'asc')
                       ->get();
 
-    // Decode JSON data and prepare chart data
     $chartData = $exports->map(function($export) {
+        $productNames = is_string($export->product_name) ? json_decode($export->product_name) : [];
+        $productQuantities = is_string($export->product_quantity) ? json_decode($export->product_quantity) : [];
+
+        if (!is_array($productNames) || !is_array($productQuantities) || count($productNames) !== count($productQuantities)) {
+            return null;
+        }
+
         return [
-            'product_names' => json_decode($export->product_name),
+            'product_names' => $productNames,
             'created_at' => $export->created_at->format('Y-m-d'),
-            'product_quantities' => json_decode($export->product_quantity),
+            'product_quantities' => $productQuantities,
         ];
-    });
+    })->filter();
 
     $dates = $chartData->pluck('created_at')->unique()->sort()->values();
 
-    // Prepare data for Chart.js
     $dataByProduct = $chartData->flatMap(function($data) {
         return collect($data['product_names'])->mapWithKeys(function($productName, $index) use ($data) {
-            return [$productName => [$data['created_at'] => $data['product_quantities'][$index]]];
+            if (isset($data['product_quantities'][$index])) {
+                return [$productName => [$data['created_at'] => $data['product_quantities'][$index]]];
+            } else {
+                return [];
+            }
         });
     })->groupBy(function($item, $key) {
         return $key;
@@ -74,6 +85,7 @@ class PageController extends Controller
         'dates' => $dates,
     ]);
 }
+
 
     public function admin_profile(){
         return view('admin.profile');
