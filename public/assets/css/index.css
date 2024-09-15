@@ -2346,6 +2346,13 @@
     color: #000080;
 }
 
+.produt-id-tg{
+    position: relative;
+    right: -120px;
+    top: -230px;
+    color: #000080;
+}
+
 #searchInput{
     padding: 6px;
     width: 90%;

@@ -17,6 +17,9 @@
             <strong><h2 class="product-name">{{$product->product_name}}</h2></strong>
             <p class="available">{{$product->description}}</p>
             <strong><p class="price-tag">Tsh {{number_format($product->product_price)}}/=</p></strong>
+            <div class="produt-id-tg">
+                <strong>{{$product->product_id}}</strong>
+            </div>
         </div>
         @endforeach
     </section>
