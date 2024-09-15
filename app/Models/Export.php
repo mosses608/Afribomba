@@ -17,6 +17,7 @@ class Export extends Model
 
     protected $fillable = [
         // 'product_id',
+        'tin',
         'product_name',
         'customer_name',
         'staff_name',

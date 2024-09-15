@@ -230,47 +230,60 @@ class PageController extends Controller
     }
 
     public function exported_products(Request $request)
-{
-    $currentDate = Carbon::now()->format('Y-m-d');
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
 
-    // Calculate total profit from all exports
-    $myexports = Export::all()->sum(function($export) {
-        $quantities = json_decode($export->product_quantity, true);
-        $prices = json_decode($export->product_price, true);
-        $total = 0;
-        foreach ($quantities as $index => $quantity) {
-            $total += (float)$quantity * (float)$prices[$index];
-        }
-        return $total;
-    });
-
-    $datePrice = $myexports;
-    $totalComponents = Export::whereNotNull('product_name')->count();
-
-    // Handle search functionality
-    if ($request->has('search') && $request->search != '') {
-        $searchDate = $request->search;
-
-        $datePrice = Export::whereDate('created_at', $searchDate)->get()->sum(function($export) {
+        $myexports = Export::all()->sum(function($export) {
             $quantities = json_decode($export->product_quantity, true);
             $prices = json_decode($export->product_price, true);
-            $total = 0;
-            foreach ($quantities as $index => $quantity) {
-                $total += (float)$quantity * (float)$prices[$index];
+
+            if (is_array($quantities) && is_array($prices)) {
+                $total = 0;
+                foreach ($quantities as $index => $quantity) {
+                    if (isset($prices[$index])) {
+                        $total += (float)$quantity * (float)$prices[$index];
+                    }
+                }
+                return $total;
             }
-            return $total;
+
+            return 0; 
         });
 
-        $totalComponents = Export::whereDate('created_at', $searchDate)->whereNotNull('product_name')->count();
+        $datePrice = $myexports;
+        $totalComponents = Export::whereNotNull('product_name')->count();
+
+        if ($request->has('search') && $request->search != '') {
+            $searchDate = $request->search;
+
+            $datePrice = Export::whereDate('created_at', $searchDate)->get()->sum(function($export) {
+                $quantities = json_decode($export->product_quantity, true);
+                $prices = json_decode($export->product_price, true);
+
+                // Ensure that both quantities and prices are arrays
+                if (is_array($quantities) && is_array($prices)) {
+                    $total = 0;
+                    foreach ($quantities as $index => $quantity) {
+                        if (isset($prices[$index])) {
+                            $total += (float)$quantity * (float)$prices[$index];
+                        }
+                    }
+                    return $total;
+                }
+
+                return 0; 
+            });
+
+            $totalComponents = Export::whereDate('created_at', $searchDate)->whereNotNull('product_name')->count();
+        }
+
+        $exports =  Export::whereDate('created_at', $currentDate);
+
+        return view('admin.exported-products', [
+            'products' => Product::all(),
+            'exports' => $exports->latest()->filter(request(['search']))->paginate(10),
+        ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate'));
     }
-
-    $exports =  Export::whereDate('created_at', $currentDate);
-
-    return view('admin.exported-products', [
-        'products' => Product::all(),
-        'exports' => $exports->latest()->filter(request(['search']))->paginate(10),
-    ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate'));
-}
 
     public function instock_product(){
         return view('admin.instock-products',[
@@ -472,6 +485,7 @@ class PageController extends Controller
     
     public function store_exports(Request $request) {
         $validatedData = $request->validate([
+            'tin' => 'nullable|string|max:255',
             'product_name.*' => 'required',
             'customer_name' => 'nullable',
             'staff_name.*' => 'required',
@@ -479,7 +493,8 @@ class PageController extends Controller
             'product_price.*' => 'required|numeric|min:0',
             'phone.*' => 'nullable|min:10|max:15',
         ]);
-    
+
+        $tin = $validatedData['tin'];
         $productNames = $validatedData['product_name'];
         $customerNames = $validatedData['customer_name'];
         $staffNames = $validatedData['staff_name'];
@@ -492,17 +507,18 @@ class PageController extends Controller
             if ($product->product_quantity < $productQuantities[$index]) {
                 return redirect()->back()->with('not_enough', 'Product quantity is not enough for ' . $productName);
             }
-            // Reduce the quantity of each product
+            
             $product->product_quantity -= $productQuantities[$index];
             $product->save();
         }
 
         $customerNames = is_array($customerNames) ? json_encode($customerNames) : $customerNames;
         $clientPhone = is_array($clientPhone) ? json_encode($clientPhone) : $clientPhone;
-
+        $tin = is_array($tin) ? json_encode($tin) : $tin;
     
         // Combine all data into a single JSON object
         Export::create([
+            'tin' => json_encode($tin),
             'product_name' => json_encode($productNames),
             'customer_name' => $customerNames,
             'staff_name' => json_encode($staffNames),

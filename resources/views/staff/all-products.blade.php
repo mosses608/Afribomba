@@ -97,18 +97,25 @@
             @endforeach
 
             <div class="inp-select-opta">
+                <label>Customer Name:</label><br>
+                <input type="text" name="tin[]" placeholder="Customer name">
+            </div>
+            <div class="inp-select-opta">
+                <label>TIN:</label><br>
+                <input type="text" name="customer_name[]" placeholder="TIN">
+            </div>
+            <div class="inp-select-optb">
+                <label>Phone:</label><br>
+                <input type="text" name="phone[]" placeholder="Phone Number...">
+            </div>
+            <div class="inp-select-opta">
             <label>Product Name:</label><br>
             <select name="product_name[]">
-                <option value="">Select Product Name</option>
+                <option value="">--select--</option>
                 @foreach($products as $product)
                 <option value="{{$product->product_name}}">{{$product->product_name}}</option>
                 @endforeach
             </select>
-            </div>
-
-            <div class="inp-select-optb">
-            <label>Customer Name:</label><br>
-            <input type="text" name="customer_name[]" placeholder="Customer Name...">
             </div>
 
             <div class="inp-select-optc">

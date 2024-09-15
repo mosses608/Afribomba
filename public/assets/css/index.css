@@ -1275,8 +1275,8 @@
     animation: fadeIn 1s forwards;
     position: absolute;
     display: none;
-    left: 5%;
-    width: 90%;
+    left: 2.5%;
+    width: 95%;
     padding: 5px;
     top: 5%;
     box-shadow: 0 0 4px rgba(0,0,0,0.2);
@@ -1291,13 +1291,13 @@
 .ajax-wrapper-creator select{
     border: 1px solid #999;
     padding: 6px;
-    width: 160px;
+    width: 130px;
 }
 
 .ajax-wrapper-creator input{
     border: 1px solid #999;
     padding: 6px;
-    width: 160px;
+    width: 130px;
 }   
 
 .ajax-wrapper-creator input{
@@ -2350,7 +2350,9 @@
     position: relative;
     right: -120px;
     top: -230px;
-    color: #000080;
+    color: orangered;
+    font-size: 14px;
+    font-weight: 900;
 }
 
 #searchInput{

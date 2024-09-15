@@ -170,56 +170,60 @@
 
 
         <form action="/exports" method="POST" class="ajax-wrapper-creator" enctype="multipart/form-data" id="product-creator-ajax-wrapper">
-    @csrf
-    <span class="closeItem" onclick="closeItem()">&times;</span>
+            @csrf
+            <span class="closeItem" onclick="closeItem()">&times;</span>
 
-    <div class="added-component">
-        <div class="appendable-min-comp">
-        <div class="inp-select-opta">
-            <label>TIN:</label><br>
-            <input type="text" name="customer_name[]" placeholder="TIN">
-        </div>
-        <div class="client-phone">
-            <label for="">Client Phone: (Optional)</label><br>
-            <input type="text" name="phone[]" id="" placeholder="Client phone number">
-        </div>
+            <div class="added-component">
+                <div class="appendable-min-comp">
+                <div class="inp-select-opta">
+                    <label>Customer Name:</label><br>
+                    <input type="text" name="tin[]" placeholder="Customer name">
+                </div>
+                <div class="inp-select-opta">
+                    <label>TIN:</label><br>
+                    <input type="text" name="customer_name[]" placeholder="TIN">
+                </div>
+                <div class="client-phone">
+                    <label for="">Client Phone: (Optional)</label><br>
+                    <input type="text" name="phone[]" id="" placeholder="Phone number">
+                </div>
 
-        <div class="inp-select-optb"> 
-        <label>Product Name:</label><br>
-            <select name="product_name[]" id="product-name-select" class="product-name-select">
-                <option value="">--select--</option>
-                @foreach($products as $product)
-                <option value="{{$product->product_name}}"
-                        data-price="{{$product->product_price}}"
-                        data-quantity="{{$product->product_quantity}}">
-                    {{$product->product_name}}
-                </option>
-                @endforeach
-            </select>
-        </div>
+                <div class="inp-select-optb"> 
+                <label>Product Name:</label><br>
+                    <select name="product_name[]" id="product-name-select" class="product-name-select">
+                        <option value="">--select--</option>
+                        @foreach($products as $product)
+                        <option value="{{$product->product_name}}"
+                                data-price="{{$product->product_price}}"
+                                data-quantity="{{$product->product_quantity}}">
+                            {{$product->product_name}}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
 
-        <div class="inp-select-optc">
-            <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
-            <label>Quantity:</label><br>
-            <input type="text" name="product_quantity[]" class="product-quantity">
-        </div>
+                <div class="inp-select-optc">
+                    <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
+                    <label>Quantity:</label><br>
+                    <input type="text" name="product_quantity[]" class="product-quantity">
+                </div>
 
-        <div class="inp-select-optc">
-            <label>Unit Price:</label><br>
-            <input type="text" name="product_price[]" class="product-price">
-        </div>
+                <div class="inp-select-optc">
+                    <label>Unit Price:</label><br>
+                    <input type="text" name="product_price[]" class="product-price">
+                </div>
 
-        
+                
 
-        </div>
-        <br><br><br><br>
-    </div>
+                </div>
+                <br><br><br><br>
+            </div>
 
-    <button type="submit" class="button-sale-add">Submit Product</button>
-    <button type="button" class="add-button" onclick="addForm()"><i class="fa fa-plus"></i></button>
+            <button type="submit" class="button-sale-add">Submit Product</button>
+            <button type="button" class="add-button" onclick="addForm()"><i class="fa fa-plus"></i></button>
 
-    <br><br>
-</form>
+            <br><br>
+        </form>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
