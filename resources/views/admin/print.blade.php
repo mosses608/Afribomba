@@ -36,9 +36,15 @@
                 </div><br><br><br><br><br>
                 <div class="down-metadata">
                     <h1><strong>Bill To: </strong></h1><br><br>
-                    <h3>TIN:: <strong>{{is_array($customer_name) ? implode(',', $customer_name) : $product->customer_name}}</strong></h3>
-                    <h3>Phone: <strong>{{ is_array($customerPhone) ? implode(', ', $customerPhone) : $product->phone }}</strong></h3>
-
+                    @if(is_array($customer_name) ? implode(',', $customer_name) : $product->customer_name != '')
+                    <h3 style="margin-left:-45%;">TIN: <strong>{{is_array($customer_name) ? implode(',', $customer_name) : $product->customer_name}}</strong></h3>
+                    @endif
+                    @if(is_array($tin) ? implode(',', $tin) : $product->tin !='')
+                    <h3 style="margin-left:-28%;">Name: <strong>{{is_array($tin) ? implode(',', $tin) : $product->tin}}</strong></h3>
+                    @endif
+                    @if(is_array($customerPhone) ? implode(', ', $customerPhone) : $product->phone != '')
+                    <h3 style="margin-left:0%;">Phone: <strong>{{ is_array($customerPhone) ? implode(', ', $customerPhone) : $product->phone }}</strong></h3>
+                    @endif
                     <!-- <h3>Due Date: <strong>{{ \Carbon\Carbon::parse($product->created_at)->addDays(30)->format('Y-m-d') }}</strong></h3><br> -->
                 </div><br><br><br><br>
                 <br>

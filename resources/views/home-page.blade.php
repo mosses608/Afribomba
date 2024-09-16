@@ -10,14 +10,24 @@
     </form>
     </center>
 
-<section class="product-list" id="productList">
+    <section class="product-list" id="productList">
         @foreach($products as $product)
         <div class="product">
             <img src="{{asset('storage/' . $product->product_image)}}" alt="Image" loading="lazy">
             <strong><h2 class="product-name">{{$product->product_name}}</h2></strong>
-            <p class="available">{{$product->description}}</p>
+            <p class="available" style="color:#0000FF;">{{$product->description}}</p>
             <strong><p class="price-tag">Tsh {{number_format($product->product_price)}}/=</p></strong>
+            <strong><p style="text-align:center; font-size:12px;" class="prod-id">Item No: {{$product->product_id}}</p></strong>
         </div>
+
+        <style>
+            @media(max-width:768px){
+                .prod-id{
+                    font-size:10px;
+                }
+            }
+        </style>
+
         @endforeach
     </section>
 <br><br>

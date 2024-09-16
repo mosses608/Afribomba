@@ -197,13 +197,13 @@ class PageController extends Controller
     public function recommended_product(){
 
         $transferProdt = Transfer::all();
-        // $productId = [];
-        // $createdAt = [];
-        // $productName = [];
-        // $productQuantity = [];
-        // $staffRecommended = [];
-        // $sourceStore = [];
-        // $destinationStore = [];
+        $productId = [];
+        $createdAt = [];
+        $productName = [];
+        $productQuantity = [];
+        $staffRecommended = [];
+        $sourceStore = [];
+        $destinationStore = [];
 
         foreach ($transferProdt as $transfer) {
             $productId = json_decode($transfer->id, true);
@@ -485,7 +485,7 @@ class PageController extends Controller
     
     public function store_exports(Request $request) {
         $validatedData = $request->validate([
-            'tin' => 'nullable|string|max:255',
+            'tin' => 'nullable',
             'product_name.*' => 'required',
             'customer_name' => 'nullable',
             'staff_name.*' => 'required',
@@ -516,9 +516,8 @@ class PageController extends Controller
         $clientPhone = is_array($clientPhone) ? json_encode($clientPhone) : $clientPhone;
         $tin = is_array($tin) ? json_encode($tin) : $tin;
     
-        // Combine all data into a single JSON object
         Export::create([
-            'tin' => json_encode($tin),
+            'tin' => $tin,
             'product_name' => json_encode($productNames),
             'customer_name' => $customerNames,
             'staff_name' => json_encode($staffNames),
@@ -526,6 +525,8 @@ class PageController extends Controller
             'product_price' => json_encode($productPrices),
             'phone' => $clientPhone,
         ]);
+
+        // dd($request->all());
     
         return redirect()->back()->with('export_message', 'Products exported successfully!');
     }
@@ -754,10 +755,12 @@ class PageController extends Controller
         $product = Export::find($id);
         $product->customer_name = json_decode($product->customer_name, true);
         $product->phone = json_decode($product->phone, true);
+        $product->tin = json_decode($product->tin, true);
         return view('admin.print',[
             'product' => $product,
             'customer_name' => $product->customer_name,
             'customerPhone' => $product->phone,
+            'tin' => $product->tin,
         ]);
     }
 

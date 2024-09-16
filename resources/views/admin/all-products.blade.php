@@ -181,10 +181,10 @@
                 </div>
                 <div class="inp-select-opta">
                     <label>TIN:</label><br>
-                    <input type="text" name="customer_name[]" placeholder="TIN">
+                    <input type="number" name="customer_name[]" placeholder="TIN">
                 </div>
                 <div class="client-phone">
-                    <label for="">Client Phone: (Optional)</label><br>
+                    <label for="">Client Phone</label><br>
                     <input type="text" name="phone[]" id="" placeholder="Phone number">
                 </div>
 
