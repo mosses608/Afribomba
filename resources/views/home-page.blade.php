@@ -15,7 +15,7 @@
         <div class="product">
             <img src="{{asset('storage/' . $product->product_image)}}" alt="Image" loading="lazy">
             <strong><h2 class="product-name">{{$product->product_name}}</h2></strong>
-            <p class="available"> <strong><span style="color:#000; font-size:14px; float:left; margin-left:8%;">{{$product->product_id}}</span></strong> - <span style="float:right; margin-right:8%;">{{$product->description}}</span></p>
+            <p class="available">{{$product->description}}</p>
             <strong><p class="price-tag">Tsh {{number_format($product->product_price)}}/=</p></strong>
         </div>
         @endforeach

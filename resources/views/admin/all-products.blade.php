@@ -100,7 +100,7 @@
                             <input type="text" name="product_price" value="{{$product->product_price}}"><br><br>
                             <label>Store Name:</label>
                             <select name="store_name">
-                                <option value="">--select--</option>
+                                <option value="{{$product->store_name}}">--select--</option>
                                 @foreach($stores as $store)
                                 <option value="{{$store->store_name}}">{{$store->store_name}}</option>
                                 @endforeach

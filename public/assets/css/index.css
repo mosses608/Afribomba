@@ -2357,7 +2357,7 @@
 
 #searchInput{
     padding: 6px;
-    width: 90%;
+    width: 80%;
     border-radius: 4px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 400;
@@ -2888,5 +2888,9 @@
     .product-creator-ajax-wrapped select{
         float: none;
         width: 100%;
+    }
+    .product-table-header th{
+        font-size: 14px;
+        padding: 4px;
     }
 }
