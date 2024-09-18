@@ -277,11 +277,11 @@ class PageController extends Controller
             $totalComponents = Export::whereDate('created_at', $searchDate)->whereNotNull('product_name')->count();
         }
 
-        $exports =  Export::whereDate('created_at', $currentDate);
+        // $exports =  Export::whereDate('created_at', $currentDate);
 
         return view('admin.exported-products', [
             'products' => Product::all(),
-            'exports' => $exports->latest()->filter(request(['search']))->paginate(10),
+            'exports' => Export::latest()->filter(request(['search']))->paginate(10),
         ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate'));
     }
 

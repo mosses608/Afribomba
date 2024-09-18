@@ -18,8 +18,8 @@
                 @csrf
                 <input type="date" name="search" id="" placeholder="Search exported product..."><button type="submit"><span>Search</span></button>
             </form>
-            <button class="add-product-button" id="product-button" style="background-color:orange; margin-right:1%;"> <span>Tsh {{number_format($datePrice)}}</span></button>
-            <button class="totla-component">{{$totalComponents}} Items</button>
+            <button class="add-product-button" id="product-button" style="background-color:orange; margin-right:1%;"> Tsh {{number_format($datePrice)}}</button>
+            <button class="totla-component">{{ $totalComponents }} Items</button>
         </div><br><br>
         <div class="flex-wrapper-container">
             <style>
@@ -28,16 +28,16 @@
                         display:block;
                     }
                     h1,h3{
-                        visibility:visible;
+                        visibility: visible;
                     }
                     body * {
-                        visibility:hidden;
+                        visibility: hidden;
                     }
                     table{
-                        visibility:visible;
+                        visibility: visible;
                     }
                     .printable-meta-data{
-                        visibility:visible;
+                        visibility: visible;
                     }
                 }
             </style>
@@ -65,23 +65,23 @@
                                 @foreach(json_decode($export->product_quantity, true) as $index => $quantity)
                                 @endforeach
 
-                                    <form action="/exports/edit-product-exp/{{ $export->id }}" method="POST" class="product-creator-ajax-wrapper" id="product-editor-ajax-{{ $export->id }}" hidden enctype="multipart/form-data">
-                                        @csrf
-                                        @method('PUT')
-                                        <h1>Edit Sales</h1><br><br>
-                                        <label>Product Name:</label>
-                                        <input type="text" name="product_name" value="{{ $export->product_name }}"><br><br>
-                                        <label>Customer Name:</label>
-                                        <input type="text" name="customer_name" value="{{ $export->customer_name }}"><br><br>
-                                        <input type="hidden" name="staff_name" value="{{ Auth::guard('web')->user()->staff_name }}">
-                                        <label>Quantity:</label>
-                                        <input type="text" name="product_quantity" value="{{ $quantity }}"><br><br>
-                                        <label>Unit Price:</label>
-                                        <input type="text" name="product_price" value="{{ json_decode($export->product_price, true)[$index] }}"><br><br>
-                                        <button type="submit" class="button">Edit Sales</button> 
-                                        <button type="button" class="close-button" onclick="closePopUpForm()">Close</button>
-                                        <br><br>
-                                    </form>
+                                <form action="/exports/edit-product-exp/{{ $export->id }}" method="POST" class="product-creator-ajax-wrapper" id="product-editor-ajax-{{ $export->id }}" hidden enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <h1>Edit Sales</h1><br><br>
+                                    <label>Product Name:</label>
+                                    <input type="text" name="product_name" value="{{ $export->product_name }}"><br><br>
+                                    <label>Customer Name:</label>
+                                    <input type="text" name="customer_name" value="{{ $export->customer_name }}"><br><br>
+                                    <input type="hidden" name="staff_name" value="{{ Auth::guard('web')->user()->staff_name }}">
+                                    <label>Quantity:</label>
+                                    <input type="text" name="product_quantity" value="{{ $quantity }}"><br><br>
+                                    <label>Unit Price:</label>
+                                    <input type="text" name="product_price" value="{{ json_decode($export->product_price, true)[$index] }}"><br><br>
+                                    <button type="submit" class="button">Edit Sales</button> 
+                                    <button type="button" class="close-button" onclick="closePopUpForm()">Close</button>
+                                    <br><br>
+                                </form>
                        
                     @endforeach
                 <!-- </table> -->
