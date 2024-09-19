@@ -27,7 +27,7 @@
                 <!-- <button type="submit"><span>Search</span></button> -->
             </form>
             <button class="sale-product-button" id="sale-product-button" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
-            <button class="add-product-button" id="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <span>Add Product</span></button>
+            <button class="add-product-button" id="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus" style="padding:4px;"></i> <span>Add Product</span></button>
         </div><br><br>
         <div class="flex-wrapper-container">
             <div class="mini-container">
@@ -92,131 +92,129 @@
             <span class="closeItem" onclick="closeItem()">&times;</span>
 
             <div class="added-component">
-            @foreach($products as $product)
-            <input type="hidden" name="product_image[]" value="{{$product->product_image}}" style="border:none;" accept="image/*">
-            @endforeach
+                <div class="appendable-min-comp">
+                <div class="inp-select-opta">
+                    <label>Customer Name:</label><br>
+                    <input type="text" name="tin[]" placeholder="Customer name">
+                </div>
+                <div class="inp-select-opta">
+                    <label>TIN:</label><br>
+                    <input type="number" name="customer_name[]" placeholder="TIN">
+                </div>
+                <div class="client-phone">
+                    <label for="">Client Phone</label><br>
+                    <input type="text" name="phone[]" id="" placeholder="Phone number">
+                </div>
 
-            <div class="inp-select-opta">
-                <label>Customer Name:</label><br>
-                <input type="text" name="tin[]" placeholder="Customer name">
-            </div>
-            <div class="inp-select-opta">
-                <label>TIN:</label><br>
-                <input type="text" name="customer_name[]" placeholder="TIN">
-            </div>
-            <div class="inp-select-optb">
-                <label>Phone:</label><br>
-                <input type="text" name="phone[]" placeholder="Phone Number...">
-            </div>
-            <div class="inp-select-opta">
-            <label>Product Name:</label><br>
-            <select name="product_name[]">
-                <option value="">--select--</option>
-                @foreach($products as $product)
-                <option value="{{$product->product_name}}">{{$product->product_name}}</option>
-                @endforeach
-            </select>
+                <div class="inp-select-optb"> 
+                <label>Product Name:</label><br>
+                    <select name="product_name[]" id="product-name-select" class="product-name-select">
+                        <option value="">--select--</option>
+                        @foreach($products as $product)
+                        <option value="{{$product->product_name}}"
+                                data-price="{{$product->product_price}}"
+                                data-quantity="{{$product->product_quantity}}">
+                            {{$product->product_name}}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="inp-select-optc">
+                    <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
+                    <label>Quantity:</label><br>
+                    <input type="text" name="product_quantity[]" class="product-quantity">
+                </div>
+
+                <div class="inp-select-optc">
+                    <label>Unit Price:</label><br>
+                    <input type="text" name="product_price[]" class="product-price">
+                </div>
+
+                
+
+                </div>
+                <br><br><br><br>
             </div>
 
-            <div class="inp-select-optc">
-            <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
-            <label>Quantity:</label><br>
-            <input type="text" name="product_quantity[]">
-            </div>
-
-            <div class="inp-select-optc">
-            <label>Unit Price:</label><br>
-            <input type="text" name="product_price[]">
-            </div>
-            <br><br><br><br>
-
-            </div>
-            <button type="submit" class="button-sale-add">Submit Product</button> 
+            <button type="submit" class="button-sale-add">Submit Product</button>
             <button type="button" class="add-button" onclick="addForm()"><i class="fa fa-plus"></i></button>
 
             <br><br>
         </form>
 
-        <script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize Select2 for dynamic dropdown
+        $('#product-name-select').select2({
+            placeholder: '--select--',
+            allowClear: true
+        });
 
-            document.addEventListener('DOMContentLoaded', function(){
-                document.querySelector('.add-button').addEventListener('click', function(){
-                    var appendableChild = document.createElement('div');
-                    appendableChild.className = 'added-component';
-                    appendableChild.innerHTML =   `
-                    @foreach($products as $product)
-            <input type="hidden" name="product_image[]" value="{{$product->product_image}}" style="border:none;" accept="image/*">
-            @endforeach
+        // Update fields on product selection
+        $('#product-name-select').on('change', function() {
+            var selectedOption = $(this).find('option:selected');
+            var price = selectedOption.data('price');
+            var quantity = selectedOption.data('quantity');
+            
+            $(this).closest('.appendable-min-comp').find('.product-price').val(price);
+            $(this).closest('.appendable-min-comp').find('.product-quantity').val(quantity);
+        });
 
+        // Add new product form dynamically
+        $('.add-button').on('click', function() {
+            var appendableChild = `
+                <div class="appendable-min-comp">
+                    <div class="inp-select-opta">
+                        <label>Product Name:</label><br>
+                        <select name="product_name[]" class="product-name-select">
+                            <option value="">--select--</option>
+                            @foreach($products as $product)
+                            <option value="{{$product->product_name}}"
+                                    data-price="{{$product->product_price}}"
+                                    data-quantity="{{$product->product_quantity}}">
+                                {{$product->product_name}}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-            <div class="inp-select-opta">
-            <label>Product Name:</label><br>
-            <select name="product_name[]">
-                <option value="">Select Product Name</option>
-                @foreach($products as $product)
-                <option value="{{$product->product_name}}">{{$product->product_name}}</option>
-                @endforeach
-            </select>
-            </div>
+                    <div class="inp-select-optc">
+                        <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
+                        <label>Quantity:</label><br>
+                        <input type="text" name="product_quantity[]" class="product-quantity">
+                    </div>
 
-            <div class="inp-select-optc">
-            <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
-            <label>Quantity:</label><br>
-            <input type="text" name="product_quantity[]">
-            </div>
+                    <div class="inp-select-optc">
+                        <label>Unit Price:</label><br>
+                        <input type="text" name="product_price[]" class="product-price">
+                    </div>
+                    <br><br><br><br>
+                </div>
+            `;
 
-            <div class="inp-select-optc">
-            <label>Unit Price:</label><br>
-            <input type="text" name="product_price[]">
-            </div>
-            <br><br><br><br>
-
-                    `;
-
-                    document.querySelector('.ajax-wrapper-creator').appendChild(appendableChild);
-
-                });
+            $('.added-component').append(appendableChild);
+            
+            // Reinitialize Select2 for the new dropdown
+            $('.product-name-select').select2({
+                placeholder: '--select--',
+                allowClear: true
             });
 
-    // document.addEventListener('DOMContentLoaded', function(){
-    //     const products = @json($products);
-
-    //     document.querySelector('.add-button').addEventListener('click', function(){
-    //         var childClass = document.createElement('div');
-    //         childClass.className = 'added-component';
-    //         childClass.innerHTML = `
-    //         <div class="inp-select-opta">
-    //         <label>Product Name:</label><br>
-    //         <select name="product_name[]">
-    //             <option value="">Select Product Name</option>
-    //             ${products.map(product => `<option value="${product.product_name}">${product.product_name}</option>`).join('')}
-    //         </select>
-    //         </div>
-
-    //         <div class="inp-select-optb">
-    //         <label>Customer Name:</label><br>
-    //         <input type="text" name="customer_name[]" placeholder="Customer Name...">
-    //         </div>
-
-    //         <div class="inp-select-optc">
-    //         <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
-    //         <label>Quantity:</label><br>
-    //         <input type="text" name="product_quantity[]">
-    //         </div>
-
-    //         <div class="inp-select-optc">
-    //         <label>Unit Price:</label><br>
-    //         <input type="text" name="product_price[]">
-    //         </div>
-    //         <br><br><br><br>
-    //         `;
-
-    //         document.querySelector('.ajax-wrapper-creator').appendChild(childClass);
-    //     });
-    // });
+            // Attach change event to the new dropdown
+            $('.product-name-select').last().on('change', function() {
+                var selectedOption = $(this).find('option:selected');
+                var price = selectedOption.data('price');
+                var quantity = selectedOption.data('quantity');
+                
+                $(this).closest('.appendable-min-comp').find('.product-price').val(price);
+                $(this).closest('.appendable-min-comp').find('.product-quantity').val(quantity);
+            });
+        });
+    });
 </script>
-
-
 
 
 

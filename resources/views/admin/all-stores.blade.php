@@ -28,7 +28,7 @@
                 <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search store...">
                 <!-- <button type="submit"><span>Search</span></button> -->
             </form>
-            <button class="add-product-button" onclick="showAddStoreForm()"><i class="fa fa-plus"></i> <span>Add Store</span></button>
+            <button class="add-product-button" id="product-butn-v" onclick="showAddStoreForm()"><i class="fa fa-plus"></i> <span>Add Store</span></button>
         </div><br><br>
         <div class="flex-wrapper-container">
             <div class="mini-container">

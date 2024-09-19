@@ -20,7 +20,8 @@
         <div class="centered-before-ajax">
             <form action="/staff/all-stores" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Search store..."><button type="submit"><span>Search</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search store...">
+                <!-- <button type="submit"><span>Search</span></button> -->
             </form>
             <!-- <button class="add-product-button" onclick="showAddStoreForm()"><i class="fa fa-plus"></i> <span>Add Store</span></button> -->
         </div><br><br>
@@ -34,8 +35,8 @@
                     <th>Location</th>
                     </tr>
                     @foreach($stores as $store)
-                    <tr>
-                        <td>#</td>
+                    <tr class="product-tr-td">
+                        <td>{{$store->id}}</td>
                         <td>{{$store->store_id}}</td>
                         <td>{{$store->store_name}}</td>
                         <td>{{$store->store_location}}</td>
@@ -81,5 +82,20 @@
         }
     </script>
     </div>
+
+    <script>
+        function searchProducts() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const products = document.querySelectorAll('.product-tr-td');
+
+        products.forEach(product => {
+            const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+            const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            
+            const isVisible = name.includes(input) || id.includes(input);
+            product.style.display = isVisible ? '' : 'none';
+        });
+    }
+</script>
 </center>
 @endsection

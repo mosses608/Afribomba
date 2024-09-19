@@ -16,24 +16,11 @@
         <div class="centered-before-ajax">
             <form action="/admin/exported-products" method="GET" class="search-component">
                 @csrf
-                <input type="number" name="search" id="" placeholder="Search by Id..."><button type="submit"><span>Search</span></button>
+                <input type="date" name="search" id="" placeholder="Search exported product..."><button type="submit"><span>Search</span></button>
             </form>
             <button class="add-product-button" id="product-button" style="background-color:orange; margin-right:1%;"> Tsh {{number_format($datePrice)}}</button>
             <button class="totla-component">{{ $totalComponents }} Items</button>
-            <button class="view-all-sold"><a href="/admin/all-sales"><i class="fa fa-eye"></i> <span>All Sales</span></a></button>
-            <style>
-                .view-all-sold{
-                    float: right;
-                    margin-right: 2%;
-                    padding: 6px;
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    background-color: green;
-                    font-size: 14px;
-                    border-radius: 4px;
-                    border: none;
-                    color: #FFF;
-                }
-            </style>
+            <button class="view-all-sold"><a href="/admin/exported-products">&#8592; <span>Back</span></a></button>
         </div><br><br>
         <div class="flex-wrapper-container">
             <style>

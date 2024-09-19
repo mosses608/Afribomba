@@ -18,7 +18,7 @@
             <br>
         </div><br>
         <div class="centered-before-ajax">
-            <form action="/admin/all-products" method="GET" class="search-component">
+            <form action="/admin/transfered-products" method="GET" class="search-component">
                 @csrf
                 <input type="date" name="search" id="" placeholder="Search product..."><button type="submit"><span>Search</span></button>
             </form>

@@ -36,8 +36,13 @@
                     <h3>Issued Email: <strong>{{ Auth::guard('web')->user()->staff_email }}</strong></h3><br>
                 </div><br><br><br><br><br><br>
                 <div class="down-metadata">
+                    @php
+                    $customerName = json_decode($product->customer_name, true);
+                    $customerTin = json_decode($product->tin, true);
+                    @endphp
                     <h1><strong>Bill To: </strong></h1><br><br>
-                    <h3>Customer Name: <strong>{{ $product->customer_name }}</strong></h3>
+                    <h3>Customer TIN: <strong>{{is_array($customerName) ? implode(',', $customerName): $product->customer_name }}</strong></h3>
+                    <h3>Name: <strong>{{is_array($customerTin) ? implode(',', $customerTin): $product->tin }}</strong></h3>
                     <h3>Due Date: <strong>{{ \Carbon\Carbon::parse($product->created_at)->addDays(30)->format('Y-m-d') }}</strong></h3><br>
                 </div><br><br><br><br> 
                 <br>

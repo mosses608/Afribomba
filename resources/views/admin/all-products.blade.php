@@ -31,7 +31,7 @@
             <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search product...">
         </form>
             <button class="transfer-product-button" onclick="showTransferProduct()"><i class="fa fa-plus"></i> <em>T</em>  <span>Transfer Product</span></button>
-            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus"></i> <em>A</em> <span>Add Product</span></button>
+            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus" style="padding:4px;"></i> <span>Add Product</span></button>
             <button class="export-product-wrapper" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
         </div><br><br>
         <div class="flex-wrapper-container">

@@ -17,7 +17,7 @@
                 <input type="date" name="search" id="" placeholder="Search exported product..."><button type="submit"><span>Search</span></button>
             </form>
             <button class="printDocs" onclick="printDocs()"><i class="fa fa-print"></i> <span>Print</span></button>
-            <button class="add-product-button" style="background-color:orange;"> <span class="spanned-profit">Tsh {{$dateProfit}}</span></button>
+            <button class="add-product-button" style="background-color:orange;"> <span class="spanned-profit">Tsh {{number_format($dateProfit)}}</span></button>
         </div><br><br>
 
         <style>
@@ -58,7 +58,7 @@
                     <div class="single-loop-wrapper-bor">
                     <span><strong>S{{$export->id}}</strong> <br> <p style="font-size:14px;">{{$export->created_at}}</p></span>
                                 <span><a href="/staff/print/{{ $export->id }}" style="color:#0000FF; cursor:pointer;"><i class="fa fa-print"></i></a> </span>
-                                <span onclick="showEditSaleForm(event, {{ $export->id }})"><i class="fa fa-edit"></i></span> 
+                                <!-- <span onclick="showEditSaleForm(event, {{ $export->id }})"><i class="fa fa-edit"></i></span>  -->
         </div>
                     @endforeach
                    

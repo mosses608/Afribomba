@@ -186,6 +186,11 @@ class StaffController extends Controller
         $products = Product::all();
 
         $transfers = Transfer::filter(request(['search']))->orderBy('id','asc')->get();
+
+        $productName =[];
+        $quantity = [];
+        $staffRecommended = [];
+        $storeName = [];
         
         foreach ($transfers as $index => $transfer) {
             $productName = json_decode($transfer->product_name, true);

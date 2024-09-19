@@ -221,7 +221,7 @@ class PageController extends Controller
 
     public function comments_loader(){
         return view('admin.comments',[
-            'comments' => Comment::latest()->latest()->filter(request(['search']))->paginate(10),
+            'comments' => Comment::latest()->filter(request(['search']))->paginate(10),
         ]);
     }
 
@@ -231,6 +231,81 @@ class PageController extends Controller
 
     public function exported_products(Request $request)
     {
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        // Calculate total of all exports for today
+        $myexports = Export::all()->sum(function($export) {
+            $quantities = json_decode($export->product_quantity, true);
+            $prices = json_decode($export->product_price, true);
+
+            if (is_array($quantities) && is_array($prices)) {
+                $total = 0;
+                foreach ($quantities as $index => $quantity) {
+                    if (isset($prices[$index])) {
+                        $total += (float)$quantity * (float)$prices[$index];
+                    }
+                }
+                return $total;
+            }
+
+            return 0; 
+        });
+
+        // Calculate total of all products exported today
+        $datePrice = Export::whereDate('created_at', $currentDate)->get()->sum(function($export) {
+            $quantities = json_decode($export->product_quantity, true);
+            $prices = json_decode($export->product_price, true);
+
+            if (is_array($quantities) && is_array($prices)) {
+                $total = 0;
+                foreach ($quantities as $index => $quantity) {
+                    if (isset($prices[$index])) {
+                        $total += (float)$quantity * (float)$prices[$index];
+                    }
+                }
+                return $total;
+            }
+
+            return 0;
+        });
+
+        // Count total components exported today
+        $totalComponents = Export::whereDate('created_at', $currentDate)->whereNotNull('product_name')->count();
+
+        if ($request->has('search') && $request->search != '') {
+            $searchDate = $request->search;
+
+            $datePrice = Export::whereDate('created_at', $searchDate)->get()->sum(function($export) {
+                $quantities = json_decode($export->product_quantity, true);
+                $prices = json_decode($export->product_price, true);
+
+                if (is_array($quantities) && is_array($prices)) {
+                    $total = 0;
+                    foreach ($quantities as $index => $quantity) {
+                        if (isset($prices[$index])) {
+                            $total += (float)$quantity * (float)$prices[$index];
+                        }
+                    }
+                    return $total;
+                }
+
+                return 0; 
+            });
+
+            $totalComponents = Export::whereDate('created_at', $searchDate)->whereNotNull('product_name')->count();
+        }
+
+        // Get today's exports for display
+        $exports = Export::whereDate('created_at', $currentDate);
+
+        return view('admin.exported-products', [
+            'products' => Product::all(),
+            'exports' => $exports->latest()->filter(request(['search']))->paginate(10),
+        ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate'));
+    }
+
+
+    public function view_all_sales(Request $request){
         $currentDate = Carbon::now()->format('Y-m-d');
 
         $myexports = Export::all()->sum(function($export) {
@@ -260,7 +335,6 @@ class PageController extends Controller
                 $quantities = json_decode($export->product_quantity, true);
                 $prices = json_decode($export->product_price, true);
 
-                // Ensure that both quantities and prices are arrays
                 if (is_array($quantities) && is_array($prices)) {
                     $total = 0;
                     foreach ($quantities as $index => $quantity) {
@@ -279,9 +353,9 @@ class PageController extends Controller
 
         // $exports =  Export::whereDate('created_at', $currentDate);
 
-        return view('admin.exported-products', [
+        return view('admin.all-sales', [
             'products' => Product::all(),
-            'exports' => Export::latest()->filter(request(['search']))->paginate(10),
+            'exports' => Export::orderBy('id','asc')->filter(request(['search']))->paginate(10),
         ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate'));
     }
 

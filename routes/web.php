@@ -28,6 +28,8 @@ Route::get('/admin/settings', [PageController::class, 'settings'])->middleware('
 
 Route::get('/admin/exported-products', [PageController::class, 'exported_products'])->middleware('auth');
 
+Route::get('/admin/all-sales', [PageController::class, 'view_all_sales'])->middleware('auth');
+
 Route::get('/admin/instock-products', [PageController::class, 'instock_product'])->middleware('auth');
 
 Route::get('/admin/less-product', [PageController::class, 'less_product'])->middleware('auth');

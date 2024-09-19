@@ -20,7 +20,8 @@
         <div class="centered-before-ajax">
             <form action="/admin/users" method="GET" class="search-component">
                 @csrf
-                <input type="text" name="search" id="" placeholder="Search staff or user..."><button type="submit"><span>Search</span></button>
+                <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search staff or user...">
+                <!-- <button type="submit"><span>Search</span></button> -->
             </form>
             <button class="add-product-button" onclick="showAddStaffForm()"><i class="fa fa-plus"></i> <span>Add Staff</span></button>
         </div><br><br>
@@ -42,7 +43,7 @@
                     <th>Action</th>
                     </tr>
                     @foreach($users as $user)
-                    <tr>
+                    <tr class="product-tr-td">
                         <td>{{$user->id}}</td>
                         <td>{{$user->staff_id}}</td>
                         <td>{{$user->staff_name}}</td>
@@ -104,6 +105,21 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            function searchProducts() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const products = document.querySelectorAll('.product-tr-td');
+
+            products.forEach(product => {
+                const name = product.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const id = product.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const isVisible = name.includes(input) || id.includes(input);
+                product.style.display = isVisible ? '' : 'none';
+            });
+        }
+        </script>
 
 
         <form action="/storeusers" method="POST" class="product-creator-ajax-wrapper" id="product-creator-ajax-wrapper" enctype="multipart/form-data">

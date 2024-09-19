@@ -38,6 +38,18 @@
                 td,th,table{
                     border:1px solid #999;
                 }
+                .printable-media{
+                    position:absolute;
+                    left:0%;
+                    top:1%;
+                    width:100%;
+                }
+                .tr-sold-prod{
+                    visibility:visible;
+                }
+                .td-prodt-name p{
+                    visibility:visible;
+                }
             }
         </style>
         
