@@ -19,7 +19,7 @@
         });
     </script>
     <div class="dashboard-mini-menu" onclick="showDashboardMenuuu()">
-        <a href="/staff/staff-dashboard"><span><i class="fa fa-home"></i></span> <p>Dahboard</p> <em><i class="fa fa-angle-down"></i></em></a> <br>
+        <a href="/staff/staff-dashboard"><span><i class="fa fa-home"></i></span> <p>Dashboard</p> <em><i class="fa fa-angle-down"></i></em></a> <br>
     </div>
     <div class="hidden-dashboard-menu">
         <a href="/staff/staff-dashboard"><span><i class="fa fa-times-circle"></i></span> <p>Staff Dashboard</p></a><br>
@@ -75,7 +75,7 @@
         <input type="text" name="search" id="" placeholder="Search......"><button type="submit"><i class="fa fa-search"></i></button>
     </form><br>
     <div class="dashboard-mini-menu" onclick="showDashboardMenuuu()">
-        <a href="/staff/admin-dashboard"><span><i class="fa fa-home"></i></span> <p>Dahboard</p> <em><i class="fa fa-angle-down"></i></em></a> <br>
+        <a href="/staff/admin-dashboard"><span><i class="fa fa-home"></i></span> <p>Dashboard</p> <em><i class="fa fa-angle-down"></i></em></a> <br>
     </div>
     <div class="hidden-dashboard-menu">
         <a href="/staff/admin-dashboard"><span><i class="fa fa-times-circle"></i></span> <p>Staff Dashboard</p></a><br>
