@@ -25,6 +25,7 @@ class Product extends Model
         'description',
         'product_image',
         'status',
+        'level',
     ];
 
     public static function single($id){

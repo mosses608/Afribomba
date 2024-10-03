@@ -66,11 +66,8 @@
                             <label for="">Store Id:</label>
                             <input type="text" name="store_id" value="{{$store->store_id}}"><br><br>
                             <label for="">Store Name:</label>
-                            <select name="store_name">
-                                <option value="{{$store->store_name}}">Choose Store</option>
-                                <option value="Godown">Godown</option>
-                                <option value="Store">Store</option>
-                            </select><br><br>
+                           <input type="text" name="store_name" value="{{$store->store_name}}">
+                            <br><br>
                             <label for="">Store Location:</label>
                             <input type="text" name="store_location" value="{{$store->store_location}}"><br><br>
                             <button type="submit" class="button">Update Store</button> 
@@ -111,11 +108,8 @@
             <label for="">Store Id:</label>
             <input type="text" name="store_id" id="" placeholder="Store Id..."><br><br>
             <label for="">Store Name:</label>
-            <select name="store_name" id="">
-                <option value="//">Choose Store</option>
-                <option value="Godown">Godown</option>
-                <option value="Store">Store</option>
-            </select><br><br>
+            <input type="text" name="store_name" id="" placeholder="Store Name">
+            <br><br>
             <label for="">Store Location:</label>
             <input type="text" name="store_location" id="" placeholder="Store Location..."><br><br>
             <button type="submit" class="button">Add Store</button> 

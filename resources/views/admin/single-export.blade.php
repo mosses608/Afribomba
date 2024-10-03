@@ -29,22 +29,44 @@
                     <p><strong>Name: {{$product->product_name}}</strong></p><br><br id="br-line">
                     <p><strong>Quantity: {{$product->product_quantity}}</strong></p><br><br id="br-line">
                     @if($product->status == 'Good')
-                            <p class="good-status-in"><strong>Status: {{$product->status}}</strong></p><br><br id="br-line">
-                            @elseif($product->product_quantity <= 20 && $product->product_quantity >= 1)
-                            <p class="less-status-in"><strong>Status: {{$product->status}}</strong></p><br><br id="br-line">
-                            @elseif($product->product_quantity == 0)
-                            <p class="out-stock-in"><strong>Status: Out Stock</strong></p><br><br id="br-line">
+                        <p class="good-status-in"><strong>Status: {{$product->status}}</strong></p><br><br id="br-line">
+                        @elseif($product->product_quantity <= 20 && $product->product_quantity >= 1)
+                        <p class="less-status-in"><strong>Status: {{$product->status}}</strong></p><br><br id="br-line">
+                        @elseif($product->product_quantity == 0)
+                        <p class="out-stock-in"><strong>Status: Out Stock</strong></p><br><br id="br-line">
                     @endif
-                    <p><strong>Price: {{number_format($product->product_price,2)}}</strong></p><br><br id="br-line">
+                    <p><strong>Price: Tsh{{number_format($product->product_price,2)}}</strong></p><br><br id="br-line">
                     <p><strong>Description: {{$product->description}}</strong></p><br><br id="br-line">
                     <p><strong>Store Name: {{$product->store_name}}</strong></p><br><br id="br-line">
                     <p><strong>Created On: {{$product->created_at}}</strong></p><br><br id="br-line">
                     @if($product->status == 'Less')
-                            <button class="comment-button-loader" type="button" onclick="showCommentForm()"><i class="fa fa-comment"></i></button><br><br>
-                            @elseif($product->status == 'Good')
-                            <button class="comment-button-loader" id="hidder-component" type="button" onclick="showMessage()"><i class="fa fa-comment"></i></button><br><br>
+                        <button class="comment-button-loader" type="button" onclick="showCommentForm()"><i class="fa fa-comment"></i></button><br><br>
+                        @elseif($product->status == 'Good')
+                        <button class="comment-button-loader" id="hidder-component" type="button" onclick="showMessage()"><i class="fa fa-comment"></i></button><br><br>
                     @endif
+                </div><br>
+                
+                <div class="minor-builder-product">
+                    <table>
+                        <tr class="tr-th">
+                            <th>Id</th>
+                            <th>Product Name</th>
+                            <th>Quantity Available</th>
+                            <th>Store Name</th>
+                        </tr>
+                        @foreach($stores as $store)
+                        @if($store->store_name == $product->store_name)
+                        <tr>
+                            <td>{{$product->id}}</td>
+                            <td>{{$product->product_name}}</td>
+                            <td><strong><span style="color:orangered;">{{$product->product_quantity}}</span></strong></td>
+                            <td>{{$product->store_name}}</td>
+                        </tr>
+                        @endif
+                        @endforeach
+                    </table>
                 </div>
+
                 <div class="graph-analytical">
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                 <canvas id="productChart" width="400" height="200"></canvas>

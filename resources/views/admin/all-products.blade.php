@@ -58,12 +58,12 @@
                         <td>{{$product->product_name}}</td>
                         <td>{{$product->product_quantity}}</td>
                         <td>
-                        @if($product->status == 'Good')
-                            <p class="good-status">{{$product->status}}</p>
-                            @elseif($product->product_quantity <= 20 && $product->product_quantity >= 1)
-                            <p class="less-status">{{$product->status}}</p>
-                            @elseif($product->product_quantity == 0)
-                            <p class="out-stock">OutStck</p>
+                            @if($product->level <= $product->product_quantity)
+                                <p class="good-status">Good</p>
+                            @elseif($product->level >= $product->product_quantity && $product->product_quantity != '0')
+                                <p class="less-status">Less</p>
+                            @elseif($product->quantity == '0')
+                                <p class="out-stock">OutStock</p>
                             @endif
                         </td>
                         <td>Tsh {{number_format($product->product_price)}}</td>
@@ -160,6 +160,8 @@
             </select><br><br>
             <label for="">Description:</label>
             <input type="text" name="description" id="" placeholder="Product description..."><br><br>
+            <label for="">Status Level</label>
+            <input type="number" name="level" id="" placeholder="Product status level"><br><br>
             <label for="">Product Image:</label>
             <input type="file" name="product_image" id="" style="border:none;" accept="image/*"><br><br>
             <button type="button" class="close-button" onclick="closePopUpForm()">Close</button>

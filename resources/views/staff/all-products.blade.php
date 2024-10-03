@@ -53,10 +53,12 @@
                         <td>{{$product->product_name}}</td>
                         <td>{{$product->product_quantity}}</td>
                         <td>
-                            @if($product->status == 'Good')
-                                <p class="good-status">{{$product->status}}</p>
-                            @else
-                                <p class="less-status">{{$product->status}}</p>
+                            @if($product->level < $product->product_quantity)
+                                <p class="good-status">Good</p>
+                            @elseif($product->level > $product->product_quantity && $product->product_quantity != '0')
+                                <p class="less-status">Less</p>
+                            @elseif($product->quantity == '0')
+                                <p class="out-stock">OutStock</p>
                             @endif
                         </td>
                         <td>Tsh {{number_format($product->product_price)}}</td>

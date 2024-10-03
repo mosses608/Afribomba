@@ -7,12 +7,12 @@
 <center>
     <div class="main-dashboard-ajax-wrapper">
         <div class="header-intro-ajax">
-            <h1>Sales Reports</h1>
+            <h1>Transfer Reports</h1>
             <h2><i class="fas fa-calendar-alt"></i> <span class="currentDate"></span></h2>
             <br>
         </div><br>
         <div class="centered-before-ajax">
-        <form action="/admin/reports" method="GET" class="search-component-inp">
+        <form action="/admin/transfer-report" method="GET" class="search-component-inp">
             @csrf
             <div class="breaker-liner0">
                 <label for="From">From</label><br>
@@ -25,7 +25,6 @@
             <button type="submit"><span>Filter</span></button>
         </form><br>
         <button class="print-product-button" onclick="printDoc()"><i class="fa fa-print"></i> <span>Print</span></button>
-        <button class="transfer-report-button" onclick="printDocyy()"><a href="/admin/transfer-report">Transfer Report</a></button>
         </div><br><br>
 
         <style>
@@ -51,10 +50,10 @@
                 .td-prodt-name p{
                     visibility:visible;
                 }
-                .all-prices p{
+                .all-quantity p{
                     visibility:visible;
                 }
-                .all-quantity p{
+                .all-prices p{
                     visibility: visible;
                 }
             }
@@ -72,8 +71,11 @@
                     <th>Date Created</th>
                     </tr>
 
-                    @if(count($exports) != "")
-                    @foreach($exports as $product)
+                    @php
+                    $myquantities = 0;
+                    @endphp
+
+                    @foreach($transfers as $product)
                     <tr class="tr-sold-prod">
                     <td>{{$product->id}}</td>
                     <!-- <td>
@@ -97,13 +99,10 @@
                         @endforeach
                         </div>
                     </td>
-                    <td class="td-price-tg">
-                        <button class="price-tag-btn" onclick="showPrices(event, {{$product->id}})"><i class="fa fa-eye"></i> View Prices</button>
-                        <div class="all-prices" id="all-prices-$product->id">
+                    <td class="all-prices">
                         @foreach($prices as $p)
                             <p>Tsh {{ number_format($p) }}</p>
                         @endforeach
-                        </div>
                     </td>
                     <td>
                         {{$product->created_at}}
@@ -112,14 +111,23 @@
 
 
                     @endforeach
-                    <tr class="tr-sold-prod">
-                        <td>Total</td>
+                    <tr>
                         <td></td>
                         <td></td>
+                        <td>
+                        @php
+                            $totalQuantity = 0;
+                            @endphp
+                            @foreach($quantities as $quantity)
+                                @php
+                                    $totalQuantity += $quantity;
+                                @endphp
+                            @endforeach
+                            <!-- {{ $totalQuantity }} -->
+                        </td>
                         <td></td>
-                        <td id="total_price_exported">Tsh {{number_format($datePrice, 2)}}</td>
+                        <td></td>
                     </tr>
-                    @endif
                 </table>
             </div>
         </div>

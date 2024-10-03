@@ -72,6 +72,8 @@ Route::put('/stores/editstore/{store}', [PageController::class, 'edit_store'])->
 
 Route::delete('/stores/delete/{store}', [PageController::class, 'delete_store_details'])->middleware('auth');
 
+Route::get('/admin/transfer-report', [App\Http\Controllers\PageController::class, 'transfer_report'])->middleware('auth');
+
 Route::get('/reset-password', [PageController::class, 'reset_password']);
 
 Route::get('/admin/logs', [App\Http\Controllers\PageController::class, 'system_logs'])->middleware('auth');
