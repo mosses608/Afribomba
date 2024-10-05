@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('store_id')->unique();
             $table->string('store_name');
             $table->string('store_location');
+            $table->string('district');
+            $table->string('street');
             $table->timestamps();
         });
     }

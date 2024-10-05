@@ -20,6 +20,8 @@ Route::get('/admin/users', [PageController::class, 'users_loader'])->middleware(
 
 Route::get('/admin/reports', [PageController::class, 'report_loader'])->middleware('auth');
 
+Route::get('/admin/inventory-report', [App\Http\Controllers\PageController::class, 'inventory_report'])->middleware('auth');
+
 Route::get('/admin/recommended', [PageController::class, 'recommended_product'])->middleware('auth');
 
 Route::get('/admin/comments', [PageController::class, 'comments_loader'])->middleware('auth');

@@ -21,5 +21,7 @@ class Store extends Model
         'store_id',
         'store_name',
         'store_location',
+        'district',
+        'street',
     ];
 }

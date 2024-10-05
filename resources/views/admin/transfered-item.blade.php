@@ -77,6 +77,10 @@
                 .header-tr td{
                     border:1px solid #999;
                 }
+                .items-loader-viewer .header-tr{
+                    color: #FFFFFF;
+                    background-color: rgb(84, 84, 152);
+                }
 
             }
         </style>
@@ -104,13 +108,15 @@
                         <td>{{__('AFRIBOMBA COMPANY LIMITED')}}</td>
                     </tr>
                     <tr>
-                        <td>@if(is_array($sourceStores))
+                        <td>
+                            @if(is_array($sourceStores))
                                 {{ implode(', ', $sourceStores) }}
                             @else
                                 {{ $sourceStores }}
                             @endif
                         </td>
-                        <td> @if(is_array($destinationStores))
+                        <td> 
+                            @if(is_array($destinationStores))
                                 {{ implode(', ', $destinationStores) }}
                             @else
                                 {{ $destinationStores }}
@@ -118,7 +124,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>{{__('Dar Es Salaam')}}</td>
+                        <td>
+                            {{__('Dar Es Salaam')}}
+                        </td>
                         <td>{{__('Dar Es Salaam')}}</td>
                     </tr>
                 </table>
@@ -139,25 +147,25 @@
                 @endforeach
                 
                 <table class="items-loader-viewer">
-        <tr class="header-tr">
-            <th>Item</th>
-            <th>Quantity Transferred</th>
-        </tr>
-        @foreach($productNames as $index => $productName)
-        
-        <tr class="tr-td">
-            <td><p style="float:left;">{{ $productName }}</p></td>
-            <td>{{ $productQuantities[$index] }}</td>
-        </tr>
-       
-    @endforeach
+                    <tr class="header-tr">
+                        <th>Item</th>
+                        <th>Quantity Transferred</th>
+                    </tr>
+                    @foreach($productNames as $index => $productName)
+                    
+                    <tr class="tr-td">
+                        <td><p style="float:left;">{{ $productName }}</p></td>
+                        <td>{{ $productQuantities[$index] }}</td>
+                    </tr>
+                
+                    @endforeach
 
-    <tr>
-        <td><strong>Total</strong></td>
-        <td><strong>{{is_array($totalproductQuantity) ? implode(',', $totalproductQuantity): $totalproductQuantity}} Items</strong></td>
-    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>{{is_array($totalproductQuantity) ? implode(',', $totalproductQuantity): $totalproductQuantity}} Items</strong></td>
+                    </tr>
 
-</table>
+                </table>
 <br><br>
 
             </div>

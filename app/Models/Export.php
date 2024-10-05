@@ -12,7 +12,8 @@ class Export extends Model
     public function scopeFilter($query, array $filters){
         if($filters['search'] ?? false){
             $query->where('created_at', 'like' , '%' . request('search') . '%')
-                  ->orwhere('id', 'like', '%' . request('search') . '%');
+                ->orwhere('id', 'like', '%' . request('search') . '%')
+                ->orwhere('tin', 'like' , '%' . request('search') . '%');
         }
     }
 

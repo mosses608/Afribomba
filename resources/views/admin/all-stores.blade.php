@@ -37,7 +37,9 @@
                     <th>#</th>
                     <th>Store Id</th>
                     <th>Store Name</th>
-                    <th>Location</th>
+                    <th>Region</th>
+                    <th>District</th>
+                    <th>Street</th>
                     <th>Action</th>
                     </tr>
                     @foreach($stores as $store)
@@ -46,6 +48,8 @@
                         <td>{{$store->store_id}}</td>
                         <td>{{$store->store_name}}</td>
                         <td>{{$store->store_location}}</td>
+                        <td>{{$store->district}}</td>
+                        <td>{{$store->street}}</td>
                         <td style="text-align:center; padding:6px;" class="action-bar">
                         <a href="#" onclick="showDeleteDialog(event, {{$store->id}})" class="delete-dialog-sh" style="color:red;"><i class="fa fa-trash"></i></a>
                         <a href="#" class="edit-form-dialog" onclick="showUpdateForm(event, {{$store->id}})"><i class="fa fa-edit"></i></a>
@@ -70,6 +74,8 @@
                             <br><br>
                             <label for="">Store Location:</label>
                             <input type="text" name="store_location" value="{{$store->store_location}}"><br><br>
+                            <input type="text" name="district" id="" value="{{$store->district}}"><br><br>
+                            <input type="text" name="street" id="" value="{{$store->street}}"><br><br>
                             <button type="submit" class="button">Update Store</button> 
                             <button type="button" class="close-button" onclick="closePopUpForm({{$store->id}})">Close</button>
                             </form>
@@ -111,7 +117,9 @@
             <input type="text" name="store_name" id="" placeholder="Store Name">
             <br><br>
             <label for="">Store Location:</label>
-            <input type="text" name="store_location" id="" placeholder="Store Location..."><br><br>
+            <input type="text" name="store_location" id="" placeholder="Region..."><br><br>
+            <input type="text" name="district" id="" placeholder="District..."><br><br>
+            <input type="text" name="street" id="" placeholder="Street..."><br><br>
             <button type="submit" class="button">Add Store</button> 
             <button type="button" class="close-button" onclick="closePopUpFormy()">Close</button>
             <br><br>

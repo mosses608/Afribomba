@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('staff_recommeded');
             $table->longText('reason');
             $table->string('product_quantity');
+            // $table->string('product_price');
             $table->string('status')->nullable();
             $table->timestamps();
         });

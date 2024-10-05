@@ -128,71 +128,74 @@ class PageController extends Controller
     }
 
     public function report_loader(Request $request) {
-        $transfers = Export::all();
-
-        $productIds = [];
-        $productNames = [];
-        $quantities = [];
-        $prices = [];
-        $productDates = [];
+        $transfers = Export::filter(request(['search']))->get();
 
         $totalQuantity = 0;
         $totalPrice = 0;
 
-        foreach ($transfers as $exported) {
-            $quantity = json_decode($exported->product_quantity, true);
-            $price = json_decode($exported->product_price, true);
-            $productId = json_decode($exported->product_id, true);
-            $productName = json_decode($exported->product_name, true);
-            $productDate = json_decode($exported->created_at, true);
+        foreach ($transfers as $key => $exported) {
+            $transfers[$key]->productIds = json_decode($exported->product_id, true);
+            $transfers[$key]->productNames = json_decode($exported->product_name, true);
+            $transfers[$key]->quantities = json_decode($exported->product_quantity, true);
+            $transfers[$key]->prices = json_decode($exported->product_price, true);
+            $transfers[$key]->customerName = json_decode($exported->tin, true);
 
-            $productIds = array_merge($productIds, (array) $productId);
-            $productNames = array_merge($productNames, (array) $productName);
-            $quantities = array_merge($quantities, (array) $quantity);
-            $prices = array_merge($prices, (array) $price);
-            $productDates = array_merge($productDates, (array) $productDate);
-
-            if (is_array($quantity) && is_array($price)) {
-                foreach ($quantity as $key => $qty) {
+            if (is_array($transfers[$key]->quantities) && is_array($transfers[$key]->prices)) {
+                foreach ($transfers[$key]->quantities as $index => $qty) {
                     $totalQuantity += $qty;
-                    $totalPrice += $qty * $price[$key];
+                    $totalPrice += $qty * $transfers[$key]->prices[$index];
                 }
             } else {
-                $totalQuantity += $quantity;
-                $totalPrice += $quantity * $price;
+                $totalQuantity += $transfers[$key]->quantities;
+                $totalPrice += $transfers[$key]->quantities * $transfers[$key]->prices;
             }
         }
-
-        $myexports = $totalPrice;
 
         if ($request->has(['start_date', 'end_date']) && $request->start_date && $request->end_date) {
             $startDate = $request->start_date;
             $endDate = $request->end_date;
 
-            $filterexports = Export::whereBetween('created_at', [$startDate, $endDate])->get();
-
+            $transfers = Export::whereBetween('created_at', [$startDate, $endDate])->get();
             $datePrice = 0;
-            
-            foreach ($filterexports as $filteredExport) {
-                $quantity = json_decode($filteredExport->product_quantity, true);
-                $price = json_decode($filteredExport->product_price, true);
 
-                if (is_array($quantity) && is_array($price)) {
-                    foreach ($quantity as $key => $qty) {
-                        $datePrice += $qty * $price[$key];
+            foreach ($transfers as $filteredExport) {
+                $quantities = json_decode($filteredExport->product_quantity, true);
+                $prices = json_decode($filteredExport->product_price, true);
+
+                if (is_array($quantities) && is_array($prices)) {
+                    foreach ($quantities as $key => $qty) {
+                        $datePrice += $qty * $prices[$key];
                     }
                 } else {
-                    $datePrice += $quantity * $price;
+                    $datePrice += $quantities * $prices;
                 }
             }
         } else {
-            $datePrice = $myexports;
+            $datePrice = $totalPrice;
         }
 
         return view('admin.reports', [
-            'exports' => Export::paginate(1),
-            'myexports' => $myexports,
-        ], compact('datePrice', 'quantities', 'prices', 'productIds', 'productNames', 'productDates','transfers'));
+            'exports' => $transfers,
+            'myexports' => $totalPrice,
+        ], compact('datePrice', 'totalQuantity', 'totalPrice'));
+    }
+
+    public function inventory_report(Request $request){
+        $stores = Store::all();
+
+        $products = Product::all();
+
+        $totalQuantity = 0;
+        $totalPrice = 0;
+
+        if ($request->has(['start_date', 'end_date']) && $request->start_date && $request->end_date) {
+            $startDate = $request->start_date;
+            $endDate = $request->end_date;
+    
+            $products = Product::whereBetween('created_at', [$startDate, $endDate])->get();
+        }
+
+        return view('admin.inventory-report', compact('products','stores','totalQuantity','totalPrice'));
     }
 
     public function recommended_product(){
@@ -425,6 +428,8 @@ class PageController extends Controller
             'store_id' => 'required',
             'store_name' => 'required',
             'store_location' => 'required',
+            'district' => 'required',
+            'street' => 'required',
         ]);
 
         $existingStore = Store::where('store_id', $request->input('store_id'))->first();
@@ -811,6 +816,8 @@ class PageController extends Controller
 
     public function single_transfer($id){
 
+        $stores = store::all();
+
         $nowDate = Carbon::now()->format('Y-m-d');
 
         $transfer = Transfer::find($id);
@@ -826,7 +833,7 @@ class PageController extends Controller
 
         return view('admin.transfered-item',[
             'transfer' => $transfer,
-        ], compact('productNames', 'productQuantities', 'sourceStores', 'destinationStores','createdAt','staff_name','reason','staff_recommended','nowDate'));
+        ], compact('productNames', 'productQuantities', 'sourceStores', 'destinationStores','createdAt','staff_name','reason','staff_recommended','nowDate','stores'));
     }
 
     public function print_invoice($id){
@@ -852,63 +859,59 @@ class PageController extends Controller
         return view('admin.logs', compact('sessions'));
     }
 
-    public function transfer_report(Request $request) {
+    public function transfer_report(Request $request)
+    {
         $transfers = Transfer::all();
-    
-        $productIds = [];
-        $productNames = [];
-        $quantities = [];
-        $prices = [];
-        $productDates = [];
-    
+        $quantity = [];
         $totalQuantity = 0;
         $totalPrice = 0;
-    
-        foreach ($transfers as $exported) {
-            $quantity = json_decode($exported->product_quantity, true);
-            $price = json_decode($exported->product_price, true);
-            $productId = json_decode($exported->product_id, true);
-            $productName = json_decode($exported->product_name, true);
-            $productDate = json_decode($exported->created_at, true);
-    
-            $productIds = array_merge($productIds, (array) $productId);
-            $productNames = array_merge($productNames, (array) $productName);
-            $quantities = array_merge($quantities, (array) $quantity);
-            $prices = array_merge($prices, (array) $price);
-            $productDates = array_merge($productDates, (array) $productDate);
-    
-            if (is_array($quantity) && is_array($price)) {
-                foreach ($quantity as $key => $qty) {
+
+        foreach ($transfers as $key => $product) {
+            $transfers[$key]->quantity = json_decode($product->product_quantity, true);
+            $transfers[$key]->price = json_decode($product->product_price, true);
+            $transfers[$key]->productId = json_decode($product->product_id, true);
+            $transfers[$key]->productName = json_decode($product->product_name, true);
+            $transfers[$key]->productDate = json_decode($product->created_at, true);
+            $transfers[$key]->sourceStore = json_decode($product->source_store, true);
+            $transfers[$key]->destinationStore = json_decode($product->store_name, true);
+
+            $sourceStore = json_decode($product->source_store, true);
+            $destinationStore = json_decode($product->store_name, true);
+            $reason = json_decode($product->reason, true);
+            $staffRec = json_decode($product->staff_recommeded, true);
+            $status = json_decode($product->status, true);
+
+            if (is_array($transfers[$key]->quantity) && is_array($transfers[$key]->price)) {
+                foreach ($transfers[$key]->quantity as $idx => $qty) {
                     $totalQuantity += $qty;
-                    $totalPrice += $qty * $price[$key];
+                    $totalPrice += $qty * $transfers[$key]->price[$idx];
                 }
-            } elseif (is_numeric($quantity) && is_numeric($price)) {
-                $totalQuantity += $quantity;
-                $totalPrice += $quantity * $price;
-            }     
+            } elseif (is_numeric($transfers[$key]->quantity) && is_numeric($transfers[$key]->price)) {
+                $totalQuantity += $transfers[$key]->quantity;
+                $totalPrice += $transfers[$key]->quantity * $transfers[$key]->price;
+            }
         }
-    
+
         $myexports = $totalPrice;
-    
+
         if ($request->has(['start_date', 'end_date']) && $request->start_date && $request->end_date) {
             $startDate = $request->start_date;
             $endDate = $request->end_date;
-    
-            // Filter by date range
+
             $transfers = Transfer::whereBetween('created_at', [$startDate, $endDate])->get();
-    
+
             $datePrice = 0;
             foreach ($transfers as $filteredExport) {
-                $quantity = json_decode($filteredExport->product_quantity, true);
-                $price = json_decode($filteredExport->product_price, true);
-    
-                if (is_array($quantity) && is_array($price)) {
-                    foreach ($quantity as $key => $qty) {
-                        $datePrice += $qty * $price[$key];
+                $filteredQuantity = json_decode($filteredExport->product_quantity, true);
+                $filteredPrice = json_decode($filteredExport->product_price, true);
+
+                if (is_array($filteredQuantity) && is_array($filteredPrice)) {
+                    foreach ($filteredQuantity as $idx => $qty) {
+                        $datePrice += $qty * $filteredPrice[$idx];
                     }
                 } else {
-                    if (is_numeric($quantity) && is_numeric($price)) {
-                        $datePrice += $quantity * $price;
+                    if (is_numeric($filteredQuantity) && is_numeric($filteredPrice)) {
+                        $datePrice += $filteredQuantity * $filteredPrice;
                     }
                 }
             }
@@ -916,12 +919,22 @@ class PageController extends Controller
             $datePrice = $myexports;
         }
 
-        $myquantities = array_sum($quantities);
-    
+        $flattenArray = function ($array) {
+            $flatArray = [];
+            array_walk_recursive($array, function ($value) use (&$flatArray) {
+                $flatArray[] = $value;
+            });
+            return $flatArray;
+        };
+
+        $quantities = array_column($transfers->toArray(), 'quantity');
+        $flatQuantities = $flattenArray($quantities);
+        $myquantities = array_sum($flatQuantities);
+
         return view('admin.transfer-report', [
-            'exports' => Export::paginate(1),
-            'myexports' => $myexports,
             'totalQuantity' => $myquantities,
-        ], compact('datePrice', 'quantities', 'prices', 'productIds', 'productNames', 'productDates', 'transfers'));
-    }    
+            'products' => Product::all(),
+        ], compact('datePrice', 'transfers','sourceStore','destinationStore','staffRec','reason','status'));
+    }
+
 }

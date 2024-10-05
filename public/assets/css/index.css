@@ -818,8 +818,8 @@
 }
 
 .print-product-button{
-    float: right;
-    width: 100px;
+    float: none;
+    width: 70px;
     margin-left: 1%;
     background-color: #007BFF;
     color: #FFFFFF;
@@ -832,10 +832,28 @@
 }
 
 .transfer-report-button{
-    float: right;
-    width: 150px;
+    float: none;
+    width: 120px;
     margin-left: 1%;
     background-color: green;
+    color: #FFFFFF;
+    padding: 6px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#print-product-button{
+    float: right;
+}
+
+.inventory-report{
+    float: none;
+    width: 120px;
+    margin-left: 1%;
+    background-color: #444;
     color: #FFFFFF;
     padding: 6px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -1125,7 +1143,7 @@
     background-color: #FFFFFF;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     position: absolute;
-    top: 22%;
+    top: 18%;
     display: none;
     left: 35%;
     padding: 10px;
@@ -1866,6 +1884,84 @@
     cursor: pointer;
     color: #FFFFFF;
     border-radius: 4px;
+}
+
+.centered-before-ajax-yz{
+    padding: 10px;
+    border-radius: 4px;
+    border: 1.5px solid #ddd;
+}
+
+.centered-before-ajax-yz .form-filter-component,.action-handler-btn,.search-by-name{
+    display: inline-block;
+}
+
+.search-by-name{
+    width: 25%;
+    margin-left: 0%;
+}
+
+.search-by-name select{
+    border: 1.2px solid rgb(168, 203, 234);
+    padding: 8px;
+    font-size: 14px;
+    width: 80%;
+    border-radius: 4px;
+}
+
+.search-by-name select:focus{
+    outline: none;
+    box-shadow: none;
+    border: 1.2px solid rgb(168, 203, 234);
+}
+
+.search-by-name button{
+    padding: 6px;
+    font-size: 14px;
+    background-color: orange;
+    color: #FFF;
+    border-radius: 4px;
+}
+
+.form-filter-component{
+    float: left;
+}
+
+.action-handler-btn{
+    width: 35%;
+}
+
+
+.filter-input{
+    width: 100%;
+    border-radius: 4px;
+    font-size: 14px;
+    border: 1.2px solid rgb(206, 226, 243);
+}
+
+.submit-btn{
+    padding: 6px;
+    background-color: orange;
+    color: #FFF;
+    border-radius: 4px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.2);
+    float: none;
+}
+
+.filter-input input{
+    padding: 6px;
+    display: inline-block;
+}
+
+.filter-input input:focus{
+    border: 1.2 solid rgb(206, 226, 243);
+    outline: none;
+    box-shadow: none;
+}
+
+.action-handler-btn button{
+    display: inline-block;
+    margin-left: 2%;
 }
 
 .printable-meta-data{
