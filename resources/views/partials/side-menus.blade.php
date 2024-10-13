@@ -22,6 +22,10 @@
     <a href="/admin/instock-products"><span><i class="fa fa-times-circle"></i></span> <p>InStock Products</p></a><br><br>
     <a href="/admin/less-product"><span><i class="fa fa-times-circle"></i></span> <p>LessStock Products</p></a><br><br>
     <a href="/admin/outstock-product"><span><i class="fa fa-times-circle"></i></span> <p>OutStock Products</p></a><br><br>
+    <a href="/admin/loans-product"><span><i class="fa fa-times-circle"></i></span> <p>Product Loans</p></a><br><br>
+    </div>
+    <div class="profile-cat-menu">
+        <a href="/admin/create-orders"><span><i class="fa fa-shopping-cart"></i></span> <p>Product Order</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div>
     <div class="store-mgt-menu">
         <a href="/admin/all-stores"><span><i class="fas fa-store-alt"></i></span> <p>All Stores</p> <em><i class="fa fa-angle-down"></i></em></a><br>
@@ -31,9 +35,6 @@
     </div>
     <div class="report-menu">
         <a href="/admin/reports"><span><i class="fa fa-bar-chart"></i></span> <p>Reports</p> <em><i class="fa fa-angle-right"></i></em></a><br>
-    </div>
-    <div class="profile-cat-menu">
-        <a href="/admin/profile"><span><i class="fa fa-user"></i></span> <p>User Profile</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div>
     <div class="recommend-menu">
         <a href="/admin/recommended"><span><i class="fa fa-paper-plane"></i></span> <p>Recommendations</p> <em><i class="fa fa-angle-right"></i></em></a><br>

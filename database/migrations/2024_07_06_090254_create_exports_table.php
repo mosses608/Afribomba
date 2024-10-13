@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('product_quantity');
             $table->string('product_price');
             $table->string('phone')->nullable();
+            $table->string('sale_mode')->nullable();
+            $table->string('payment_date')->nullable();
+            $table->string('status')->nullable();
             // $table->string('product_image')->nullable();
             $table->timestamps();
         });

@@ -34,6 +34,18 @@ Route::get('/admin/all-sales', [PageController::class, 'view_all_sales'])->middl
 
 Route::get('/admin/instock-products', [PageController::class, 'instock_product'])->middleware('auth');
 
+Route::get('/admin/loans-product', [App\Http\Controllers\PageController::class, 'loans_products'])->middleware('auth');
+
+Route::put('/edit-status/{export}', [App\Http\Controllers\PageController::class, 'edit_loan_details'])->middleware('auth');
+
+Route::get('/admin/create-orders', [App\Http\Controllers\PageController::class, 'make_orders'])->middleware('auth');
+
+Route::post('/post/orders', [App\Http\Controllers\PageController::class, 'post_orders'])->name('post.orders')->middleware('auth');
+
+Route::get('/admin/view-more/{order}', [App\Http\Controllers\PageController::class, 'single_order'])->middleware('auth');
+
+Route::post('/create/product', [App\Http\Controllers\PageController::class, 'create_products'])->name('create.product')->middleware('auth');
+
 Route::get('/admin/less-product', [PageController::class, 'less_product'])->middleware('auth');
 
 Route::get('/admin/outstock-product', [PageController::class, 'outstock_product'])->middleware('auth');
@@ -102,6 +114,8 @@ Route::get('/admin/edit-exproduct/{product}', [PageController::class, 'edit_expo
 Route::put('/exports/edit-product-exp/{product}', [PageController::class, 'edit_sales'])->middleware('auth');
 
 Route::get('/admin/transfered-products', [PageController::class, 'tranfered_products'])->middleware('auth');
+
+Route::get('/admin/all-transfers', [PageController::class, 'all_transfers'])->middleware('auth');
 
 Route::get('/admin/transfered-item/{transfer}', [PageController::class, 'single_transfer'])->middleware('auth');
 

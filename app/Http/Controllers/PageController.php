@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Post;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Store;
 use App\Models\Export;
 use App\Models\Comment;
 use App\Models\Product;
 use App\Models\Session;
 use App\Models\Transfer;
+use App\Models\Container;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -142,7 +145,7 @@ class PageController extends Controller
 
             if (is_array($transfers[$key]->quantities) && is_array($transfers[$key]->prices)) {
                 foreach ($transfers[$key]->quantities as $index => $qty) {
-                    $totalQuantity += $qty;
+                    $totalQuantity += $qty; 
                     $totalPrice += $qty * $transfers[$key]->prices[$index];
                 }
             } else {
@@ -180,23 +183,63 @@ class PageController extends Controller
         ], compact('datePrice', 'totalQuantity', 'totalPrice'));
     }
 
-    public function inventory_report(Request $request){
-        $stores = Store::all();
+    public function inventory_report(Request $request)
+{
+    $stores = Store::all();
+    $products = Product::all();
 
-        $products = Product::all();
+    $totalQuantity = 0;
+    $totalPrice = 0;
+    $totalQuantityOnHand = 0;
+    $ToatlQuantityIn = 0;
+    $TotalQuantityOut = 0;
 
-        $totalQuantity = 0;
-        $totalPrice = 0;
+    if ($request->has(['start_date', 'end_date']) && $request->start_date && $request->end_date) {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
 
-        if ($request->has(['start_date', 'end_date']) && $request->start_date && $request->end_date) {
-            $startDate = $request->start_date;
-            $endDate = $request->end_date;
-    
-            $products = Product::whereBetween('created_at', [$startDate, $endDate])->get();
+        $products = Product::whereBetween('created_at', [$startDate, $endDate])->get();
+    }
+
+    foreach ($products as $product) {
+        $quantityOut = 0;
+        $quantityOrdered = 0;
+
+        $exports = Export::all();
+
+        foreach ($exports as $export) {
+            $exportedItems = json_decode($export->product_name, true);
+            $exportedQuantities = json_decode($export->product_quantity, true);
+
+            if (is_array($exportedItems) && is_array($exportedQuantities)) {
+                foreach ($exportedItems as $index => $item) {
+                    if (isset($item['product_name']) && isset($exportedQuantities[$index]['product_quantity'])) {
+                        if (trim(strtolower($item['product_name'])) == trim(strtolower($product->product_name))) {
+                            $quantityOut += $exportedQuantities[$index]['product_quantity'];
+                        }
+                    }
+                }
+            }
         }
 
-        return view('admin.inventory-report', compact('products','stores','totalQuantity','totalPrice'));
+        $quantityOrdered = $product->product_quantity + $quantityOut;
+
+        $quantityOnHand = $product->product_quantity - $quantityOut;
+
+        $product->quantity_ordered = $quantityOrdered;
+        $product->quantity_out = $quantityOut;
+        $product->quantity_on_hand = $quantityOnHand;
+
+        $totalQuantityOnHand += $product->quantity_on_hand;
+        $totalQuantity += $product->product_quantity;
+        $totalPrice += $product->product_price * $product->product_quantity;
+        $ToatlQuantityIn += $product->product_quantity;
+        $TotalQuantityOut += $product->quantity_out;
     }
+
+    return view('admin.inventory-report', compact('products', 'stores', 'totalQuantity', 'totalPrice','totalQuantityOnHand','ToatlQuantityIn','TotalQuantityOut'));
+}
+
 
     public function recommended_product(){
 
@@ -369,6 +412,44 @@ class PageController extends Controller
         ]);
     }
 
+    public function loans_products(Request $request) {
+        $todayDate = Carbon::now()->format('Y-m-d');
+    
+        $exports = Export::filter(request(['search']))->get();
+    
+        $decodedExports = [];
+    
+        foreach ($exports as $export) {
+            $decodedExports[] = [
+                'id' => $export->id,
+                'customerNames' => json_decode($export->tin, true),
+                'productName' => json_decode($export->product_name, true),
+                'unitPrice' => json_decode($export->product_price, true),
+                'product_quantity' => json_decode($export->product_quantity, true),
+                'staffName' => json_decode($export->staff_name, true),
+                'status' => json_decode($export->status, true),
+                'payment_date' => json_decode($export->payment_date, true),
+                'saleMode' => json_decode($export->sale_mode, true),
+                'created_at' => $export->created_at,
+            ];
+            $customer_name = json_decode($export->customer_name, true);
+        }
+
+        if($request->has(['start_date','end_date']) && $request->start_date != "" && $request->end_date != ""){
+            $fromDate = $request->start_date;
+            $toDate = $request->end_date;
+
+            $exports = Export::whereJsonContains('payment_date', function ($query) use ($fromDate, $toDate) {
+                $query->whereBetween('payment_date', [$fromDate, $toDate]);
+            })->get();
+        }
+    
+        return view('admin.loans-product', [
+            'exports' => $decodedExports,
+            'todayDate' => $todayDate,
+        ], compact('customer_name'));
+    }
+    
     public function less_product(){
 
         // $lessProducts = DB::table('products')
@@ -575,6 +656,8 @@ class PageController extends Controller
             'product_quantity.*' => 'required|integer|min:1',
             'product_price.*' => 'required|numeric|min:0',
             'phone.*' => 'nullable|min:10|max:15',
+            'sale_mode.*' => 'nullable|string|max:255',
+            'payment_date.*' => 'nullable',
         ]);
 
         $tin = $validatedData['tin'];
@@ -584,6 +667,9 @@ class PageController extends Controller
         $productQuantities = $validatedData['product_quantity'];
         $productPrices = $validatedData['product_price'];
         $clientPhone = $validatedData['phone'];
+        $sale_mode = $validatedData['sale_mode'];
+        $payment_date = $validatedData['payment_date'];
+
     
         foreach ($productNames as $index => $productName) {
             $product = Product::where('product_name', $productName)->first();
@@ -598,7 +684,9 @@ class PageController extends Controller
         $customerNames = is_array($customerNames) ? json_encode($customerNames) : $customerNames;
         $clientPhone = is_array($clientPhone) ? json_encode($clientPhone) : $clientPhone;
         $tin = is_array($tin) ? json_encode($tin) : $tin;
-    
+        $sale_mode = is_array($sale_mode) ? json_encode($sale_mode) : $sale_mode;
+        $payment_date = is_array($payment_date) ? json_encode($payment_date) : $payment_date;
+
         Export::create([
             'tin' => $tin,
             'product_name' => json_encode($productNames),
@@ -607,6 +695,8 @@ class PageController extends Controller
             'product_quantity' => json_encode($productQuantities),
             'product_price' => json_encode($productPrices),
             'phone' => $clientPhone,
+            'sale_mode' => $sale_mode,
+            'payment_date' => $payment_date,
         ]);
 
         // dd($request->all());
@@ -614,7 +704,93 @@ class PageController extends Controller
         return redirect()->back()->with('export_message', 'Products exported successfully!');
     }
     
-    
+    public function edit_loan_details(Request $request, Export $export){
+        $loanDetails = $request->validate([
+            'status.*' => 'required',
+            'payment_date.*' => 'required',
+        ]);
+
+        $loanStatus = $loanDetails['status'];
+        $loanPaymentDate = $loanDetails['payment_date'];
+
+        $export->update([
+            'status' => json_encode($loanStatus),
+            'payment_date' => json_encode($loanPaymentDate),
+        ]);
+
+        dd($request->all());
+    }
+
+    public function make_orders(){
+        $orders = Order::filter(request(['search']))->orderBy('id','asc')->get();
+
+        foreach ($orders as $key => $order) {
+            $staffName = json_decode($order->staff_name, true);
+            $productNames = json_decode($order->product_name, true);
+        }
+
+        $containers = Container::orderBy('id','asc')->get();
+        $posts = Post::filter(request(['search']))->orderBy('id','asc')->get();
+        return view('admin.create-orders', compact('posts','containers','orders','staffName','productNames'));
+    }
+
+    public function post_orders(Request $request){
+        $orderDetails = $request->validate([
+            'staff_name.*' => 'required|string|max:255',
+            'container_id.*' => 'required',
+            'product_name.*' => 'required',
+            'quantity.*'  => 'required',
+        ]);
+
+        $staffName = $orderDetails['staff_name'];
+        $containerId = $orderDetails['container_id'];
+        $productName = $orderDetails['product_name'];
+        $Quantity = $orderDetails['quantity'];
+
+        Order::create([
+            'staff_name' => json_encode($staffName),
+            'container_id' => json_encode($containerId),
+            'product_name' => json_encode($productName),
+            'quantity' => json_encode($Quantity),
+        ]);
+
+        // dd($request->all());
+
+        return redirect()->back();
+    }
+
+    public function single_order($id){
+        $containers = Container::all();
+
+        $order = Order::find($id);
+        $orderId = json_decode($order->id, true);
+        $staffName = json_decode($order->staff_name, true);
+        $containerId = json_decode($order->container_id, true);
+        $productName = json_decode($order->product_name, true);
+        $quantity = json_decode($order->quantity, true);
+        return view('admin.view-more', compact('order','staffName','containerId','productName','quantity','containers'));
+    }
+
+    public function create_products(Request $request){
+        $postPrpduct = $request->validate([
+            'product_id' => ['required', Rule::unique('posts','product_id')],
+            'product_name' => 'required|string|max:255',
+            'length' => 'required|numeric',
+            'width' => 'required|numeric',
+            'height' => 'required|numeric',
+            'weight' => 'required|numeric',
+        ]);
+        
+        $existingPost = Post::where('product_id', $request->input('product_id'))->first();
+
+        if($existingPost){
+            return redirect()->back()->withErrors('Product already exists!')->withInput();
+        }
+
+        Post::create($postPrpduct);
+
+        return redirect()->back();
+    }
     
     
 
@@ -834,6 +1010,13 @@ class PageController extends Controller
         return view('admin.transfered-item',[
             'transfer' => $transfer,
         ], compact('productNames', 'productQuantities', 'sourceStores', 'destinationStores','createdAt','staff_name','reason','staff_recommended','nowDate','stores'));
+    }
+
+    public function all_transfers(){
+        $nowDate = Carbon::now()->format('Y-m-d');
+        return view('admin.all-transfers',[
+            'transfers' => Transfer::latest()->filter(request(['search']))->get(),
+        ], compact('nowDate'));
     }
 
     public function print_invoice($id){

@@ -13,17 +13,17 @@
 <center>
     <div class="main-dashboard-ajax-wrapper">
         <div class="header-intro-ajax">
-            <h1>Transfered Products</h1>
+            <h1>All Transfered Products</h1>
             <h2><i class="fas fa-calendar-alt"></i> <span class="currentDate"></span></h2>
             <br>
         </div><br>
         <div class="centered-before-ajax">
-            <form action="/admin/transfered-products" method="GET" class="search-component">
+            <form action="/admin/all-transfers" method="GET" class="search-component">
                 @csrf
                 <input type="date" name="search" id="" placeholder="Search product..."><button type="submit"><span>Search</span></button>
             </form>
-            <button class="View-all-transfers-button"><i class="fa fa-eye"></i> <span><a href="/admin/all-transfers">All Transfers</a></span></button>
-            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-print"></i> <span> Print</span></button>
+            <button class="View-all-transfers-button"><span><a href="/admin/transfered-products">&#8592; Back</a></span></button>
+            <!-- <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-print"></i> <span> Print</span></button> -->
         </div><br><br>
         <div class="flex-wrapper-container">
             <div class="mini-container">
@@ -31,13 +31,10 @@
                 @if(count($transfers) == 0)
                 <p>No product transfered!</p>
                 @endif
-
                 @foreach($transfers as $transfer)
-                @if($transfer->created_at->format('Y-m-d') == $nowDate)
                <div class="single-loop-wrapper">
                 <a href="/admin/transfered-item/{{$transfer->id}}"><p><strong>U{{$transfer->id}}</strong>, {{$transfer->created_at}}</p></a><br>
                </div>
-               @endif
                @endforeach
             </div>
         </div>

@@ -28,5 +28,8 @@ class Export extends Model
         'product_price',
         'product_image',
         'phone',
+        'sale_mode',
+        'payment_date',
+        'status',
     ];
 }

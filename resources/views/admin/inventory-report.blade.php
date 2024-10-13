@@ -79,34 +79,58 @@
         
         <div class="flex-wrapper-container">
             <div class="mini-container">
-                <table class="printable-media">
-                    <tr class="product-table-header">
+            <table class="printable-media">
+                <tr class="product-table-header">
                     <th>S/N</th>
-                    <th>Image</th>
-                    <th>Product Id</th>
+                    <th>Product No</th>
                     <th>Product Name</th>
-                    <th>Quantity Available</th>
+                    <!-- <th>Quantity Ordered</th> -->
+                    <th>Quantity In</th>
+                    <th>Quantity Out</th>
+                    <th>Quantity On Hand</th>
                     <th>Price</th>
-                    <th>Date Created</th>
-                    </tr>
+                    <th>Total</th>
+                </tr>
 
-                    @php
-                        $totalQuantity = 0;
-                        $totalPrice = 0;
-                    @endphp
+                @php
+                $totalQuantity = 0;
+                $totalPrices = 0;
+                @endphp
 
-                    @foreach($products as $product)
-                    <tr>
-                        <td>{{$product->id}}</td>
-                        <td class="image-reporte"><a href="{{asset('storage/' . $product->product_image)}}"><img src="{{ asset('storage/' . $product->product_image)}}" alt="Image"></a></td>
-                        <td>{{$product->product_id}}</td>
-                        <td>{{$product->product_name}}</td>
-                        <td>{{$product->product_quantity}}</td>
-                        <td>Tsh {{number_format($product->product_price, 2)}}</td>
-                        <td>{{$product->created_at}}</td>
-                    </tr>
-                    @endforeach
-                </table>
+                @foreach($products as $product)
+                <tr class="tr-sold-prod">
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $product->product_id }}</td>
+                    <td>{{ $product->product_name }}</td>
+                    <!-- <td>{{ $product->quantity_ordered }}</td> -->
+                    <td>{{ $product->product_quantity }}</td> <!-- Quantity In -->
+                    <td>{{ $product->quantity_out }}</td> <!-- Calculated Quantity Out -->
+                    <td>{{ $product->quantity_on_hand }}</td> <!-- Calculated Quantity On Hand -->
+                    <td>{{ number_format($product->product_price, 2) }}</td>
+                    <td>{{ number_format($product->quantity_on_hand * $product->product_price,2) }}</td>
+                </tr>
+                @endforeach
+
+                <tr class="tr-sold-prod">
+                    <td>Total</td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        {{number_format($ToatlQuantityIn)}}
+                    </td>
+                    <td>
+                        {{number_format($TotalQuantityOut)}}
+                    </td>
+                    <td>
+                        {{number_format($totalQuantityOnHand)}}
+                    </td>
+                    <td></td>
+                    <td>
+                        Tsh {{number_format($totalPrice,2)}}
+                    </td>
+                </tr>
+            </table>
+
             </div>
         </div>
 

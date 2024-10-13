@@ -183,7 +183,7 @@
                 </div>
                 <div class="inp-select-opta">
                     <label>TIN:</label><br>
-                    <input type="number" name="customer_name[]" placeholder="TIN">
+                    <input type="text" name="customer_name[]" placeholder="TIN">
                 </div>
                 <div class="client-phone">
                     <label for="">Client Phone</label><br>
@@ -215,10 +215,22 @@
                     <input type="text" name="product_price[]" class="product-price">
                 </div>
 
-                
+                <div class="inp-select-optc">
+                <label>Sale Mode:</label><br>
+                <select name="sale_mode[]" id="">
+                    <option value="" selected disabled>--select sale mode--</option>
+                    <option value="Paid">{{__('Full Paid')}}</option>
+                    <option value="Loan">By Loan</option>
+                </select>
+                </div>
+                <div class="inp-select-optc">
+                    <label>Payment Date:</label><br>
+                    <input type="date" name="payment_date[]" class="product-price">
+                </div>
 
                 </div>
-                <br><br><br><br>
+                <br>
+                <!-- <br><br><br><br> -->
             </div>
 
             <button type="submit" class="button-sale-add">Submit Product</button>
