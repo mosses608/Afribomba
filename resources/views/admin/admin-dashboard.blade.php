@@ -214,9 +214,6 @@
             });
         </script>
 
-
-
-
     </div>
 </center>
 @endsection

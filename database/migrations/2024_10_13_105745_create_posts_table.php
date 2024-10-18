@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('product_id');
             $table->string('product_name');
-            $table->string('length');
-            $table->string('width');
-            $table->string('height');
+            $table->string('cbm');
+            // $table->string('width');
+            $table->string('price');
             $table->string('weight');
             $table->timestamps();
         });

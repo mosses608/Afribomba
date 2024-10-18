@@ -32,6 +32,10 @@ Route::get('/admin/exported-products', [PageController::class, 'exported_product
 
 Route::get('/admin/all-sales', [PageController::class, 'view_all_sales'])->middleware('auth');
 
+Route::get('/admin/view-order/{order}', [App\Http\Controllers\PageController::class, 'view_order'])->middleware('auth');
+
+Route::put('/add-order/{order}', [App\Http\Controllers\PageController::class, 'add_product_order'])->middleware('auth');
+
 Route::get('/admin/instock-products', [PageController::class, 'instock_product'])->middleware('auth');
 
 Route::get('/admin/loans-product', [App\Http\Controllers\PageController::class, 'loans_products'])->middleware('auth');
@@ -40,11 +44,17 @@ Route::put('/edit-status/{export}', [App\Http\Controllers\PageController::class,
 
 Route::get('/admin/create-orders', [App\Http\Controllers\PageController::class, 'make_orders'])->middleware('auth');
 
+Route::get('/admin/view-products', [App\Http\Controllers\PageController::class, 'view_posters'])->middleware('auth');
+
 Route::post('/post/orders', [App\Http\Controllers\PageController::class, 'post_orders'])->name('post.orders')->middleware('auth');
 
 Route::get('/admin/view-more/{order}', [App\Http\Controllers\PageController::class, 'single_order'])->middleware('auth');
 
 Route::post('/create/product', [App\Http\Controllers\PageController::class, 'create_products'])->name('create.product')->middleware('auth');
+
+Route::delete('/delete-order/{order}', [App\Http\Controllers\PageController::class, 'delete_order'])->middleware('auth');
+
+Route::put('/edit-order/{order}', [App\Http\Controllers\PageController::class, 'edit_order'])->middleware('auth');
 
 Route::get('/admin/less-product', [PageController::class, 'less_product'])->middleware('auth');
 
@@ -92,6 +102,9 @@ Route::get('/reset-password', [PageController::class, 'reset_password']);
 
 Route::get('/admin/logs', [App\Http\Controllers\PageController::class, 'system_logs'])->middleware('auth');
 
+Route::delete('/delete-product/{post}', [App\Http\Controllers\PageController::class, 'delete_post_product'])->middleware('auth');
+
+Route::put('/edit-product/{post}', [App\Http\Controllers\PageController::class, 'edit_post_product'])->middleware('auth');
 
 Route::get('/staff/staff-dashboard', [StaffController::class, 'staff_dashboard'])->middleware('auth');
 

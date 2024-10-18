@@ -20,5 +20,6 @@ class Container extends Model
         'gross_weight',
         'max_payload',
         'description',
+        'used_capacity',
     ];
 }

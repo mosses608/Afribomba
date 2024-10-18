@@ -18,9 +18,11 @@ class Post extends Model
     protected $fillable = [
         'product_id',
         'product_name',
-        'length',
-        'width',
-        'height',
+        'cbm',
+        // 'length',
+        // 'width',
+        // 'height',
         'weight',
+        'price',
     ];
 }

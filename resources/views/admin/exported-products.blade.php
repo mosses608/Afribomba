@@ -72,31 +72,30 @@
                     @endif
                     @foreach($exports as $export)
                     <div class="single-loop-wrapper-bor">
-                                <span><strong>S{{$export->id}}</strong> <br> <p style="font-size:14px;">{{$export->created_at}}</p></span>
-                                <span><a href="/admin/print/{{ $export->id }}" style="color:#0000FF; cursor:pointer;"><i class="fa fa-print"></i></a> </span>
-                                <!-- <span onclick="showEditSalesForm(event, {{ $export->id }})"><i class="fa fa-edit"></i></span>  -->
-            </div>
+                        <span><strong>{{ is_array($customerName) ? implode(',', $customerName) : $export->tin }}</strong> <br> <p style="font-size:14px;">{{$export->created_at}}</p></span>
+                        <span><a href="/admin/print/{{ $export->id }}" style="color:#0000FF; cursor:pointer;"><i class="fa fa-print"></i></a> </span>
+                    </div>
                                 @foreach(json_decode($export->product_quantity, true) as $index => $quantity)
                                 @endforeach
 
-                                <form action="/exports/edit-product-exp/{{ $export->id }}" method="POST" class="product-creator-ajax-wrapper" id="product-editor-ajax-{{ $export->id }}" hidden enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    <h1>Edit Sales</h1><br><br>
-                                    <label>Product Name:</label>
-                                    <input type="text" name="product_name" value="{{ $export->product_name }}"><br><br>
-                                    <label>Customer Name:</label>
-                                    <input type="text" name="customer_name" value="{{ $export->customer_name }}"><br><br>
-                                    <input type="hidden" name="staff_name" value="{{ Auth::guard('web')->user()->staff_name }}">
-                                    <label>Quantity:</label>
-                                    <input type="text" name="product_quantity" value="{{ $quantity }}"><br><br>
-                                    <label>Unit Price:</label>
-                                    <input type="text" name="product_price" value="{{ json_decode($export->product_price, true)[$index] }}"><br><br>
-                                    <button type="submit" class="button">Edit Sales</button> 
-                                    <button type="button" class="close-button" onclick="closePopUpForm()">Close</button>
-                                    <br><br>
-                                </form>
-                       
+                        <!-- <form action="/exports/edit-product-exp/{{ $export->id }}" method="POST" class="product-creator-ajax-wrapper" id="product-editor-ajax-{{ $export->id }}" hidden enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <h1>Edit Sales</h1><br><br>
+                            <label>Product Name:</label>
+                            <input type="text" name="product_name" value="{{ $export->product_name }}"><br><br>
+                            <label>Customer Name:</label>
+                            <input type="text" name="customer_name" value="{{ $export->customer_name }}"><br><br>
+                            <input type="hidden" name="staff_name" value="{{ Auth::guard('web')->user()->staff_name }}">
+                            <label>Quantity:</label>
+                            <input type="text" name="product_quantity" value="{{ $quantity }}"><br><br>
+                            <label>Unit Price:</label>
+                            <input type="text" name="product_price" value="{{ json_decode($export->product_price, true)[$index] }}"><br><br>
+                            <button type="submit" class="button">Edit Sales</button> 
+                            <button type="button" class="close-button" onclick="closePopUpForm()">Close</button>
+                            <br><br>
+                        </form> -->
+                
                     @endforeach
                 <!-- </table> -->
             </div>

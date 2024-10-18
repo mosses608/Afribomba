@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('tare_weight');
             $table->string('gross_weight');
             $table->string('max_payload');
+            $table->string('used_capacity')->default(0);
             $table->longText('description');
             $table->timestamps();
         });

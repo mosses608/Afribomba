@@ -10,6 +10,8 @@
 
 <x-export_message />
 
+<div class="black-screeen-view"></div>
+
 <center>
     <div class="main-dashboard-ajax-wrapper">
         <div class="header-intro-ajax">
@@ -23,7 +25,7 @@
                 <input type="date" name="search" id="" placeholder="Search product..."><button type="submit"><span>Search</span></button>
             </form>
             <button class="View-all-transfers-button"><i class="fa fa-eye"></i> <span><a href="/admin/all-transfers">All Transfers</a></span></button>
-            <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-print"></i> <span> Print</span></button>
+            <button class="add-product-button" onclick="ViewGraph(event)"><i class="fa fa-eye"></i> <span> View Graph</span></button>
         </div><br><br>
         <div class="flex-wrapper-container">
             <div class="mini-container">
@@ -60,6 +62,109 @@
             document.querySelector('.font-sans-antialiased-admin').style.backgroundColor='rgba(0,0,0,0.5)';
             document.getElementById("product-creator-ajax-wrapper").classList.toggle('active');
         }
+
+        window.ViewGraph = function(event){
+            event.preventDefault();
+            const graphShow = document.querySelector('.graph-transfer');
+            const hideScreenView = document.querySelector('.black-screeen-view');
+
+            graphShow.style.display='block';
+            hideScreenView.style.display='block';
+        }
+        window.closeBtn = function(event){
+            event.preventDefault();
+            const graphShow = document.querySelector('.graph-transfer');
+            const hideScreenView = document.querySelector('.black-screeen-view');
+
+            graphShow.style.display='none';
+            hideScreenView.style.display='none';
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div class="graph-transfer">
+        <div class="top-breaker-graph">
+            <h1>Product Transfer Analysis Graph</h1>
+            <button class="closeBtn" onclick="closeBtn(event)">&times;</button>
+        </div>
+        <br>
+        <canvas id="exportChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- <style>
+        @media only screen and (min-width: 769px) {
+            .graph-analytics canvas {
+                height: 400px !important;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            .graph-analytics canvas {
+                width: 100% !important;
+                height: 400px !important;
+            }
+        }
+    </style> -->
+
+    <script>
+        // Decode the JSON data passed from the controller
+        var chartDates = @json($dates); // Array of dates
+        var chartData = @json($chartData); // Object with product names as keys and date quantities as values
+
+        // Create the datasets for each product
+        var datasets = Object.keys(chartData).map(function(productName) {
+            return {
+                label: productName,
+                data: chartDates.map(function(date) {
+                    return chartData[productName][date] || 0; // Use 0 if no data for the date
+                }),
+                borderWidth: 1,
+                fill: false // Use false if you don't want to fill the area under the line
+            };
+        });
+
+        // Create the chart
+        var ctx = document.getElementById('exportChart').getContext('2d');
+        var exportChart = new Chart(ctx, {
+            type: 'bar',  // Use 'bar' for a bar chart
+            data: {
+                labels: chartDates, // Dates for the x-axis
+                datasets: datasets  // Data for each product
+            },
+            options: {
+                maintainAspectRatio: false,  // Disable maintain aspect ratio for better responsiveness
+                aspectRatio: 2,  // Adjust this value to control the height (e.g., higher value = shorter height on larger screens)
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Quantity Transfered'
+                        },
+                        beginAtZero: true
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     </script>
 </center>
 @endsection

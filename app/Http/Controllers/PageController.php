@@ -280,10 +280,20 @@ class PageController extends Controller
     {
         $currentDate = Carbon::now()->format('Y-m-d');
 
-        // Calculate total of all exports for today
+        $customerName = [];
+
+        
+        // Get today's exports for display
+        $exports = Export::whereDate('created_at', $currentDate)->orderBy('id','desc')->get();
+
+        foreach ($exports as $key => $export) {
+            $customerName = json_decode($export->tin, true);
+        }
+
         $myexports = Export::all()->sum(function($export) {
             $quantities = json_decode($export->product_quantity, true);
             $prices = json_decode($export->product_price, true);
+            
 
             if (is_array($quantities) && is_array($prices)) {
                 $total = 0;
@@ -297,6 +307,7 @@ class PageController extends Controller
 
             return 0; 
         });
+
 
         // Calculate total of all products exported today
         $datePrice = Export::whereDate('created_at', $currentDate)->get()->sum(function($export) {
@@ -342,18 +353,21 @@ class PageController extends Controller
             $totalComponents = Export::whereDate('created_at', $searchDate)->whereNotNull('product_name')->count();
         }
 
-        // Get today's exports for display
-        $exports = Export::whereDate('created_at', $currentDate);
-
         return view('admin.exported-products', [
             'products' => Product::all(),
-            'exports' => $exports->latest()->filter(request(['search']))->paginate(10),
-        ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate'));
+            'exports' => $exports,
+        ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate','customerName'));
     }
 
 
     public function view_all_sales(Request $request){
         $currentDate = Carbon::now()->format('Y-m-d');
+
+        $sales = Export::all();
+
+        foreach ($sales as $key => $sale) {
+            $customerName = json_decode($sale->tin, true);
+        }
 
         $myexports = Export::all()->sum(function($export) {
             $quantities = json_decode($export->product_quantity, true);
@@ -403,7 +417,7 @@ class PageController extends Controller
         return view('admin.all-sales', [
             'products' => Product::all(),
             'exports' => Export::orderBy('id','asc')->filter(request(['search']))->paginate(10),
-        ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate'));
+        ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate','customerName'));
     }
 
     public function instock_product(){
@@ -418,6 +432,7 @@ class PageController extends Controller
         $exports = Export::filter(request(['search']))->get();
     
         $decodedExports = [];
+        $customer_name = [];
     
         foreach ($exports as $export) {
             $decodedExports[] = [
@@ -432,7 +447,7 @@ class PageController extends Controller
                 'saleMode' => json_decode($export->sale_mode, true),
                 'created_at' => $export->created_at,
             ];
-            $customer_name = json_decode($export->customer_name, true);
+            $customer_name[] = json_decode($export->customer_name, true);
         }
 
         if($request->has(['start_date','end_date']) && $request->start_date != "" && $request->end_date != ""){
@@ -721,43 +736,56 @@ class PageController extends Controller
         dd($request->all());
     }
 
-    public function make_orders(){
-        $orders = Order::filter(request(['search']))->orderBy('id','asc')->get();
+    public function make_orders(Request $request){
+        $orders = Order::filter(request(['search']))->orderBy('id','desc')->get();
 
+        $productName = [];
+        $quantity = [];
         foreach ($orders as $key => $order) {
-            $staffName = json_decode($order->staff_name, true);
-            $productNames = json_decode($order->product_name, true);
+            $productName[] = json_decode($order->product_name, true);
+            $quantity[] = json_decode($order->quantity, true);
+        }
+
+        if($request->has(['start_date','end_date']) && $request->start_date !="" && $request->end_date !=""){
+            $fromDate = $request->start_date;
+            $toDate = $request->end_date;
+
+            $orders = Order::whereBetween('created_at', [$fromDate,$toDate])->get();
         }
 
         $containers = Container::orderBy('id','asc')->get();
         $posts = Post::filter(request(['search']))->orderBy('id','asc')->get();
-        return view('admin.create-orders', compact('posts','containers','orders','staffName','productNames'));
+        return view('admin.create-orders', compact('posts','containers','orders','productName','quantity'));
     }
 
-    public function post_orders(Request $request){
+    public function post_orders(Request $request)
+    {
+
         $orderDetails = $request->validate([
-            'staff_name.*' => 'required|string|max:255',
-            'container_id.*' => 'required',
-            'product_name.*' => 'required',
-            'quantity.*'  => 'required',
+            'order_name' => 'required|max:255',
+            'staff_name' => 'required|string|max:255',
+            'container_id' => 'required',
+            // 'product_name' => 'required',
+            // 'quantity' => 'required|integer',
         ]);
 
+        $orderName = $orderDetails['order_name'];
         $staffName = $orderDetails['staff_name'];
-        $containerId = $orderDetails['container_id'];
-        $productName = $orderDetails['product_name'];
-        $Quantity = $orderDetails['quantity'];
+        $containerIds = $orderDetails['container_id'];
+        // $productNames = $orderDetails['product_name'];
+        // $quantities = $orderDetails['quantity'];
 
         Order::create([
-            'staff_name' => json_encode($staffName),
-            'container_id' => json_encode($containerId),
-            'product_name' => json_encode($productName),
-            'quantity' => json_encode($Quantity),
+            'order_name' => $orderName,
+            'staff_name' => $staffName,
+            'container_id' => $containerIds,
+            // 'product_name' => $productNames,
+            // 'quantity' => $quantities,
         ]);
 
-        // dd($request->all());
-
-        return redirect()->back();
+        return redirect()->back()->with('success_created', 'Order created successfully!');
     }
+
 
     public function single_order($id){
         $containers = Container::all();
@@ -775,10 +803,12 @@ class PageController extends Controller
         $postPrpduct = $request->validate([
             'product_id' => ['required', Rule::unique('posts','product_id')],
             'product_name' => 'required|string|max:255',
-            'length' => 'required|numeric',
-            'width' => 'required|numeric',
-            'height' => 'required|numeric',
+            'cbm' => 'required|numeric',
+            // 'length' => 'required|numeric',
+            // 'width' => 'required|numeric',
+            // 'height' => 'required|numeric',
             'weight' => 'required|numeric',
+            'price' => 'required|numeric',
         ]);
         
         $existingPost = Post::where('product_id', $request->input('product_id'))->first();
@@ -789,7 +819,7 @@ class PageController extends Controller
 
         Post::create($postPrpduct);
 
-        return redirect()->back();
+        return redirect()->back()->with('prod_created_flash_msg', 'Product registered successfully!');
     }
     
     
@@ -984,9 +1014,45 @@ class PageController extends Controller
     }
 
     public function tranfered_products(){
+        $exports = Transfer::select('product_name', 'created_at', 'product_quantity')
+                      ->orderBy('created_at', 'asc')
+                      ->get();
+
+    $chartData = $exports->map(function($export) {
+        $productNames = is_string($export->product_name) ? json_decode($export->product_name) : [];
+        $productQuantities = is_string($export->product_quantity) ? json_decode($export->product_quantity) : [];
+
+        if (!is_array($productNames) || !is_array($productQuantities) || count($productNames) !== count($productQuantities)) {
+            return null;
+        }
+
+        return [
+            'product_names' => $productNames,
+            'created_at' => $export->created_at->format('Y-m-d'),
+            'product_quantities' => $productQuantities,
+        ];
+    })->filter();
+
+    $dates = $chartData->pluck('created_at')->unique()->sort()->values();
+
+    $dataByProduct = $chartData->flatMap(function($data) {
+        return collect($data['product_names'])->mapWithKeys(function($productName, $index) use ($data) {
+            if (isset($data['product_quantities'][$index])) {
+                return [$productName => [$data['created_at'] => $data['product_quantities'][$index]]];
+            } else {
+                return [];
+            }
+        });
+    })->groupBy(function($item, $key) {
+        return $key;
+    })->map(function($items) {
+        return $items->collapse();
+    });
         $nowDate = Carbon::now()->format('Y-m-d');
         return view('admin.transfered-products',[
             'transfers' => Transfer::latest()->filter(request(['search']))->paginate(10),
+            'chartData' => $dataByProduct,
+            'dates' => $dates,
         ], compact('nowDate'));
     }
 
@@ -1118,6 +1184,93 @@ class PageController extends Controller
             'totalQuantity' => $myquantities,
             'products' => Product::all(),
         ], compact('datePrice', 'transfers','sourceStore','destinationStore','staffRec','reason','status'));
+    }
+
+    public function delete_order(Request $request, Order $order){
+        $order->delete();
+        return redirect('/admin/create-orders')->with('order_deleted_flash_msg','Order deleted successfully!');
+    }
+
+    public function edit_order(Request $request, Order $order){
+        $orderDetails = $request->validate([
+            'order_name' => 'required',
+            'container_id' => 'required',
+            'product_name.*' => 'required',
+            'quantity.*' => 'required',
+        ]);
+
+        $orderName = $orderDetails['order_name'];
+        $containerId = $orderDetails['container_id'];
+        $productName = $orderDetails['product_name'];
+        $quantity = $orderDetails['quantity'];
+
+        $order->update([
+            'order_name' => $orderName,
+            'container_id' => $containerId,
+            'product_name' => $productName,
+            'quantity' => $quantity,
+        ]);
+
+        return redirect()->back()->with('order_updated_msg','Order updated successfully!');
+    }
+
+    public function view_posters(Request $request){
+        $posts = Post::orderBy('id','asc')->get();
+
+        if($request->has(['start_date','end_date']) && $request->start_date !="" && $request->end_date !=""){
+            $startDate = $request->start_date;
+            $endDate = $request->end_date;
+
+            $posts = Post::whereBetween('created_at', [$startDate,$endDate])->get();
+        }
+        return view('admin.view-products', compact('posts'));
+    }
+
+    public function delete_post_product(Request $request, Post $post){
+        $post->delete();
+        return redirect()->back();
+    }
+
+    public function edit_post_product(Request $request, Post $post){
+        $postDetails = $request->validate([
+            'product_id' => 'required',
+            'product_name' => 'required',
+            'price' => 'required',
+            'weight' => 'required',
+            'cbm' => 'required',
+        ]);
+
+        $post->update($postDetails);
+
+        return redirect()->back();
+    }
+
+    public function view_order($id){
+        $containers = Container::all();
+        $order = Order::find($id);
+        
+        $productName = json_decode($order->product_name, true);
+        $quantity = json_decode($order->quantity, true);
+
+        $posts = Post::all();
+        return view('admin.view-order', compact('posts','order','containers','productName','quantity'));
+    }
+
+    public function add_product_order(Request $request, Order $order){
+        $orderProductsAdd = $request->validate([
+            'product_name.*' => 'required',
+            'quantity.*' => 'required', 
+        ]);
+
+        $productName = $orderProductsAdd['product_name'];
+        $quantity = $orderProductsAdd['quantity'];
+
+        $order->update([
+            'product_name' => json_encode($productName),
+            'quantity' => json_encode($quantity),
+        ]);
+
+        return redirect()->back()->with('success_order_msg','Order Products added to this order!');
     }
 
 }

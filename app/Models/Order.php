@@ -12,11 +12,13 @@ class Order extends Model
     public function scopeFilter($query, array $filters){
         if($filters['search'] ?? false){
             $query->where('id', 'like' , '%' . request('search') . '%')
-            ->orwhere('container_id' , 'like' , '%' . request('search') . '%');
+            ->orwhere('container_id' , 'like' , '%' . request('search') . '%')
+            ->orwhere('order_name' , 'like' , '%' . request('search') . '%');
         }
     }
 
     protected $fillable = [
+        'order_name',
         'staff_name',
         'container_id',
         'product_name',

@@ -24,9 +24,6 @@
     <a href="/admin/outstock-product"><span><i class="fa fa-times-circle"></i></span> <p>OutStock Products</p></a><br><br>
     <a href="/admin/loans-product"><span><i class="fa fa-times-circle"></i></span> <p>Product Loans</p></a><br><br>
     </div>
-    <div class="profile-cat-menu">
-        <a href="/admin/create-orders"><span><i class="fa fa-shopping-cart"></i></span> <p>Product Order</p> <em><i class="fa fa-angle-right"></i></em></a><br>
-    </div>
     <div class="store-mgt-menu">
         <a href="/admin/all-stores"><span><i class="fas fa-store-alt"></i></span> <p>All Stores</p> <em><i class="fa fa-angle-down"></i></em></a><br>
     </div>
@@ -47,6 +44,9 @@
     </div>
     <div class="setting-menu">
         <a href="/admin/logs"><span><i class="fas fa-history"></i></span> <p>System Logs</p> <em><i class="fa fa-angle-right"></i></em></a><br>
+    </div>
+    <div class="profile-cat-menu">
+        <a href="/admin/create-orders"><span><i class="fa fa-shopping-cart"></i></span> <p>Product Order</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div>
     <div class="invalidate-logout">
         <form action="/logout" method="POST" class="logout-invalidate">

@@ -95,7 +95,7 @@
                         font-family: Verdana, Geneva, Tahoma, sans-serif;
                     }
                     .action-td,.action-th{
-                        visibility:hidden;
+                        display:none;
                     }
                     .non-blintxt,.fadeBlink{
                         visibility:visible;

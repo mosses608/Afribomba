@@ -18,6 +18,15 @@
             <h2><i class="fas fa-calendar-alt"></i> <span class="currentDate"></span></h2>
             <br>
         </div><br>
+        <div class="centered-before-ajax">
+        <form id="searchForm" method="GET" class="search-component">
+            @csrf
+            <input type="text" name="search" id="searchInput" onkeyup="searchProducts()" placeholder="Search product...">
+        </form>
+            <button class="transfer-product-button" onclick="showTransferProducty()"><a href="/admin/all-products"><i class="fa fa-plus"></i> <em>T</em>  <span>Transfer Product</span></a></button>
+            <button class="add-product-button" onclick="showAddProductFormy()"><a href="/admin/all-products"><i class="fa fa-plus" style="padding:4px;"></i> <span>Add Product</span></a></button>
+            <button class="export-product-wrapper" onclick="showExportFormy()"><a href="/admin/all-products"><i class="fa fa-upload"></i> <span>Sale Product</span></a></button>
+        </div><br><br>
         <div class="flex-wrapper-container">
             <div class="mini-container">
                 <br>
@@ -47,7 +56,7 @@
                 </div><br>
                 
                 <div class="minor-builder-product">
-                    <table>
+                    <!-- <table>
                         <tr class="tr-th">
                             <th>Id</th>
                             <th>Product Name</th>
@@ -64,12 +73,27 @@
                         </tr>
                         @endif
                         @endforeach
+                    </table> -->
+                    <div class="top-notch-containers">
+                        <h1>Quantity On Hand</h1>
+                        <span>{{ $product->product_quantity }}</span>
+                    </div><br><br><br>
+                    <hr>
+                    <table>
+                        <tr>
+                            <th>Location</th>
+                            <th>Quantity</th>
+                        </tr>
+                        <tr>
+                            <td>{{ $product->store_name }}</td>
+                            <td>{{ $product->product_quantity }}</td>
+                        </tr>
                     </table>
                 </div>
 
                 <div class="graph-analytical">
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                <canvas id="productChart" width="400" height="200"></canvas>
+                <!-- <canvas id="productChart" width="400" height="200"></canvas> -->
                 <style>
                     @media only screen and (max-width:768px){
                         .graph-analytical canvas{
