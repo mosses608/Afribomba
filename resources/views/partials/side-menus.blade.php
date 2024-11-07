@@ -22,7 +22,7 @@
     <a href="/admin/instock-products"><span><i class="fa fa-times-circle"></i></span> <p>InStock Products</p></a><br><br>
     <a href="/admin/less-product"><span><i class="fa fa-times-circle"></i></span> <p>LessStock Products</p></a><br><br>
     <a href="/admin/outstock-product"><span><i class="fa fa-times-circle"></i></span> <p>OutStock Products</p></a><br><br>
-    <a href="/admin/loans-product"><span><i class="fa fa-times-circle"></i></span> <p>Product Loans</p></a><br><br>
+    <!-- <a href="/admin/loans-product"><span><i class="fa fa-times-circle"></i></span> <p>Product Loans</p></a><br><br> -->
     </div>
     <div class="store-mgt-menu">
         <a href="/admin/all-stores"><span><i class="fas fa-store-alt"></i></span> <p>All Stores</p> <em><i class="fa fa-angle-down"></i></em></a><br>
@@ -40,7 +40,7 @@
         <a href="/admin/comments"><span><i class="fa fa-comments"></i></span> <p>Product Comments</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div>
     <div class="setting-menu">
-        <a href="/admin/profile"><span><i class="fa fa-cog"></i></span> <p>Account Settings</p> <em><i class="fa fa-angle-right"></i></em></a><br>
+        <a href="/admin/loans"><span><i class="fa fa-cog"></i></span> <p>Manage Loans</p> <em><i class="fa fa-angle-right"></i></em></a><br>
     </div>
     <div class="setting-menu">
         <a href="/admin/logs"><span><i class="fas fa-history"></i></span> <p>System Logs</p> <em><i class="fa fa-angle-right"></i></em></a><br>

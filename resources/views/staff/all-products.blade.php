@@ -54,7 +54,7 @@
                         <td>{{$product->product_quantity}}</td>
                         <td>
                             @if($product->level < $product->product_quantity)
-                                <p class="good-status">Good</p>
+                                <p class="good-status">Instock</p>
                             @elseif($product->level > $product->product_quantity && $product->product_quantity != '0')
                                 <p class="less-status">Less</p>
                             @elseif($product->quantity == '0')

@@ -22,10 +22,20 @@
 
         <style>
             @media(max-width:768px){
-                .prod-id{
-                    font-size:10px;
+               
+                .product{
+                    padding: 10px;
+                    cursor: pointer;
+                    width: 30% !important;
+                    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+                    margin-left: 2%;
+                    margin-top: 2%;
+                    display: inline-block;
+                    border-radius: 4px;
+                    background-color: rgba(255,255,255,0.8);
                 }
             }
+
         </style>
 
         @endforeach
@@ -91,6 +101,8 @@
             });
         }
     </script>
+
+    <style>
 
 @stop
 

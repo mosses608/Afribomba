@@ -34,6 +34,9 @@
             <button class="add-product-button" onclick="showAddProductForm()"><i class="fa fa-plus" style="padding:4px;"></i> <span>Add Product</span></button>
             <button class="export-product-wrapper" onclick="showExportForm()"><i class="fa fa-upload"></i> <span>Sale Product</span></button>
         </div><br><br>
+        @php
+        $totalQuantity = 0;
+        @endphp
         <div class="flex-wrapper-container">
             <div class="mini-container">
                 <table>
@@ -56,10 +59,13 @@
                         <td><a href="{{asset('storage/'. $product->product_image)}}"><img src="{{asset('storage/'. $product->product_image)}}" alt=""></a></td>
                         <td>{{$product->product_id}}</td>
                         <td>{{$product->product_name}}</td>
-                        <td>{{$product->product_quantity}}</td>
+                        
+                        <td>
+                            {{$product->product_quantity}}
+                        </td>
                         <td>
                             @if($product->level <= $product->product_quantity)
-                                <p class="good-status">Good</p>
+                                <p class="good-status">Instock</p>
                             @elseif($product->level >= $product->product_quantity && $product->product_quantity != '0')
                                 <p class="less-status">Less</p>
                             @elseif($product->quantity == '0')
@@ -68,7 +74,23 @@
                         </td>
                         <td>Tsh {{number_format($product->product_price)}}</td>
                         <td>{{$product->description}}</td>
-                        <td>{{$product->store_name}}</td>
+                        <td>
+                            @foreach($transfers as $transfer)
+                            @endforeach
+                                @php
+                                    $productName = is_array($transfer['product_name']) ? implode(',', $transfer['product_name']) : $transfer['product_name'];
+                                    $otherStoreQuantity = is_array($transfer['store_name']) ? implode(',', $transfer['store_name']) : $transfer['store_name'];
+                                    $transferredQuantity = is_array($transfer['product_quantity']) ? implode(',', $transfer['product_quantity']) : $transfer['product_quantity'];
+                                @endphp
+
+                                @if($otherStoreQuantity != $product->store_name && $productName == $product->product_name)
+                                    {{ $product->store_name }} & {{ $otherStoreQuantity }}
+                                @else
+                                    {{ $product->store_name }}
+                                @endif
+                            
+                        </td>
+
                         <!-- <td>{{$product->created_at}}</td> -->
                         <td style="text-align:center;">
                             <a href="/admin/single-export/{{$product->id}}"><i class="fa fa-eye"></i></a>
@@ -87,35 +109,35 @@
 
 
                             <form action="/products/edit/{{$product->id}}" id="product-creator-ajax-wrapper-w-{{$product->id}}" method="POST" class="product-creator-ajax-wrapper-w hidden" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <h1>Edit Product</h1><br><br>
-                            <label>Product Id:</label>
-                            <input type="text" name="product_id" value="{{$product->product_id}}"><br><br>
-                            <label>Product Name:</label>
-                            <input type="text" name="product_name" value="{{$product->product_name}}"><br><br>
-                            <label>Quantity:</label>
-                            <input type="text" name="product_quantity" value="{{$product->product_quantity}}"><br><br>
-                            <label>Product Price:</label>
-                            <input type="text" name="product_price" value="{{$product->product_price}}"><br><br>
-                            <label>Store Name:</label>
-                            <select name="store_name">
-                                <option value="{{$product->store_name}}">--select--</option>
-                                @foreach($stores as $store)
-                                <option value="{{$store->store_name}}">{{$store->store_name}}</option>
-                                @endforeach
-                            </select><br>
-                            @error('store_name')
-                            <span>Store name is required!</span>
-                            @enderror
-                            <br>
-                            <label>Description:</label>
-                            <input type="text" name="description" value="{{$product->description}}"><br><br>
-                            <label>Product Image:</label>
-                            <input type="file" name="product_image" value="{{$product->product_image}}" style="border:none;" accept="image/*"><br><br>
-                            <button type="button" class="close-button" onclick="closePopUpForm()" style="float:left;">Close</button>
-                            <button type="submit" class="button" style="float:right;">Import Product</button> 
-                            <br><br>
+                                @csrf
+                                @method('PUT')
+                                <h1>Edit Product</h1><br><br>
+                                <label>Product Id:</label>
+                                <input type="text" name="product_id" value="{{$product->product_id}}"><br><br>
+                                <label>Product Name:</label>
+                                <input type="text" name="product_name" value="{{$product->product_name}}"><br><br>
+                                <label>Quantity:</label>
+                                <input type="text" name="product_quantity" value="{{$product->product_quantity}}"><br><br>
+                                <label>Product Price:</label>
+                                <input type="text" name="product_price" value="{{$product->product_price}}"><br><br>
+                                <label>Store Name:</label>
+                                <select name="store_name">
+                                    <option value="{{$product->store_name}}">--select--</option>
+                                    @foreach($stores as $store)
+                                    <option value="{{$store->store_name}}">{{$store->store_name}}</option>
+                                    @endforeach
+                                </select><br>
+                                @error('store_name')
+                                <span>Store name is required!</span>
+                                @enderror
+                                <br>
+                                <label>Description:</label>
+                                <input type="text" name="description" value="{{$product->description}}"><br><br>
+                                <label>Product Image:</label>
+                                <input type="file" name="product_image" value="{{$product->product_image}}" style="border:none;" accept="image/*"><br><br>
+                                <button type="button" class="close-button" onclick="closePopUpForm()" style="float:left;">Close</button>
+                                <button type="submit" class="button" style="float:right;">Import Product</button> 
+                                <br><br>
                             </form>
 
                         </td>

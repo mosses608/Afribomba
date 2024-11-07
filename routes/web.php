@@ -42,11 +42,17 @@ Route::get('/admin/loans-product', [App\Http\Controllers\PageController::class, 
 
 Route::put('/edit-status/{export}', [App\Http\Controllers\PageController::class, 'edit_loan_details'])->middleware('auth');
 
+Route::get('/admin/loans', [App\Http\Controllers\PageController::class, 'loans_manager'])->middleware('auth');
+
 Route::get('/admin/create-orders', [App\Http\Controllers\PageController::class, 'make_orders'])->middleware('auth');
 
 Route::get('/admin/view-products', [App\Http\Controllers\PageController::class, 'view_posters'])->middleware('auth');
 
 Route::post('/post/orders', [App\Http\Controllers\PageController::class, 'post_orders'])->name('post.orders')->middleware('auth');
+
+Route::post('/store_loans', [App\Http\Controllers\PageController::class, 'store_loans'])->name('create.loans')->middleware('auth');
+
+Route::put('/edit-loan/{loan}', [App\Http\Controllers\PageController::class, 'edit_loan'])->middleware('auth');
 
 Route::get('/admin/view-more/{order}', [App\Http\Controllers\PageController::class, 'single_order'])->middleware('auth');
 

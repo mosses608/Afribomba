@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Loan;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Order;
@@ -109,13 +110,21 @@ class PageController extends Controller
             }
         }
 
+        $transfers = Transfer::all();
+
+        foreach ($transfers as $key => $transfer) {
+            $transfers[$key]->product_name = json_decode($transfer->product_name, true);
+            $transfers[$key]->store_name = json_decode($transfer->store_name, true);
+            $transfers[$key]->product_quantity = json_decode($transfer->product_quantity, true);
+        }
+
         $myProducts = Product::filter(request(['search']))->orderBy('id','asc')->get();
 
         return view('admin.all-products',[
             'stores' => Store::all(),
             'products' => $myProducts,
             'users' => User::all(),
-        ]);
+        ], compact('transfers'));
     }
 
     public function store_loader(){
@@ -282,12 +291,16 @@ class PageController extends Controller
 
         $customerName = [];
 
+        $exports = Export::whereDate('created_at', $currentDate)->orderBy('id', 'desc')->filter(request(['search']))->get();
         
-        // Get today's exports for display
-        $exports = Export::whereDate('created_at', $currentDate)->orderBy('id','desc')->get();
-
-        foreach ($exports as $key => $export) {
-            $customerName = json_decode($export->tin, true);
+        foreach ($exports as $export) {
+            $decodedTin = json_decode($export->tin, true);
+            
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $customerName[] = $decodedTin;
+            } else {
+                $customerName[] = $export->tin;
+            }
         }
 
         $myexports = Export::all()->sum(function($export) {
@@ -365,8 +378,18 @@ class PageController extends Controller
 
         $sales = Export::all();
 
-        foreach ($sales as $key => $sale) {
-            $customerName = json_decode($sale->tin, true);
+        $customerName = [];
+
+        $exports = Export::orderBy('id', 'desc')->get();
+        
+        foreach ($exports as $export) {
+            $decodedTin = json_decode($export->tin, true);
+            
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $customerName[] = $decodedTin;
+            } else {
+                $customerName[] = $export->tin;
+            }
         }
 
         $myexports = Export::all()->sum(function($export) {
@@ -392,6 +415,8 @@ class PageController extends Controller
         if ($request->has('search') && $request->search != '') {
             $searchDate = $request->search;
 
+            $exports = Export::whereDate('created_at', $searchDate)->get();
+
             $datePrice = Export::whereDate('created_at', $searchDate)->get()->sum(function($export) {
                 $quantities = json_decode($export->product_quantity, true);
                 $prices = json_decode($export->product_price, true);
@@ -416,7 +441,7 @@ class PageController extends Controller
 
         return view('admin.all-sales', [
             'products' => Product::all(),
-            'exports' => Export::orderBy('id','asc')->filter(request(['search']))->paginate(10),
+            'exports' => $exports,
         ], compact('myexports', 'datePrice', 'totalComponents', 'currentDate','customerName'));
     }
 
@@ -622,9 +647,12 @@ class PageController extends Controller
             return redirect()->back()->with('error_code','Sorry! Passwords do not match!');
         }else{
             
-        $user->update($user_passDetails);
+        $user->update([
+            $user_passDetails['username'],
+            $user_passDetails['password'],
+        ]);
 
-        return redirect()->back()->with('user_pass','User data updated successfully!');
+        return redirect()->back()->with('user_pass','Passwords updated successfully!');
         }
     }
 
@@ -650,15 +678,23 @@ class PageController extends Controller
             ];
         });
 
+        $transfers = Transfer::all();
+
+        foreach ($transfers as $key => $transfer) {
+            $transfers[$key]->product_name = json_decode($transfer->product_name, true);
+            $transfers[$key]->store_name = json_decode($transfer->store_name, true);
+            $transfers[$key]->product_quantity = json_decode($transfer->product_quantity, true);
+        }
+
         return view('admin.single-export', [
-            'transfers' => Transfer::all(),
+            // 'transfers' => Transfer::all(),
             'stores' => Store::all(),
             'product' => $product,
             'stores' => Store::all(),
             'users' => User::all(),
             'sales' => $sales,
             'chartData' => $chartData,
-        ]);
+        ], compact('transfers'));
     }
     
     
@@ -719,10 +755,11 @@ class PageController extends Controller
         return redirect()->back()->with('export_message', 'Products exported successfully!');
     }
     
-    public function edit_loan_details(Request $request, Export $export){
+    public function edit_loan_details(Request $request, Export $export)
+    {
         $loanDetails = $request->validate([
-            'status.*' => 'required',
-            'payment_date.*' => 'required',
+            'status.*' => 'required|string',
+            'payment_date.*' => 'required|date', 
         ]);
 
         $loanStatus = $loanDetails['status'];
@@ -733,8 +770,11 @@ class PageController extends Controller
             'payment_date' => json_encode($loanPaymentDate),
         ]);
 
-        dd($request->all());
+        // dd($request->all());
+
+        return redirect()->back();
     }
+
 
     public function make_orders(Request $request){
         $orders = Order::filter(request(['search']))->orderBy('id','desc')->get();
@@ -1191,7 +1231,9 @@ class PageController extends Controller
         return redirect('/admin/create-orders')->with('order_deleted_flash_msg','Order deleted successfully!');
     }
 
-    public function edit_order(Request $request, Order $order){
+    public function edit_order(Request $request, Order $order)
+    {
+        // Validate the input
         $orderDetails = $request->validate([
             'order_name' => 'required',
             'container_id' => 'required',
@@ -1201,17 +1243,23 @@ class PageController extends Controller
 
         $orderName = $orderDetails['order_name'];
         $containerId = $orderDetails['container_id'];
-        $productName = $orderDetails['product_name'];
-        $quantity = $orderDetails['quantity'];
+        $productName = $orderDetails['product_name']; 
+        $quantity = $orderDetails['quantity']; 
+
+        $existingProductNames = is_array($order->product_name) ? $order->product_name : json_decode($order->product_name, true);
+        $existingQuantities = is_array($order->quantity) ? $order->quantity : json_decode($order->quantity, true);
+
+        $mergedProductNames = array_merge($existingProductNames ?? [], $productName);
+        $mergedQuantities = array_merge($existingQuantities ?? [], $quantity);
 
         $order->update([
             'order_name' => $orderName,
             'container_id' => $containerId,
-            'product_name' => $productName,
-            'quantity' => $quantity,
+            'product_name' => json_encode($mergedProductNames), 
+            'quantity' => json_encode($mergedQuantities), 
         ]);
 
-        return redirect()->back()->with('order_updated_msg','Order updated successfully!');
+        return redirect()->back()->with('order_updated_msg', 'Order updated successfully!');
     }
 
     public function view_posters(Request $request){
@@ -1271,6 +1319,84 @@ class PageController extends Controller
         ]);
 
         return redirect()->back()->with('success_order_msg','Order Products added to this order!');
+    }
+
+    public function loans_manager(Request $request){
+
+        $todayDate = Carbon::now()->format('Y-m-d');
+
+        $loans = Loan::filter(request(['search']))->orderBy('id','asc')->get();
+
+        // $productNames = [];
+        // $unitPrice = [];
+        // $quantities = [];
+        foreach ($loans as $key => $loanrecord) {
+            $loans[$key]->productNames = json_decode($loanrecord->product_name, true);
+            $loans[$key]->unitPrice = json_decode($loanrecord->product_price, true);
+            $loans[$key]->quantities = json_decode($loanrecord->product_quantity, true);
+        }
+
+        if($request->has(['start_date','end_date']) && $request->start_date != ""  && $request->end_date != ""){
+            $fromDate = $request->start_date;
+            $toDate = $request->end_date;
+
+            $loans = Loan::whereBetween('created_at', [$fromDate,$toDate])->get();
+        }
+
+        $products = Product::all();
+
+        return view('admin.loans', compact('products','loans','todayDate'));
+    }
+
+    public function store_loans(Request $request){
+        $loansDetails = $request->validate([
+            'customer_name' => 'required',
+            'tin' => 'required',
+            'phone' => 'required',
+            'product_name.*' => 'required',
+            'staff_name' => 'required',
+            'product_quantity.*' => 'required',
+            'product_price.*' => 'required',
+            'payment_date' => 'required',
+        ]);
+
+        $customerName = $loansDetails['customer_name'];
+        $tin = $loansDetails['tin'];
+        $phone = $loansDetails['phone'];
+        $productName = $loansDetails['product_name'];
+        $staffName = $loansDetails['staff_name'];
+        $quantity = $loansDetails['product_quantity'];
+        $price = $loansDetails['product_price'];
+        $paymentDate = $loansDetails['payment_date'];
+
+        Loan::create([
+            'customer_name' => $customerName,
+            'tin' => $tin,
+            'phone' => $phone,
+            'product_name' => json_encode($productName),
+            'staff_name' => $staffName,
+            'product_quantity' => json_encode($quantity),
+            'product_price' => json_encode($price),
+            'payment_date' => $paymentDate,
+        ]);
+
+        // dd($request->all());
+
+        return redirect()->back();
+    }
+
+    public function edit_loan(Request $request, Loan $loan){
+        $loanUpdateDetaila = $request->validate([
+            'payment_date' => 'required',
+            'status' => 'required',
+            'amount_paid' => 'required',
+        ]);
+
+        $loan->update($loanUpdateDetaila);
+
+        // dd($request->all());
+
+        return redirect()->back();
     }
 
 }

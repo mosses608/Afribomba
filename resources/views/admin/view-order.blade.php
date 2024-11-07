@@ -247,12 +247,23 @@
                    </tr>
                    <tr class="tr-td-class">
                     <td>Totals: </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @foreach($quantity as $key => $qty)
+                            @php
+                            $totalQuantity += $qty;
+                            @endphp
+                        @endforeach
+                        {{ number_format($totalQuantity) }}
+                    </td>
                     <td>
                        @foreach($productName as $key => $name)
                        @foreach($posts as $post)
                             @if($name == $post->product_id)
                             @php
-                            $totalWeightKG += $post->weight;
+                            $totalWeightKG += $post->weight * $quantity[$key];
                             @endphp
                             @endif
                             @endforeach
@@ -264,7 +275,7 @@
                        @foreach($posts as $post)
                             @if($name == $post->product_id)
                             @php
-                            $totalCubicMetresCBM += $post->cbm;
+                            $totalCubicMetresCBM += $post->cbm * $quantity[$key];
                             @endphp
                             @endif
                             @endforeach
@@ -276,21 +287,15 @@
                        @foreach($posts as $post)
                             @if($name == $post->product_id)
                             @php
-                            $totalOrderPrice += $post->price;
+                            $totalOrderPrice += $post->price * $quantity[$key];
                             @endphp
                             @endif
                             @endforeach
                         @endforeach
                         TZS {{ number_format($totalOrderPrice, 2) }}
                     </td>
-                    <td>
-                        @foreach($quantity as $key => $qty)
-                            @php
-                            $totalQuantity += $qty;
-                            @endphp
-                        @endforeach
-                        {{ number_format($totalQuantity) }}
-                    </td>
+                    <td></td>
+                    <td></td>
                    </tr>
                    
                 </table>
@@ -311,49 +316,153 @@
 
         <!-- EDIT THIS ORDER -->
 
-            <form action="/edit-order/{{ $order->id }}" method="POST" class="order-tbl-wrapper" id="order-tbl-wrapper">
-                @csrf
-                @method('PUT')
-                <div class="top-notch-form">
-                    <h1>Edit This Order</h1>
-                    <button type="button" onclick="hideEditOrderForm(event)" class="close-btn-order-wrapper">&times;</button>
-                </div><br><br>
-                <div class="container-selector">
-                    <div class="min-order-name">
-                        <label for="">Order Name</label><br>
-                        <input type="text" name="order_name" id="" value="{{ $order->order_name }}">
-                    </div>
-                    <div class="container-name">
-                        <label for="">Select Container</label><br>
-                        <select name="container_id" id="containerSelect" onchange="updateRemainingCapacity()" style="width:98%; padding:10px;">
+        <form action="/edit-order/{{ $order->id }}" method="POST" class="order-tbl-wrapper" id="order-tbl-wrapper">
+            @csrf
+            @method('PUT')
+
+            <div class="top-notch-form">
+                <h1>Edit This Order</h1>
+                <button type="button" onclick="hideEditOrderForm(event)" class="close-btn-order-wrapper">&times;</button>
+            </div>
+            <br>
+            <div class="available-levl">
+                <span>Available CBM = <strong>{{ $container->capacity - $CBMCovered }}</strong> | Available KG = <strong>{{ number_format($container->max_payload - $KGCovered) }}</strong></span>
+            </div>
+            <br>
+
+            <div class="container-selector">
+                <div class="min-order-name">
+                    <label for="">Order Name</label><br>
+                    <input type="text" name="order_name" id="" value="{{ $order->order_name }}">
+                </div>
+
+                <div class="container-name">
+                    <label for="">Select Container</label><br>
+                    <select name="container_id" id="containerSelect" onchange="updateRemainingCapacity()" style="width:98%; padding:10px;">
                         @foreach($containers as $container)
-                        @if($container->id == $order->container_id)
-                            <option value="{{ $order->container_id }}" selected disabled>{{ $container->name }}</option>
-                            @endif
-                                <option value="{{$container->id}}" data-capacity="{{$container->total_capacity}}">{{$container->name}}</option>
+                            <option value="{{ $container->id }}" {{ $container->id == $order->container_id ? 'selected' : '' }}>
+                                {{ $container->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="mini-parent-class">
+                <div class="child-component-x">
+                    <label for="">Product Name</label><br>
+                    @foreach($productName as $key => $name)
+                        <select name="product_name[]" class="product-select" style="width:100%;">
+                            <option value="{{ $name }}" selected>{{ $name }}</option>
+                            @foreach($posts as $post)
+                                <option value="{{$post->product_id}}" data-cbm="{{$post->cbm}}" data-kg="{{$post->kg}}">
+                                    {{$post->product_name}}
+                                </option>
                             @endforeach
                         </select>
-                    </div>
+                        <br><br>
+                    @endforeach
                 </div>
 
-                <div class="mini-parent-class">
-                    <div class="child-component-x">
-                        <label for="">Product Ids</label><br>
-                        @foreach($productName as $key => $name)
-                        <input type="text" name="product_name[]" class="product-select" id="productSelect" onchange="updatePayloadWeight()" style="width:100%;" value="{{ $name }}"><br><br>
-                        @endforeach
-                    </div>
+                <div class="child-component-y">
+                    <label for="">Box Quantity</label><br>
+                    @foreach($quantity as $key => $qty)
+                        <input type="text" value="{{ $qty }}" name="quantity[]"><br><br>
+                    @endforeach
+                </div>
+            </div>
 
+            <div class="button-controll">
+                <br><br>
+                <button type="submit" class="submit-order-btn">Edit Order</button>
+                <button type="button" class="append-container-child"><i class="fa fa-plus"></i></button>
+            </div>
+        </form>
+
+        <script>
+        $(document).ready(function() {
+            // Initialize Select2 for the existing container select
+            $('#containerSelect').select2({
+                placeholder: '--select container--',
+                allowClear: true
+            });
+
+            // Initialize Select2 for product_name[] field
+            $('.product-select').select2({
+                placeholder: '--select product--',
+                allowClear: true
+            });
+
+            // Listen for changes in product_name and quantity fields
+            $(document).on('change', '.product-select, input[name="quantity[]"]', function() {
+                updateAvailableCapacity();
+            });
+
+            // Add new product and quantity fields on button click
+            $('.append-container-child').click(function(e) {
+                e.preventDefault();
+
+                var productField = `
+                    <br>
+                    <div class="child-component-x">
+                        <label for="">Product Name</label><br>
+                        <select name="product_name[]" class="product-select" style="width:100%;">
+                            <option value="" selected disabled>--select product--</option>
+                            @foreach($posts as $post)
+                                <option value="{{$post->product_id}}" data-cbm="{{$post->cbm}}" data-kg="{{$post->kg}}">
+                                    {{$post->product_name}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <br><br>
+                    </div>
                     <div class="child-component-y">
                         <label for="">Box Quantity</label><br>
-                        @foreach($quantity as $key => $qty)
-                        <input type="text" value="{{ $qty }}" name="quantity[]"><br><br>
-                        @endforeach
-                    </div>
-                </div>
+                        <input type="text" name="quantity[]" placeholder="Quantity" style="width:100%;"><br><br>
+                    </div> <br><br> `;
 
-                <button type="submit" class="submit-order-btn">Edit Order</button>
-            </form>
+                // Append the new fields to the form
+                $('.mini-parent-class').append(productField);
+
+                // Re-initialize Select2 for dynamically added product selects
+                $('.product-select').last().select2({
+                    placeholder: '--select product--',
+                    allowClear: true
+                });
+            });
+
+            // Function to update available CBM and KG dynamically
+            function updateAvailableCapacity() {
+                var totalCBMUsed = 0;
+                var totalKGUsed = 0;
+
+                // Loop through each product and quantity
+                $('.product-select').each(function(index) {
+                    var selectedOption = $(this).find('option:selected');
+                    var cbm = parseFloat(selectedOption.data('cbm')) || 0;
+                    var kg = parseFloat(selectedOption.data('kg')) || 0;
+                    var quantity = parseInt($('input[name="quantity[]"]').eq(index).val()) || 0;
+
+                    // Calculate total CBM and KG based on the selected product and quantity
+                    totalCBMUsed += cbm * quantity;
+                    totalKGUsed += kg * quantity;
+                });
+
+                // Get the available CBM and KG from the current container
+                var availableCBM = parseFloat('{{ $container->capacity }}') - parseFloat('{{ $CBMCovered }}');
+                var availableKG = parseFloat('{{ $container->max_payload }}') - parseFloat('{{ $KGCovered }}');
+
+                // Calculate new available values
+                var remainingCBM = availableCBM - totalCBMUsed;
+                var remainingKG = availableKG - totalKGUsed;
+
+                // Update the DOM with the new available CBM and KG values
+                $('.available-levl strong').eq(0).text(remainingCBM.toFixed(2)); // Available CBM
+                $('.available-levl strong').eq(1).text(remainingKG.toFixed(2));  // Available KG
+            }
+        });
+        </script>
+
 
             @else
             <p class="alert-message-dialog">
@@ -367,7 +476,7 @@
 
             <!-- ADD NEW PRODUCT TO THIS ORDER FORM -->
 
-        <form action="/add-order/{{ $order->id }}" method="POST" class="order-tbl-wrapper" id="order-tbl-wrapper">
+        <form action="/add-order/{{ $order->id }}" method="POST" class="order-tbl-wrapper" id="order-tbl-wrapper-">
             @csrf
             @method('PUT')
             <div class="top-notch-form">
@@ -407,12 +516,7 @@
 
                 <div class="child-component-y">
                     <label for="">Box Quantity</label><br>
-                    <select name="quantity[]">
-                        <option value="" selected disabled>--select quantity--</option>
-                        @for($i=1; $i<=100; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </select>
+                    <input type="text" name="quantity[]" placeholder="Quantity">
                 </div>
             </div>
 
@@ -423,7 +527,7 @@
         <script>
             window.showPlaceOrderForm = function(event){
                 event.preventDefault();
-                const orderForm = document.getElementById("order-tbl-wrapper");
+                const orderForm = document.getElementById("order-tbl-wrapper-");
                 const hideScreenView = document.querySelector('.black-screeen-view');
 
                 orderForm.style.display='block';
@@ -432,7 +536,7 @@
 
             window.hideOrderForm = function(event){
                 event.preventDefault();
-                const orderForm = document.getElementById("order-tbl-wrapper");
+                const orderForm = document.getElementById("order-tbl-wrapper-");
                 const hideScreenView = document.querySelector('.black-screeen-view');
 
                 orderForm.style.display='none';
@@ -496,7 +600,7 @@
                     e.preventDefault();
 
                     var productField = `
-                        <br><br>
+                        <br>
                         <div class="child-component-x">
                             <label for="">Product Name</label><br>
                             <select name="product_name[]" class="product-select" id="">
@@ -508,12 +612,7 @@
                         </div>
                         <div class="child-component-y">
                             <label for="">Box Quantity</label><br>
-                            <select name="quantity[]" id="">
-                                <option value="" selected disabled>--select quantity--</option>
-                                @for($i=1; $i<=100; $i++)
-                                    <option value="{{$i}}">{{$i}}</option>
-                                @endfor
-                            </select>
+                            <input type="text" name="quantity[]" plceholder="Quantity" id="">
                         </div>`;
 
                     // Append the new fields

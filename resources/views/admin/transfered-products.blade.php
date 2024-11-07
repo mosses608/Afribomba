@@ -166,5 +166,50 @@
             }
         });
     </script>
+
+    <style>
+        .graph-transfer{
+            position: absolute;
+            left: 22%;
+            width: 70% !important;
+            box-shadow: 0 0 4px rgba(0,0,0,0.2);
+            background-color: #FFF !important;
+            top: 15%;
+            height: 500px !important;
+            display: none;
+            border-radius: 6px;
+        }
+
+        .graph-transfer canvas{
+            width: 100% !important;
+            height: 450px !important;
+        }
+        .top-breaker-graph h1,button{
+            display: inline-block;
+        }
+
+        .top-breaker-graph{
+            padding: 6px;
+        }
+
+        .top-breaker-graph h1{
+            text-transform: uppercase;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            float: left;
+            padding: 6px;
+        }
+
+        .top-breaker-graph button{
+            float: right;
+            background-color: red;
+            color: #FFF;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            height: 30px;
+            width: 30px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
 </center>
 @endsection

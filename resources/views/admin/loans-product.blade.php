@@ -176,21 +176,29 @@
                                     <form action="/edit-status/{{$export['id']}}" method="POST" class="edit-status-checker" id="edit-status-checker-{{$export['id']}}">
                                         @csrf
                                         @method('PUT')
+                                        
                                         <div class="centered-ajx-minor">
                                             <h1>Edit Loan Status</h1>
                                             <button class="close-form-pop" type="button" onclick="closeEditForm(event, {{ $export['id'] }})">&times;</button>
                                         </div><br><br>
-                                        <label for="">Loan Status:</label><br>
-                                        <select name="status[]" id="">
-                                            <option value="{{is_array($export['status']) ? implode(',', $export['status']) : $export['status']}}" selected disabled>--select status--</option>
+
+                                        <label for="status">Loan Status:</label><br>
+                                        <select name="status[]" id="status">
+                                            <option value="" selected disabled>--select status--</option>
                                             <option value="Paid">Paid</option>
+                                            <option value="Pedding..">Pending</option>
+                                            <option value="Unpaid">Unpaid</option>
                                         </select>
                                         <br><br>
-                                        <label for="">Payment Date:</label><br>
-                                        <input type="date" name="payment_date[]" id="" value="{{is_array($export['payment_date']) ? implode(',', $export['payment_date']) : $export['payment_date']}}">
+
+                                        <label for="payment_date">Payment Date:</label><br>
+                                        <input type="date" name="payment_date[]" id="payment_date" value="{{ is_array($export['payment_date']) ? implode(',', $export['payment_date']) : $export['payment_date'] }}">
                                         <br><br>
+
                                         <button type="submit" class="edit-btn-status-jx">Edit</button>
                                     </form>
+
+
                                 </td>
                             </tr>
                         @endif

@@ -44,7 +44,7 @@
                         @elseif($product->product_quantity == 0)
                         <p class="out-stock-in"><strong>Status: Out Stock</strong></p><br><br id="br-line">
                     @endif
-                    <p><strong>Price: Tsh{{number_format($product->product_price,2)}}</strong></p><br><br id="br-line">
+                    <p><strong>Price: Tsh {{number_format($product->product_price,2)}}</strong></p><br><br id="br-line">
                     <p><strong>Description: {{$product->description}}</strong></p><br><br id="br-line">
                     <p><strong>Store Name: {{$product->store_name}}</strong></p><br><br id="br-line">
                     <p><strong>Created On: {{$product->created_at}}</strong></p><br><br id="br-line">
@@ -56,24 +56,6 @@
                 </div><br>
                 
                 <div class="minor-builder-product">
-                    <!-- <table>
-                        <tr class="tr-th">
-                            <th>Id</th>
-                            <th>Product Name</th>
-                            <th>Quantity Available</th>
-                            <th>Store Name</th>
-                        </tr>
-                        @foreach($stores as $store)
-                        @if($store->store_name == $product->store_name)
-                        <tr>
-                            <td>{{$product->id}}</td>
-                            <td>{{$product->product_name}}</td>
-                            <td><strong><span style="color:orangered;">{{$product->product_quantity}}</span></strong></td>
-                            <td>{{$product->store_name}}</td>
-                        </tr>
-                        @endif
-                        @endforeach
-                    </table> -->
                     <div class="top-notch-containers">
                         <h1>Quantity On Hand</h1>
                         <span>{{ $product->product_quantity }}</span>
@@ -84,10 +66,25 @@
                             <th>Location</th>
                             <th>Quantity</th>
                         </tr>
-                        <tr>
-                            <td>{{ $product->store_name }}</td>
-                            <td>{{ $product->product_quantity }}</td>
-                        </tr>
+                        @foreach($transfers as $transfer)
+                        @endforeach
+                            @php
+                                $productName = is_array($transfer['product_name']) ? implode(',', $transfer['product_name']) : $transfer['product_name'];
+                                $otherStoreQuantity = is_array($transfer['store_name']) ? implode(',', $transfer['store_name']) : $transfer['store_name'];
+                                
+                                $transferedQuantity = is_array($transfer['product_quantity']) ? implode(',', $transfer['product_quantity']) : $transfer['product_quantity'];
+                                $transferedQuantity = floatval($transferedQuantity);  // Convert to a numeric value
+                            @endphp
+                            <tr>
+                                <td>{{ $product->store_name }}</td>
+                                <td>{{ floatval($product->product_quantity) - $transferedQuantity }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ $otherStoreQuantity }}</td>
+                                <td>{{ $transferedQuantity }}</td>
+                            </tr>
+                       
+
                     </table>
                 </div>
 

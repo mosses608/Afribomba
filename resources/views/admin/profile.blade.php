@@ -51,7 +51,7 @@
                 <label for="">Username:</label>
                 <input type="text" name="username" id="" value="{{Auth::guard('web')->user()->username}}"><br><br>
                 <label for="">Password:</label>
-                <input type="text" name="password" id="" value="{{Auth::guard('web')->user()->password}}"><br><br>
+                <input type="password" name="password" id="" value="{{Auth::guard('web')->user()->password}}"><br><br>
                 <label for="">Confirm Password:</label>
                 <input type="password" name="password_confirm" id=""><br><br>
                 <button type="submit">Update</button><br><br>
@@ -67,7 +67,6 @@
             document.querySelector('.profile-editor-viewer').style.color="#000";
             document.querySelector('.pass-user-editor').style.backgroundColor="#0000FF";
             document.querySelector('.pass-user-editor').style.color="#FFFFFF";
-            // document.querySelector('.profile-editor-viewer').classList.toggle('activeProfile');
         }
 
         function showProfileEditor(){

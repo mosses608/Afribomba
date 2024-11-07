@@ -56,48 +56,31 @@
                 }
             </style>
             <div class="mini-container">
-                <!-- <table>
-                    <tr class="product-table-header">
-                    <th>#</th>
-                    <th>Sale Id</th>
-                    <th>Product Name</th>
-                    <th>Unit Price</th>
-                    <th>Total Price</th>
-                    <th>Staff Name</th>
-                    <th>Date Created</th>
-                    <th>Action</th>
-                    </tr> -->
-                    @if(count($exports) == 0)
-                    <p>No product exported today!</p>
-                    @endif
-                    @foreach($exports as $export)
-                    <div class="single-loop-wrapper-bor">
-                        <span><strong>{{ is_array($customerName) ? implode(',', $customerName) : $export->tin }}</strong> <br> <p style="font-size:14px;">{{$export->created_at}}</p></span>
-                        <span><a href="/admin/print/{{ $export->id }}" style="color:#0000FF; cursor:pointer;"><i class="fa fa-print"></i></a> </span>
-                    </div>
-                                @foreach(json_decode($export->product_quantity, true) as $index => $quantity)
-                                @endforeach
+                @if(count($exports) == 0)
+                <p>No product exported today!</p>
+                @endif
 
-                        <!-- <form action="/exports/edit-product-exp/{{ $export->id }}" method="POST" class="product-creator-ajax-wrapper" id="product-editor-ajax-{{ $export->id }}" hidden enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <h1>Edit Sales</h1><br><br>
-                            <label>Product Name:</label>
-                            <input type="text" name="product_name" value="{{ $export->product_name }}"><br><br>
-                            <label>Customer Name:</label>
-                            <input type="text" name="customer_name" value="{{ $export->customer_name }}"><br><br>
-                            <input type="hidden" name="staff_name" value="{{ Auth::guard('web')->user()->staff_name }}">
-                            <label>Quantity:</label>
-                            <input type="text" name="product_quantity" value="{{ $quantity }}"><br><br>
-                            <label>Unit Price:</label>
-                            <input type="text" name="product_price" value="{{ json_decode($export->product_price, true)[$index] }}"><br><br>
-                            <button type="submit" class="button">Edit Sales</button> 
-                            <button type="button" class="close-button" onclick="closePopUpForm()">Close</button>
-                            <br><br>
-                        </form> -->
-                
-                    @endforeach
-                <!-- </table> -->
+                @foreach($exports as $key => $export)
+                    <div class="single-loop-wrapper-bor">
+                        <span>
+                            <strong>
+                                @if(is_array($customerName[$key]))
+                                    {{ implode(',', $customerName[$key]) }} <!-- If it's an array, implode to convert to string -->
+                                @else
+                                    {{ $customerName[$key] }} <!-- Otherwise, just display the value -->
+                                @endif
+                            </strong> 
+                            <br>
+                            <p style="font-size:14px;">{{ $export->created_at }}</p>
+                        </span>
+                        <span>
+                            <a href="/admin/print/{{ $export->id }}" style="color:#0000FF; cursor:pointer;">
+                                <i class="fa fa-print"></i>
+                            </a>
+                        </span>
+                    </div>
+                @endforeach
+
             </div>
         </div>
 
