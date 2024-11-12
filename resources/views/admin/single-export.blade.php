@@ -54,11 +54,20 @@
                         <button class="comment-button-loader" id="hidder-component" type="button" onclick="showMessage()"><i class="fa fa-comment"></i></button><br><br>
                     @endif
                 </div><br>
+
+                @foreach($transfers as $transfer)
+                
+                @php
+                $transferedQuantity = is_array($transfer['product_quantity']) ? implode(',', $transfer['product_quantity']) : $transfer['product_quantity'];
+                $transferedQuantity = floatval($transferedQuantity); 
+                @endphp
+
+                @endforeach
                 
                 <div class="minor-builder-product">
                     <div class="top-notch-containers">
                         <h1>Quantity On Hand</h1>
-                        <span>{{ $product->product_quantity }}</span>
+                        <span>{{ $product->product_quantity + $transferedQuantity }}</span>
                     </div><br><br><br>
                     <hr>
                     <table>
@@ -73,11 +82,11 @@
                                 $otherStoreQuantity = is_array($transfer['store_name']) ? implode(',', $transfer['store_name']) : $transfer['store_name'];
                                 
                                 $transferedQuantity = is_array($transfer['product_quantity']) ? implode(',', $transfer['product_quantity']) : $transfer['product_quantity'];
-                                $transferedQuantity = floatval($transferedQuantity);  // Convert to a numeric value
+                                $transferedQuantity = floatval($transferedQuantity);
                             @endphp
                             <tr>
                                 <td>{{ $product->store_name }}</td>
-                                <td>{{ floatval($product->product_quantity) - $transferedQuantity }}</td>
+                                <td>{{ floatval($product->product_quantity) }}</td>
                             </tr>
                             <tr>
                                 <td>{{ $otherStoreQuantity }}</td>

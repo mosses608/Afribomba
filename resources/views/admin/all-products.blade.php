@@ -49,7 +49,6 @@
                     <th>Status</th>
                     <th>Price</th>
                     <th>Description</th>
-                    <th>Store Name</th>
                     <!-- <th>Date Created</th> -->
                     <th>Action</th>
                     </tr>
@@ -74,22 +73,6 @@
                         </td>
                         <td>Tsh {{number_format($product->product_price)}}</td>
                         <td>{{$product->description}}</td>
-                        <td>
-                            @foreach($transfers as $transfer)
-                            @endforeach
-                                @php
-                                    $productName = is_array($transfer['product_name']) ? implode(',', $transfer['product_name']) : $transfer['product_name'];
-                                    $otherStoreQuantity = is_array($transfer['store_name']) ? implode(',', $transfer['store_name']) : $transfer['store_name'];
-                                    $transferredQuantity = is_array($transfer['product_quantity']) ? implode(',', $transfer['product_quantity']) : $transfer['product_quantity'];
-                                @endphp
-
-                                @if($otherStoreQuantity != $product->store_name && $productName == $product->product_name)
-                                    {{ $product->store_name }} & {{ $otherStoreQuantity }}
-                                @else
-                                    {{ $product->store_name }}
-                                @endif
-                            
-                        </td>
 
                         <!-- <td>{{$product->created_at}}</td> -->
                         <td style="text-align:center;">
@@ -358,6 +341,20 @@
                 @endforeach
             </select>
         </div>
+
+        <div class="select-md3">
+            <label>Destination Store:</label><br>
+            <select name="store_name[]">
+                <option value="">--select--</option>
+                @foreach($stores as $store)
+                    <option value="{{$store->store_name}}">{{$store->store_name}}</option>
+                @endforeach
+            </select>
+            @error('store_name')
+            <span>Store name is required!</span>
+            @enderror
+        </div>
+        
         <div class="select-md2">
             <label>Product Name:</label><br>
             <select name="product_name[]" class="product-select-md2">
@@ -372,18 +369,7 @@
         </div>
 
         <input type="hidden" name="staff_name[]" value="{{Auth::guard('web')->user()->staff_name}}">
-        <div class="select-md3">
-            <label>Destination Store:</label><br>
-            <select name="store_name[]">
-                <option value="">--select--</option>
-                @foreach($stores as $store)
-                    <option value="{{$store->store_name}}">{{$store->store_name}}</option>
-                @endforeach
-            </select>
-            @error('store_name')
-            <span>Store name is required!</span>
-            @enderror
-        </div>
+        
         <div class="select-md-4">
             <label>Recommend:</label><br>
             <select name="staff_recommeded[]">

@@ -70,47 +70,41 @@
                     <td>{{ $loan->id }}</td>
                     <td>
                         @foreach($loan->productNames as $key => $name)
-                        <span>{{ is_array($name) ? implode(',', $name) : $name }}</span><br>
+                        <span>{{ is_array($name) ? implode(',', $name) : $name }}</span><br><br>
                         @endforeach
                     </td>
                     <td>
                         @foreach($loan->unitPrice as $key => $price)
-                        <span>{{ number_format(is_array($price) ? implode(',', $price) : $price) }}</span> <br>
+                        <span>{{ number_format(is_array($price) ? implode(',', $price) : $price) }}</span> <br><br>
                         @endforeach
                     </td>
                     <td>
                         @foreach($loan->quantities as $key => $quantity)
-                        <span>{{ number_format( is_array($quantity) ? implode(',', $quantity) : $quantity ) }}</span> <br>
+                        <span>{{ number_format( is_array($quantity) ? implode(',', $quantity) : $quantity ) }}</span> <br><br>
                         @endforeach
                     </td>
                     @php
-                        $grandTotal = 0; // Initialize a variable to hold the cumulative total price
+                        $grandTotal = 0;
                     @endphp
                     <td>
                         @foreach($loan->unitPrice as $key => $price)
                             @php
-                                // Ensure the price is a numeric value
                                 if (is_array($price)) {
                                     $price = reset($price);
                                 }
                                 $price = (float) $price;
 
-                                // Retrieve the quantity and ensure it's numeric
                                 $quantity = is_array($loan->quantities) && isset($loan->quantities[$key]) 
                                             ? (float) $loan->quantities[$key] 
                                             : 0;
 
-                                // Calculate the total price for this item
                                 $totalPrice = $price * $quantity;
 
-                                // Add to the cumulative total
                                 $grandTotal += $totalPrice;
                             @endphp
-                            <!-- Display individual total price for this item -->
-                            <span>{{ number_format($totalPrice, 2) }}</span><br>
+                            <span>{{ number_format($totalPrice, 2) }}</span><br><br>
                         @endforeach
 
-                        <!-- Display the grand total after the loop -->
                          <hr><hr><hr>
                         <strong>Total Price: {{ number_format($grandTotal, 2) }}</strong>
                     </td>
@@ -340,4 +334,5 @@
             }
         </script>
 </center>
+
 @endsection

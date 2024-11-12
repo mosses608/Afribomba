@@ -911,11 +911,10 @@ class PageController extends Controller
             return redirect()->back()->withErrors('not_enough', 'Product quantity is not enough to transfer for product ' . $productName)->withInput();
         }
         // Reduce the quantity of each product
-        // $product->product_quantity -= $productQuantities[$index];
-        // $product->save();
+        $product->product_quantity -= $productQuantities[$index];
+        $product->save();
     }
 
-    // Combine all data into a single JSON object
     Transfer::create([
         'product_name' => json_encode($productNames), 
         'staff_name' => json_encode($staffNames), 
